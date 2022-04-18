@@ -1,0 +1,36 @@
+	{
+      "awayTeam": {
+        "logo": "https://media.api-sports.io/football/teams/63.png", 
+        "team_id": 63, 
+        "team_name": "Leeds"
+      }, 
+      "elapsed": 90, 
+      "event_date": "2020-12-20T16:30:00+00:00", 
+      "event_timestamp": 1608481800, 
+      "firstHalfStart": 1608481800, 
+      "fixture_id": 592276, 
+      "goalsAwayTeam": 2, 
+      "goalsHomeTeam": 6, 
+      "homeTeam": {
+        "logo": "https://media.api-sports.io/football/teams/33.png", 
+        "team_id": 33, 
+        "team_name": "Manchester United"
+      }, 
+      "league": {
+        "country": "England", 
+        "flag": "https://media.api-sports.io/flags/gb.svg", 
+        "logo": "https://media.api-sports.io/football/leagues/39.png", 
+        "name": "Premier League"
+      }, 
+      "league_id": 2790, 
+      "referee": "Anthony Taylor, England", 
+      "round": "Regular Season - 14", 
+      "score": {
+        "fulltime": "6-2", 
+        "halftime": "4-1"
+      }, 
+      "secondHalfStart": 1608485400, 
+      "status": "Match Finished", 
+      "statusShort": "FT", 
+      "venue": "Old Trafford"
+    }

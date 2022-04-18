@@ -1,0 +1,51 @@
+version: "2.3"
+
+services:
+    tinyserver:
+        build: .
+        networks:
+            lan:
+              # Define a static ip for the container. The containter can be accessible by others devices on the LAN network with this IP.
+              ipv4_address: 192.168.1.101
+        ports:
+            - "8080:8080"
+
+#   emby:
+#     image: emby/embyserver:latest
+#     container_name: emby
+#     restart: "unless-stopped"
+#     volumes:
+#       - ./programdata:/config
+#       - ./share:/mnt/share
+#     devices:
+#       - /dev/dri:/dev/dri
+#     environment:
+#       - UID=1000 # user id of the owner of the volumes on the host machine
+#       - GID=1000 # group id of the owner of the volumes on the host machine
+#     networks:
+#       lan:
+#         # Define a static ip for the container. The container can be accessible by others devices on the LAN network with this IP.
+#         ipv4_address: 192.168.1.155
+#   jellyfin:
+#     image: jellyfin/jellyfin
+#     container_name: jellyfin
+#     user: 1000:1000
+#     restart: "unless-stopped"
+#     volumes:
+#       - ./config:/config
+#       - ./cache:/cache
+#       - ./share:/media
+#     networks:
+#       lan:
+#         # Define a static ip for the container. The containter can be accessible by others devices on the LAN network with this IP.
+#         ipv4_address: 192.168.1.156
+
+networks:
+  lan:
+    name: lan
+    driver: macvlan
+    driver_opts:
+      parent: eth0 #your ethernet interface
+    ipam:
+      config:
+        - subnet: 192.168.1.0/24 # I use the same subnet as my LAN router.

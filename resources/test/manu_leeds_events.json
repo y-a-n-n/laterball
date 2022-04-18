@@ -1,0 +1,166 @@
+{
+  "events": [
+    {
+      "assist": "B. Fernandes", 
+      "assist_id": 1485.0, 
+      "detail": "Normal Goal", 
+      "elapsed": 2, 
+      "player": "S. McTominay", 
+      "player_id": 903, 
+      "teamName": "Manchester United", 
+      "team_id": 33, 
+      "type": "Goal"
+    }, 
+    {
+      "assist": "A. Martial", 
+      "assist_id": 908.0, 
+      "detail": "Normal Goal", 
+      "elapsed": 3, 
+      "player": "S. McTominay", 
+      "player_id": 903, 
+      "teamName": "Manchester United", 
+      "team_id": 33, 
+      "type": "Goal"
+    }, 
+    {
+      "detail": "Normal Goal", 
+      "elapsed": 20, 
+      "player": "B. Fernandes", 
+      "player_id": 1485, 
+      "teamName": "Manchester United", 
+      "team_id": 33, 
+      "type": "Goal"
+    }, 
+    {
+      "assist": "A. Martial", 
+      "assist_id": 908.0, 
+      "detail": "Normal Goal", 
+      "elapsed": 37, 
+      "player": "V. Lindelof", 
+      "player_id": 889, 
+      "teamName": "Manchester United", 
+      "team_id": 33, 
+      "type": "Goal"
+    }, 
+    {
+      "assist": "Raphinha", 
+      "assist_id": 1496.0, 
+      "detail": "Normal Goal", 
+      "elapsed": 41, 
+      "player": "L. Cooper", 
+      "player_id": 19118, 
+      "teamName": "Leeds", 
+      "team_id": 63, 
+      "type": "Goal"
+    }, 
+    {
+      "assist": "K. Phillips", 
+      "assist_id": 19130.0, 
+      "detail": "K. Phillips", 
+      "elapsed": 46, 
+      "player": "P. Struijk", 
+      "player_id": 64003, 
+      "teamName": "Leeds", 
+      "team_id": 63, 
+      "type": "subst"
+    }, 
+    {
+      "assist": "M. Klich", 
+      "assist_id": 3008.0, 
+      "detail": "M. Klich", 
+      "elapsed": 46, 
+      "player": "J. Shackleton", 
+      "player_id": 19131, 
+      "teamName": "Leeds", 
+      "team_id": 63, 
+      "type": "subst"
+    }, 
+    {
+      "comments": "Diving", 
+      "detail": "Yellow Card", 
+      "elapsed": 52, 
+      "player": "D. James", 
+      "player_id": 19329, 
+      "teamName": "Manchester United", 
+      "team_id": 33, 
+      "type": "Card"
+    }, 
+    {
+      "assist": "L. Shaw", 
+      "assist_id": 891.0, 
+      "detail": "L. Shaw", 
+      "elapsed": 60, 
+      "player": "A. Telles", 
+      "player_id": 378, 
+      "teamName": "Manchester United", 
+      "team_id": 33, 
+      "type": "subst"
+    }, 
+    {
+      "assist": "S. McTominay", 
+      "assist_id": 903.0, 
+      "detail": "Normal Goal", 
+      "elapsed": 66, 
+      "player": "D. James", 
+      "player_id": 19329, 
+      "teamName": "Manchester United", 
+      "team_id": 33, 
+      "type": "Goal"
+    }, 
+    {
+      "detail": "Penalty", 
+      "elapsed": 70, 
+      "player": "B. Fernandes", 
+      "player_id": 1485, 
+      "teamName": "Manchester United", 
+      "team_id": 33, 
+      "type": "Goal"
+    }, 
+    {
+      "assist": "B. Fernandes", 
+      "assist_id": 1485.0, 
+      "detail": "B. Fernandes", 
+      "elapsed": 71, 
+      "player": "D. van de Beek", 
+      "player_id": 547, 
+      "teamName": "Manchester United", 
+      "team_id": 33, 
+      "type": "subst"
+    }, 
+    {
+      "assist": "M. Rashford", 
+      "assist_id": 909.0, 
+      "detail": "M. Rashford", 
+      "elapsed": 71, 
+      "player": "E. Cavani", 
+      "player_id": 274, 
+      "teamName": "Manchester United", 
+      "team_id": 33, 
+      "type": "subst"
+    }, 
+    {
+      "assist": "L. Cooper", 
+      "assist_id": 19118.0, 
+      "detail": "L. Cooper", 
+      "elapsed": 72, 
+      "player": "L. Davis", 
+      "player_id": 19119, 
+      "teamName": "Leeds", 
+      "team_id": 63, 
+      "type": "subst"
+    }, 
+    {
+      "assist": "Raphinha", 
+      "assist_id": 1496.0, 
+      "detail": "Normal Goal", 
+      "elapsed": 73, 
+      "player": "S. Dallas", 
+      "player_id": 19126, 
+      "teamName": "Leeds", 
+      "team_id": 63, 
+      "type": "Goal"
+    }
+  ], 
+  "results": 15
+}
+

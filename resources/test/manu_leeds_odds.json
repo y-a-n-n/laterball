@@ -1,0 +1,19 @@
+{
+  "label_id": 1, 
+  "label_name": "Match Winner", 
+  "values": [
+    {
+      "odd": "1.65", 
+      "value": "Home"
+    }, 
+    {
+      "odd": "4.40", 
+      "value": "Draw"
+    }, 
+    {
+      "odd": "4.60", 
+      "value": "Away"
+    }
+  ]
+}
+

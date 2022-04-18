@@ -1,0 +1,31 @@
+on:
+  push:
+#    temporarily disabling push on tag while changing hosting provider
+    tags:
+      - 'foobar'
+
+name: Release
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Publish app to Google App Engine
+        env:
+          RAPID_API_KEY: ${{ secrets.RAPID_API_KEY }}
+          LATERBALL_ANALYTICS_TAG: ${{ secrets.LATERBALL_ANALYTICS_TAG }}
+          LATERBALL_ADSENSE_TAG: ${{ secrets.LATERBALL_ADSENSE_TAG }}
+          LATERBALL_TWITTER_API_KEY: ${{ secrets.LATERBALL_TWITTER_API_KEY }}
+          LATERBALL_TWITTER_API_SECRET: ${{ secrets.LATERBALL_TWITTER_API_SECRET }}
+          LATERBALL_ACCESS_TOKEN: ${{ secrets.LATERBALL_ACCESS_TOKEN }}
+          LATERBALL_ACCESS_SECRET: ${{ secrets.LATERBALL_ACCESS_SECRET }}
+        run: |
+          # This client-secret.json is converted by GCP_SA_KEY.
+          echo ${{ secrets.GCP_SA_KEY }} | base64 --decode > client-secret.json
+          gcloud auth activate-service-account ${{ secrets.GCP_SA_EMAIL }} --key-file=client-secret.json
+          gcloud info
+          gcloud config set project laterball
+          chmod +x deploy.sh
+          ./deploy.sh

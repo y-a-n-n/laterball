@@ -1,0 +1,64 @@
+{
+  "Ball Possession": {
+    "away": "59%", 
+    "home": "41%"
+  }, 
+  "Blocked Shots": {
+    "away": "7", 
+    "home": "6"
+  }, 
+  "Corner Kicks": {
+    "away": "13", 
+    "home": "11"
+  }, 
+  "Fouls": {
+    "away": "6", 
+    "home": "6"
+  }, 
+  "Goalkeeper Saves": {
+    "away": "8", 
+    "home": "1"
+  }, 
+  "Offsides": {
+    "away": "4", 
+    "home": "2"
+  }, 
+  "Passes %": {
+    "away": "83%", 
+    "home": "77%"
+  }, 
+  "Passes accurate": {
+    "away": "391", 
+    "home": "267"
+  }, 
+  "Red Cards": {}, 
+  "Shots insidebox": {
+    "away": "14", 
+    "home": "19"
+  }, 
+  "Shots off Goal": {
+    "away": "7", 
+    "home": "6"
+  }, 
+  "Shots on Goal": {
+    "away": "3", 
+    "home": "14"
+  }, 
+  "Shots outsidebox": {
+    "away": "3", 
+    "home": "7"
+  }, 
+  "Total Shots": {
+    "away": "17", 
+    "home": "26"
+  }, 
+  "Total passes": {
+    "away": "470", 
+    "home": "348"
+  }, 
+  "Yellow Cards": {
+    "away": "0", 
+    "home": "1"
+  }
+}
+
