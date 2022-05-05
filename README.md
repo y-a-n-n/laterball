@@ -43,4 +43,6 @@ Accounting for:
 # Hosting
 Laterball is currently hosted on a single Linode instance.
 It makes use of an in-memory cache to reduce DB roundtrips, and a Mongo database to persist data between restarts.
-If the application ever needs to support autoscaling, a more robust centralised caching mechanism would be required.
+If the application ever needs to support horizontal scaling, a more robust centralised caching mechanism would be required.
+
+HTTPS is not yet enabled, but planned.
