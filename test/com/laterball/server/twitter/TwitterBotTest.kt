@@ -1,5 +1,6 @@
 package com.laterball.server.twitter
 
+import com.laterball.server.MockConfig
 import com.laterball.server.api.ApiFootball
 import com.laterball.server.api.DataApi
 import com.laterball.server.model.LeagueId
@@ -48,7 +49,7 @@ class TwitterBotTest {
 
         twitterApiMock = TwitterApiMock()
         ratingsRepository = RatingsRepository(fixtureRepository, statsRepository, eventsRepository, oddsRepository)
-        twitterBot = TwitterBot(twitterApiMock, databaseMock, ratingsRepository, clockMock)
+        twitterBot = TwitterBot(twitterApiMock, databaseMock, MockConfig(mapOf(Pair("ktor.environment", "PROD"))), ratingsRepository, clockMock)
     }
 
     @Test

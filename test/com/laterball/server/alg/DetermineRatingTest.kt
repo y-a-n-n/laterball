@@ -17,7 +17,7 @@ class DetermineRatingTest {
 
         val result = determineRating(fixture, odds, stats, events)
 
-        assertEquals(885.0f, result.rating)
+        assertEquals(1035.0f, result.rating)
     }
 
     private fun readText(fileName: String): String {
