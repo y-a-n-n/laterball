@@ -49,7 +49,7 @@ class MongoDataStore(config: ApplicationConfig) : Database {
             val col = database.getCollection<LeagueFixtures>("fixtures")
             val data = col.find().toList()
             val map = HashMap<LeagueId, ApiFixtureList>()
-            data.forEach { map[it.leagueId] = it.fixtureList }
+            data.forEach { if (it.fixtureList != null) map[it.leagueId] = it.fixtureList }
             return@runBlocking map
         }
     }
@@ -59,7 +59,7 @@ class MongoDataStore(config: ApplicationConfig) : Database {
             val col = database.getCollection<FixtureStats>("stats")
             val data = col.find().toList()
             val map = HashMap<Int, Statistics>()
-            data.forEach { map[it.fixtureId] = it.stats }
+            data.forEach { if (it.stats != null) map[it.fixtureId] = it.stats }
             return@runBlocking map
         }
     }
@@ -69,7 +69,7 @@ class MongoDataStore(config: ApplicationConfig) : Database {
             val col = database.getCollection<FixtureEvents>("events")
             val data = col.find().toList()
             val map = HashMap<Int, ApiFixtureEvents>()
-            data.forEach { map[it.fixtureId] = it.events }
+            data.forEach { if (it.events != null) map[it.fixtureId] = it.events }
             return@runBlocking map
         }
     }
@@ -79,7 +79,7 @@ class MongoDataStore(config: ApplicationConfig) : Database {
             val col = database.getCollection<FixtureOdds>("odds")
             val data = col.find().toList()
             val map = HashMap<Int, Bet>()
-            data.forEach { map[it.fixtureId] = it.odds }
+            data.forEach { if (it.odds != null) map[it.fixtureId] = it.odds }
             return@runBlocking map
         }
     }
