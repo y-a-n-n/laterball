@@ -1,23 +1,28 @@
 <configuration>
     <!-- Stack Driver Appender -->
     <!-- See Config here: https://cloud.google.com/logging/docs/setup/java#wzxhzdk57wzxhzdk58logback_appender_for_product_name -->
-    <appender name="CLOUD" class="com.google.cloud.logging.logback.LoggingAppender">
-        <!-- Optional : filter logs at or above a level -->
-        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-            <level>INFO</level>
-        </filter>
-        <log>application.log</log> <!-- Optional : default java.log -->
-        <flushLevel>WARN</flushLevel> <!-- Optional : default ERROR -->
-    </appender>
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>%d{YYYY-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
         </encoder>
     </appender>
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>application.log</file>
+        <prudent>true</prudent>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>application.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>10MB</totalSizeCap>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>%-4relative [%thread] %-5level %logger{35} - %msg%n</pattern>
+        </encoder>
+    </appender>
     <root level="trace">
         <!-- Add Console output for local dev -->
         <appender-ref ref="STDOUT"/>
-        <!-- Add Cloud Appender to root output-->
-        <appender-ref ref="CLOUD" />
+        <appender-ref ref="FILE"/>
     </root>
+
 </configuration>
