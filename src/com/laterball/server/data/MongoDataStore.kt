@@ -94,7 +94,7 @@ class MongoDataStore(config: ApplicationConfig) : Database {
 
     override fun storeEvents(events: Map<Int, ApiFixtureEvents>) {
         runBlocking {
-            val col = database.getCollection<FixtureEvents>("stats")
+            val col = database.getCollection<FixtureEvents>("events")
             val data = events.map { f -> FixtureEvents(f.key, f.value) }
             col.insertMany(data)
         }
