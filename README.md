@@ -20,7 +20,7 @@ A Twitter bot tweets the ratings for 4- and 5-star games (maximum one per kickof
 
 ## Hosting and deployment
 
-This repository contains a GitHub action for deploying to Google App Engine, provided the appropriate secrets are set in the repository. The required secrets are defined in the `application.conf` file. The action runs every time a new tag is pushed to main.
+(Deprecated) This repository contains a GitHub action for deploying to Google App Engine, provided the appropriate secrets are set in the repository. The required secrets are defined in the `application.conf` file. The action runs every time a new tag is pushed to main.
 
 ## Future work
 
