@@ -14,6 +14,7 @@ import io.ktor.features.*
 import io.ktor.html.respondHtml
 import io.ktor.response.respondRedirect
 import io.ktor.util.KtorExperimentalAPI
+import org.koin.core.logger.Level
 import org.koin.ktor.ext.Koin
 import org.koin.ktor.ext.inject
 import org.koin.logger.slf4jLogger
@@ -29,7 +30,7 @@ fun Application.module() {
     }
 
     install(Koin) {
-        slf4jLogger()
+        slf4jLogger(Level.ERROR)
         modules(appModule)
     }
 

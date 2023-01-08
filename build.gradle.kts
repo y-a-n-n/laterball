@@ -5,8 +5,8 @@ val koin_version: String by project
 
 plugins {
     application
-    war
-    kotlin("jvm") version "1.4.10"
+    kotlin("jvm") version "1.6.21"
+//    id("io.ktor.plugin") version "2.2.2"
 }
 
 group = "com.laterball.server"
@@ -19,6 +19,7 @@ application {
 repositories {
     mavenLocal()
     mavenCentral()
+    maven { url = uri("https://maven.pkg.jetbrains.space/public/p/ktor/eap") }
     jcenter()
     maven { url = uri("https://kotlin.bintray.com/ktor") }
     maven { url = uri("https://kotlin.bintray.com/kotlinx") }
