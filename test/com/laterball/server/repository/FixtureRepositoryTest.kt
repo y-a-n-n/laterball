@@ -26,17 +26,17 @@ internal class FixtureRepositoryTest {
 
     @Test
     fun testRequestNull() {
-        assertNull(fixtureRepository.getFixturesForLeague(LeagueId.EPL))
+        assertNull(fixtureRepository.getFixturesForLeague(LeagueId.EPL).first)
     }
 
     @Test
     fun testCached() {
         dataApiMock.testFixtures = ApiFixtureList(listOf(randomFixture, randomFixture), 2)
-        assertEquals(fixtureRepository.getFixturesForLeague(LeagueId.EPL)!!.fixtures!!.size, 2)
+        assertEquals(fixtureRepository.getFixturesForLeague(LeagueId.EPL)!!.first!!.fixtures!!.size, 2)
         dataApiMock.testFixtures = ApiFixtureList(listOf(randomFixture, randomFixture, randomFixture), 3)
-        assertEquals(fixtureRepository.getFixturesForLeague(LeagueId.EPL)!!.fixtures!!.size, 2)
+        assertEquals(fixtureRepository.getFixturesForLeague(LeagueId.EPL)!!.first!!.fixtures!!.size, 2)
         clockMock.time += 86400001
-        assertEquals(fixtureRepository.getFixturesForLeague(LeagueId.EPL)!!.fixtures!!.size, 3)
+        assertEquals(fixtureRepository.getFixturesForLeague(LeagueId.EPL)!!.first!!.fixtures!!.size, 3)
     }
 
     @Test
@@ -44,11 +44,11 @@ internal class FixtureRepositoryTest {
         val fixtures = randomFixture
         val data = ApiFixtureList(listOf(fixtures), 1)
         dataApiMock.testFixtures = data
-        assertEquals(fixtureRepository.getFixturesForLeague(LeagueId.EPL)!!.fixtures!!.size, 1)
+        assertEquals(fixtureRepository.getFixturesForLeague(LeagueId.EPL)!!.first!!.fixtures!!.size, 1)
 
         dataApiMock.testFixtures = null
         val newRepo = FixtureRepository(dataApiMock, databaseMock, clockMock)
-        assertEquals(fixtureRepository.getFixturesForLeague(LeagueId.EPL), newRepo.getFixturesForLeague(LeagueId.EPL))
+        assertEquals(fixtureRepository.getFixturesForLeague(LeagueId.EPL).first, newRepo.getFixturesForLeague(LeagueId.EPL).first)
     }
 
     companion object {

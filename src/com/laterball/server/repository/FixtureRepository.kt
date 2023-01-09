@@ -1,6 +1,5 @@
 package com.laterball.server.repository
 
-import com.google.gson.Gson
 import com.laterball.server.model.LeagueId
 import com.laterball.server.api.DataApi
 import com.laterball.server.api.model.ApiFixtureList
@@ -26,7 +25,7 @@ class FixtureRepository(private val dataApi: DataApi, private val database: Data
         logger.info("Initialised with fixtureCache size ${fixtureCache.size}")
     }
 
-    fun getFixturesForLeague(leagueId: LeagueId): ApiFixtureList? {
+    fun getFixturesForLeague(leagueId: LeagueId): Pair<ApiFixtureList?, Long?> {
         val current = fixtureCache[leagueId]
         logger.info("Fixture cache currently containts ${current?.fixtures?.size ?: 0} fixtures")
         if (needsUpdate(leagueId)) {
@@ -48,15 +47,19 @@ class FixtureRepository(private val dataApi: DataApi, private val database: Data
                     }
                 }
 
-                val valid = updated?.fixtures?.size ?: 0 > 0
+                val valid = (updated?.fixtures?.size ?: 0) > 0
                 if (valid) fixtureCache[leagueId] = updated!!
                 database.storeFixtures(fixtureCache)
-                return if (valid) updated else current
+                if (valid) {
+                    return Pair(updated, nextFixtureUpdateTime[leagueId])
+                } else {
+                    return Pair(current, null)
+                }
             } catch (e: Exception) {
-                return current
+                return Pair(current, null)
             }
         }
-        return current
+        return Pair(current, null)
     }
 
     private fun needsUpdate(leagueId: LeagueId): Boolean {

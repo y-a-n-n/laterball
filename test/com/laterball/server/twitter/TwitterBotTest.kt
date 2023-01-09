@@ -48,7 +48,7 @@ class TwitterBotTest {
         val oddsRepository = OddsRepository(dataApi, databaseMock)
 
         twitterApiMock = TwitterApiMock()
-        ratingsRepository = RatingsRepository(fixtureRepository, statsRepository, eventsRepository, oddsRepository)
+        ratingsRepository = RatingsRepository(fixtureRepository, statsRepository, eventsRepository, oddsRepository, SchedulerMock())
         twitterBot = TwitterBot(twitterApiMock, databaseMock, MockConfig(mapOf(Pair("ktor.environment", "PROD"))), ratingsRepository, clockMock)
     }
 

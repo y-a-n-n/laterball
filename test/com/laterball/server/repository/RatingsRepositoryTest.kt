@@ -24,6 +24,7 @@ internal class RatingsRepositoryTest {
     private lateinit var client: HttpClient
     private lateinit var ratingsRepository: RatingsRepository
     private lateinit var databaseMock: DatabaseMock
+    private lateinit var schedulerMock: SchedulerMock
 
     @Before
     fun setUp() {
@@ -57,8 +58,9 @@ internal class RatingsRepositoryTest {
         val statsRepository = StatsRepository(dataApi, databaseMock)
         val eventsRepository = EventsRepository(dataApi, databaseMock)
         val oddsRepository = OddsRepository(dataApi, databaseMock)
+        val schedulerMock = SchedulerMock()
 
-        ratingsRepository = RatingsRepository(fixtureRepository, statsRepository, eventsRepository, oddsRepository, clockMock)
+        ratingsRepository = RatingsRepository(fixtureRepository, statsRepository, eventsRepository, oddsRepository, schedulerMock, clockMock)
     }
 
     @Test

@@ -5,6 +5,8 @@ import com.laterball.server.api.DataApi
 import com.laterball.server.data.Database
 import com.laterball.server.data.MongoDataStore
 import com.laterball.server.repository.*
+import com.laterball.server.scheduler.CoroutineScheduler
+import com.laterball.server.scheduler.Scheduler
 import com.laterball.server.twitter.Twitter4jApi
 import com.laterball.server.twitter.TwitterApi
 import com.laterball.server.twitter.TwitterBot
@@ -19,6 +21,7 @@ import org.koin.experimental.builder.singleBy
 val appModule = module(createdAtStart = true) {
     factory<ApplicationConfig> { HoconApplicationConfig(ConfigFactory.load()) }
     factory<DataApi> { ApiFootball(get()) }
+    single<Scheduler> { CoroutineScheduler() }
     single<Database> { MongoDataStore(get()) }
     singleBy<TwitterApi, Twitter4jApi>()
     single { FixtureRepository(get(), get()) }
@@ -26,5 +29,5 @@ val appModule = module(createdAtStart = true) {
     single { StatsRepository(get(), get()) }
     single { OddsRepository(get(), get()) }
     single { TwitterBot(get(), get(), get(), get()) }
-    single { RatingsRepository(get(), get(), get(), get()) }
+    single { RatingsRepository(get(), get(), get(), get(), get()) }
 }

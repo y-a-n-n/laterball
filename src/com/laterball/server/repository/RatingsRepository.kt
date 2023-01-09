@@ -4,6 +4,7 @@ import com.laterball.server.alg.determineRating
 import com.laterball.server.api.model.Fixture
 import com.laterball.server.model.LeagueId
 import com.laterball.server.model.Rating
+import com.laterball.server.scheduler.Scheduler
 import org.slf4j.LoggerFactory
 import java.time.Instant
 import java.time.format.DateTimeFormatter
@@ -19,6 +20,7 @@ class RatingsRepository(
     private val statsRepository: StatsRepository,
     private val eventsRepository: EventsRepository,
     private val oddsRepository: OddsRepository,
+    private val scheduler: Scheduler,
     private val clock: Clock = SystemClock()
 ) {
 
@@ -40,11 +42,14 @@ class RatingsRepository(
         val currentTime = clock.time
         // Get completed fixtures in this league less that 1 week old
         val timeFormatter = DateTimeFormatter.ISO_DATE_TIME
-        val relevantFixtures = fixtureRepository.getFixturesForLeague(leagueId)
+        val fixturesResult = fixtureRepository.getFixturesForLeague(leagueId)
+        val relevantFixtures = fixturesResult.first // Fixtures are the first value in the tuple
             ?.fixtures
             ?.filter {
                 it.status == STATUS_FINISHED && currentTime - Date.from(Instant.from(timeFormatter.parse(it.event_date))).time < 604_800_000
             }
+
+        fixturesResult.second?.let { scheduleNextCalculation(leagueId, it) } // Next update time is the second value in the tuple
 
         logger.info("There are ${relevantFixtures?.size} relevant fixtures at this time")
 
@@ -99,6 +104,18 @@ class RatingsRepository(
         newRatingsListeners.forEach { it.invoke(leagueId, normedNew) }
 
         return if (sortByDate) normed.toMutableList().sortedByDescending { it.date.time } else normed
+    }
+
+    private fun recalculateRatings(leagueId: LeagueId) {
+        // Don't care about returning a result, just update internal state
+        getRatingsForLeague(leagueId)
+    }
+
+    private fun scheduleNextCalculation(leagueId: LeagueId, nextUpdateTime: Long) {
+        val callback = { id: LeagueId ->
+            recalculateRatings(id)
+        }
+        scheduler.schedule(nextUpdateTime - clock.time, leagueId, callback)
     }
 
     private fun normalize(ratings: List<Rating>): List<Rating> {
