@@ -1,11 +1,3 @@
-#####################
-# build the jar
-#####################
-
-FROM gradle:jdk15 as builder
-COPY --chown=gradle:gradle application /application
-WORKDIR /application
-RUN gradle clean build jar
 
 #####################
 # run the server
@@ -15,10 +7,9 @@ RUN gradle clean build jar
 # FROM openjdk:15
 
 # Use this on an arm machine, such as a raspberry pi
-FROM arm32v7/adoptopenjdk:15
+FROM adoptopenjdk/openjdk11:latest
 
 EXPOSE 8080
-COPY --from=builder /application/build/libs/miniktor-0.0.1.jar .
+COPY build/distributions/laterball-server-2.4.3.tar .
 WORKDIR /
-CMD java -jar ./miniktor-0.0.1.jar
- 
+RUN tar -xf laterball-server-2.4.3.tar && rm laterball-server-2.4.3.tar && ./laterball-server-2.4.3/bin/laterball-server
