@@ -27,9 +27,10 @@ class MongoDataStore(config: ApplicationConfig) : Database {
 
     private val dbUser = config.property("ktor.mongo.user").getString()
     private val dbPassword = config.property("ktor.mongo.password").getString()
+    private val host = config.property("ktor.mongo.host").getString()
 
     private val connectionString =
-        "mongodb://$dbUser:$dbPassword@localhost:27017/?authSource=admin&readPreference=primary&appname=laterball&directConnection=true&ssl=false"
+        "mongodb://$dbUser:$dbPassword@$host:27017/?authSource=admin&readPreference=primary&appname=laterball&directConnection=true&ssl=false"
 
     private val client = KMongo.createClient(ConnectionString(connectionString))
 
