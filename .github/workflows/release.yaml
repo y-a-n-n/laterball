@@ -15,8 +15,6 @@ jobs:
       - name: Publish app to Google App Engine
         env:
           RAPID_API_KEY: ${{ secrets.RAPID_API_KEY }}
-          LATERBALL_ANALYTICS_TAG: ${{ secrets.LATERBALL_ANALYTICS_TAG }}
-          LATERBALL_ADSENSE_TAG: ${{ secrets.LATERBALL_ADSENSE_TAG }}
           LATERBALL_TWITTER_API_KEY: ${{ secrets.LATERBALL_TWITTER_API_KEY }}
           LATERBALL_TWITTER_API_SECRET: ${{ secrets.LATERBALL_TWITTER_API_SECRET }}
           LATERBALL_ACCESS_TOKEN: ${{ secrets.LATERBALL_ACCESS_TOKEN }}

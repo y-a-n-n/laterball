@@ -16,17 +16,6 @@ services:
       - 'mongo'
     ports:
       - 8080:8080
-    environment:
-      - KTOR_ENV
-      - RAPID_API_KEY
-      - LATERBALL_ANALYTICS_TAG
-      - MONGO_USER
-      - MONGO_PASSWORD
-      - MONGO_HOST
-      - LATERBALL_TWITTER_API_KEY
-      - LATERBALL_TWITTER_API_SECRET
-      - LATERBALL_ACCESS_TOKEN
-      - LATERBALL_ACCESS_SECRET
 
 volumes:
   mongo:

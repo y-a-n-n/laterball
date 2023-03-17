@@ -14,31 +14,10 @@ class Generator(private val repo: RatingsRepository, private val config: Applica
 
     private val logger = LoggerFactory.getLogger(Generator::class.java)
 
-    private fun generateAdsense(head: HEAD) {
-        val adsenseTag = config.propertyOrNull("ktor.analytics.adsense")?.getString() ?: ""
-        head.script(src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js") {
-            attributes.putIfAbsent("async", "true")
-            attributes.putIfAbsent("data-ad-client", "ca-pub-$adsenseTag")
-        }
-    }
-
     private fun generateHeader(html: HTML) {
-        val analyticsTag = config.propertyOrNull("ktor.analytics.tag")?.getString() ?: ""
         html.head {
-            generateAdsense(this)
             styleLink("/static/laterball.css")
             link(href = "https://fonts.googleapis.com/css2?family=Roboto+Slab&family=Turret+Road:wght@800&display=swap", rel = "stylesheet")
-            script(type = ScriptType.textJavaScript, src = "https://www.googletagmanager.com/gtag/js?id=$analyticsTag") {}
-            script(type = ScriptType.textJavaScript) {
-                unsafe {
-                    raw("""
-                                window.dataLayer = window.dataLayer || [];
-                                function gtag(){dataLayer.push(arguments);}
-                                gtag('js', new Date());
-                                gtag('config', '$analyticsTag');
-                            """)
-                }
-            }
         }
     }
 
