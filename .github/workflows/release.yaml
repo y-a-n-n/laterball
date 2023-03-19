@@ -1,3 +1,4 @@
+# Inspired by https://blog.benoitblanchon.fr/github-action-run-ssh-commands/
 on:
   push:
 #    temporarily disabling push on tag while changing hosting provider
@@ -10,20 +11,32 @@ jobs:
   release:
     name: Release
     runs-on: ubuntu-latest
+    # needs: test
     steps:
-      - uses: actions/checkout@v1
-      - name: Publish app to Google App Engine
-        env:
-          RAPID_API_KEY: ${{ secrets.RAPID_API_KEY }}
-          LATERBALL_TWITTER_API_KEY: ${{ secrets.LATERBALL_TWITTER_API_KEY }}
-          LATERBALL_TWITTER_API_SECRET: ${{ secrets.LATERBALL_TWITTER_API_SECRET }}
-          LATERBALL_ACCESS_TOKEN: ${{ secrets.LATERBALL_ACCESS_TOKEN }}
-          LATERBALL_ACCESS_SECRET: ${{ secrets.LATERBALL_ACCESS_SECRET }}
+      - name: Configure SSH
         run: |
-          # This client-secret.json is converted by GCP_SA_KEY.
-          echo ${{ secrets.GCP_SA_KEY }} | base64 --decode > client-secret.json
-          gcloud auth activate-service-account ${{ secrets.GCP_SA_EMAIL }} --key-file=client-secret.json
-          gcloud info
-          gcloud config set project laterball
-          chmod +x deploy.sh
-          ./deploy.sh
+          mkdir -p ~/.ssh/
+          echo "$SSH_KEY" > ~/.ssh/staging.key
+          chmod 600 ~/.ssh/staging.key
+          cat >>~/.ssh/config <<END
+          Host production
+            HostName $SSH_HOST
+            User $SSH_USER
+            IdentityFile ~/.ssh/production.key
+            StrictHostKeyChecking no
+          END
+        env:
+          SSH_USER: ${{ secrets.STAGING_SSH_USER }}
+          SSH_KEY: ${{ secrets.STAGING_SSH_KEY }}
+          SSH_HOST: ${{ secrets.STAGING_SSH_HOST }}
+
+      - name: Stop the server
+        # TODO
+        run: ssh staging 'sudo systemctl stop my-application'
+
+      - name: Check out the source
+        run: ssh staging 'cd my-application && git fetch && git reset --hard origin/master'
+
+      - name: Start the server
+        if: ${{ always() }}
+        run: ssh staging 'sudo systemctl start my-application'

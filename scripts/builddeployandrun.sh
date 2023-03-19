@@ -1,3 +1,4 @@
+# TODO: https://blog.benoitblanchon.fr/github-action-run-ssh-commands/
 # build the tarball
 ./scripts/buildlocal.sh
 # build the docker images
