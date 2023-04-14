@@ -1,6 +1,5 @@
-tag=$(git describe --tags --abbrev=0)
-version="${tag#?}"
-docker build -t laterball/laterball-server --build-arg VERSION=$version \
+version=$1
+docker build -t laterball/laterball-server:$version --build-arg VERSION=$version \
 --build-arg KTOR_ENV=$KTOR_ENV \
 --build-arg RAPID_API_KEY=$RAPID_API_KEY \
 --build-arg MONGO_USER=$MONGO_USER \
@@ -12,4 +11,4 @@ docker build -t laterball/laterball-server --build-arg VERSION=$version \
 --build-arg LATERBALL_ACCESS_SECRET=$LATERBALL_ACCESS_SECRET -f Dockerfile .
 .
 
-docker build -t laterball/mongo --build-arg MONGO_USER=$MONGO_USER --build-arg MONGO_PASSWORD=$MONGO_PASSWORD -f Dockerfile-db .
+docker build -t laterball/mongo:$version --build-arg MONGO_USER=$MONGO_USER --build-arg MONGO_PASSWORD=$MONGO_PASSWORD -f Dockerfile-db .
