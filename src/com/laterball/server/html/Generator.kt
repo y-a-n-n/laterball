@@ -149,13 +149,13 @@ class Generator(private val repo: RatingsRepository, private val config: Applica
                     style = "margin-right: 10px;"
                     img(src = "/static/twitter.png") { style = "width: 50px; height: 50px"}
                 }
-                a(href = "https://github.com/y-a-n-n/laterball-server", target = "_blank") {
+                a(href = "https://github.com/y-a-n-n/laterball", target = "_blank") {
                     style = "margin-left: 10px;"
                     img(src = "/static/github.png") { style = "width: 50px; height: 50px"}
                 }
             }
             span(classes = "subtitle center") { +"© ${SimpleDateFormat("YYYY").format(Date())} Laterball" }
-            span(classes = "subtitle center") { +"Version 2.4.3" }
+            span(classes = "subtitle center") { +"Version 2.4.4" }
         }
     }
 }
