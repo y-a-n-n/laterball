@@ -9,10 +9,17 @@ services:
       - mongo:/data/db
     networks:
       - laterball-network
+  redis:
+    image: redis:latest
+    command: redis-server --save 300 1
+    volumes:
+      - redis-data:/data
+    restart: always
   laterball:
     image: 'laterball/laterball-server'
     depends_on:
       - 'mongo'
+      - 'redis'
     ports:
       - 8080:8080
     networks:
@@ -20,6 +27,8 @@ services:
 
 volumes:
   mongo:
+  redis-data:
+
 
 networks:
   laterball-network:
