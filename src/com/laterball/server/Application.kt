@@ -2,6 +2,7 @@ package com.laterball.server
 
 import com.laterball.server.api.DataApi
 import com.laterball.server.html.Generator
+import com.laterball.server.html.generateHmac
 import com.laterball.server.model.LeagueId
 import com.laterball.server.repository.RatingsRepository
 import io.ktor.application.*
@@ -12,7 +13,7 @@ import io.ktor.http.content.*
 import io.ktor.gson.*
 import io.ktor.features.*
 import io.ktor.html.respondHtml
-import io.ktor.response.respondRedirect
+import io.ktor.response.*
 import io.ktor.util.KtorExperimentalAPI
 import org.koin.core.logger.Level
 import org.koin.ktor.ext.Koin
@@ -70,6 +71,17 @@ fun Application.module() {
                 val sortByDate = call.request.queryParameters["sort"] == "date"
                 call.respondHtml {
                     generator.generateForLeague(this, leagueId, sortByDate)
+                }
+            }
+            post("/${leagueId.path}/rating") {
+                val fixtureId = call.request.queryParameters["fixtureId"]!!
+                val csrf = call.request.queryParameters["csrf"]!!
+                val salt = call.request.queryParameters["salt"]!!
+                if (generateHmac(fixtureId, salt, "1234") == csrf) {
+                    val rating = call.request.queryParameters["rating"]!!
+                    call.respond(HttpStatusCode.OK)
+                } else {
+                    call.respond(HttpStatusCode.Unauthorized)
                 }
             }
         }
