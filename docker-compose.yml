@@ -10,7 +10,7 @@ services:
     networks:
       - laterball-network
   laterball:
-    image: 'laterball/laterball-server'
+    image: 'laterball/laterball-server:latest'
     depends_on:
       - 'mongo'
     ports:

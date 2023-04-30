@@ -11,4 +11,8 @@ docker build -t laterball/laterball-server:$version --build-arg VERSION=$version
 --build-arg LATERBALL_ACCESS_SECRET=$LATERBALL_ACCESS_SECRET -f Dockerfile .
 .
 
+docker tag laterball/laterball-server:$version laterball/laterball-server:latest
+
 docker build -t laterball/mongo:$version --build-arg MONGO_USER=$MONGO_USER --build-arg MONGO_PASSWORD=$MONGO_PASSWORD -f Dockerfile-db .
+
+docker tag laterball/mongo:$version laterball/mongo:latest

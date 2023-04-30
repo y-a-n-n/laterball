@@ -12,6 +12,7 @@ ARG LATERBALL_TWITTER_API_SECRET
 ARG LATERBALL_ACCESS_TOKEN
 ARG LATERBALL_ACCESS_SECRET
 
+ENV VERSION=${VERSION}
 ENV KTOR_ENV=${KTOR_ENV}
 ENV RAPID_API_KEY=${RAPID_API_KEY}
 ENV MONGO_USER=${MONGO_USER}
@@ -26,4 +27,5 @@ EXPOSE 8080
 COPY build/distributions/laterball-server-$VERSION.tar .
 WORKDIR /
 RUN tar -xf laterball-server-$VERSION.tar && rm laterball-server-$VERSION.tar
-CMD ["/laterball-server-2.4.3/bin/laterball-server"]
+ENTRYPOINT ["/bin/bash", "-c", "/laterball-server-$VERSION/bin/laterball-server"]
+#CMD ["/laterball-server-$VERSION/bin/laterball-server"]
