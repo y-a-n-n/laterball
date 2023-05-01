@@ -9,6 +9,7 @@ import com.laterball.server.data.mongo.FixtureOdds
 import com.laterball.server.data.mongo.FixtureStats
 import com.laterball.server.data.mongo.LeagueFixtures
 import com.laterball.server.model.LeagueId
+import com.laterball.server.model.LeagueUpdateTime
 import com.laterball.server.model.TwitterData
 import com.mongodb.ConnectionString
 import io.ktor.config.*
@@ -113,6 +114,34 @@ class MongoDataStore(config: ApplicationConfig) : Database {
         runBlocking {
             val col = database.getCollection<TwitterData>("twitter")
             col.insertOne(twitterData)
+        }
+    }
+
+    override fun storeLastUpdatedMap(lastUpdated: List<LeagueUpdateTime>) {
+        runBlocking {
+            val col = database.getCollection<LeagueUpdateTime>("lastUpdated")
+            lastUpdated.forEach { f -> col.updateOne(LeagueUpdateTime::leagueId eq f.leagueId, f, upsert()) }
+        }
+    }
+
+    override fun getLastUpdatedMap(): List<LeagueUpdateTime> {
+        return runBlocking {
+            val col = database.getCollection<LeagueUpdateTime>("lastUpdated")
+            return@runBlocking col.find().toList()
+        }
+    }
+
+    override fun storeNextUpdatedMap(lastUpdated: List<LeagueUpdateTime>) {
+        runBlocking {
+            val col = database.getCollection<LeagueUpdateTime>("nextUpdated")
+            lastUpdated.forEach { f -> col.updateOne(LeagueUpdateTime::leagueId eq f.leagueId, f, upsert()) }
+        }
+    }
+
+    override fun getNextUpdatedMap(): List<LeagueUpdateTime> {
+        return runBlocking {
+            val col = database.getCollection<LeagueUpdateTime>("nextUpdated")
+            return@runBlocking col.find().toList()
         }
     }
 
