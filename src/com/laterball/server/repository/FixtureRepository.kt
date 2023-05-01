@@ -4,6 +4,7 @@ import com.laterball.server.model.LeagueId
 import com.laterball.server.api.DataApi
 import com.laterball.server.api.model.ApiFixtureList
 import com.laterball.server.data.Database
+import com.laterball.server.model.LeagueUpdateTime
 import org.slf4j.LoggerFactory
 import java.time.Instant
 import java.time.format.DateTimeFormatter
@@ -21,13 +22,16 @@ class FixtureRepository(private val dataApi: DataApi, private val database: Data
         val storedFixtures = database.getFixtures()
         logger.info("Retrieved ${storedFixtures.size} stored fixtures")
         fixtureCache = ConcurrentHashMap(storedFixtures)
-
+        val storedLastUpdateTimes = database.getLastUpdatedMap()
+        val storedNextUpdateTimes = database.getNextUpdatedMap()
+        storedLastUpdateTimes.forEach { lastUpdatedMap[it.leagueId] = it.updateTime }
+        storedNextUpdateTimes.forEach { nextFixtureUpdateTime[it.leagueId] = it.updateTime }
         logger.info("Initialised with fixtureCache size ${fixtureCache.size}")
     }
 
     fun getFixturesForLeague(leagueId: LeagueId): Pair<ApiFixtureList?, Long?> {
         val current = fixtureCache[leagueId]
-        logger.info("Fixture cache currently containts ${current?.fixtures?.size ?: 0} fixtures")
+        logger.info("Fixture cache currently contains ${current?.fixtures?.size ?: 0} fixtures")
         if (needsUpdate(leagueId)) {
             try {
                 lastUpdatedMap[leagueId] = clock.time
@@ -46,6 +50,8 @@ class FixtureRepository(private val dataApi: DataApi, private val database: Data
                         nextFixtureUpdateTime.remove(leagueId)
                     }
                 }
+                database.storeLastUpdatedMap(lastUpdatedMap.map { LeagueUpdateTime(it.key, it.value) })
+                database.storeNextUpdatedMap(nextFixtureUpdateTime.map { LeagueUpdateTime(it.key, it.value) })
 
                 val valid = (updated?.fixtures?.size ?: 0) > 0
                 if (valid) fixtureCache[leagueId] = updated!!
