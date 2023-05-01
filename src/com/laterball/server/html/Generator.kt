@@ -106,15 +106,16 @@ class Generator(private val repo: RatingsRepository, private val config: Applica
                                         for (i in (starsAdded..4)) {
                                             img(src = "/static/empty_star.svg") { style = "height:50px" }
                                         }
-                                        val salt = getSalt()
                                         // TODO https://dev.to/madsstoumann/star-rating-using-a-single-input-i0l
                                         form(action = "/${leagueId.path}/rating", encType = FormEncType.applicationXWwwFormUrlEncoded, method = FormMethod.post) {
                                             p {
                                                 +"Your rating:"
                                                 rangeInput(name = "rating") { min = "1"; max = "10" }
-                                                hiddenInput(name = "csrf") { value = generateHmac(rating.fixtureId.toString(), salt, "1234") }
-                                                hiddenInput(name = "salt") { value = salt }
-                                                hiddenInput(name = "fixture") { value = rating.fixtureId.toString() }
+                                                hiddenInput(name = "csrf") { value = generateCsrfToken(rating.fixtureId.toString(), "1234") }
+                                                hiddenInput(name = "fixtureId") { value = rating.fixtureId.toString() }
+                                            }
+                                            p {
+                                                submitInput(classes = "lb-button lb-green lb-hover-green lb-round-xlarge") { value = "Submit" }
                                             }
                                         }
                                     }

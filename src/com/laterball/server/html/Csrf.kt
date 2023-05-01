@@ -5,15 +5,29 @@ import javax.crypto.spec.SecretKeySpec
 
 private val charPool : List<Char> = ('a'..'z') + ('A'..'Z') + ('0'..'9')
 
-fun getSalt(): String {
+private fun getSalt(): String {
     return List(8) { charPool.random() }.joinToString("")
 }
 
-fun generateHmac(payload: String, salt: String, secret: String): String {
-    val secretKeySpec = SecretKeySpec(secret.toByteArray(), "SHA-512")
-    val mac = Mac.getInstance("SHA-512")
+private fun generateHmac(payload: String, salt: String, secret: String): String {
+    val secretKeySpec = SecretKeySpec(secret.toByteArray(), "HmacSHA256")
+    val mac = Mac.getInstance("HmacSHA256")
     mac.init(secretKeySpec)
-    return mac.doFinal("$payload:$salt".toByteArray()).toHex()
+    val bytes = mac.doFinal((payload + salt).toByteArray())
+    return bytes.toHex()
 }
 
-fun ByteArray.toHex(): String = joinToString(separator = "") { eachByte -> "%02x".format(eachByte) }
+fun generateCsrfToken(payload: String, secret: String): String {
+    val salt = getSalt()
+    val hmac = generateHmac(payload, salt, secret)
+    return "$hmac:$salt"
+}
+
+fun checkCsrfToken(payload: String, token: String, secret: String): Boolean {
+    val (hmac, salt) = token.split(":")
+    val expectedHmac = generateHmac(payload, salt, secret)
+    // Not caring about timing attacks at this stage--we're not important enough
+    return hmac == expectedHmac
+}
+
+private fun ByteArray.toHex(): String = joinToString(separator = "") { eachByte -> "%02x".format(eachByte) }
