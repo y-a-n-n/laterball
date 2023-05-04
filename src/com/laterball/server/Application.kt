@@ -4,6 +4,7 @@ import com.laterball.server.api.DataApi
 import com.laterball.server.html.Generator
 import com.laterball.server.html.checkCsrfToken
 import com.laterball.server.model.LeagueId
+import com.laterball.server.model.RatingSubmission
 import com.laterball.server.repository.RatingsRepository
 import io.ktor.application.*
 import io.ktor.config.ApplicationConfig
@@ -75,11 +76,9 @@ fun Application.module() {
                 }
             }
             post("/${leagueId.path}/rating") {
-                val formParams = call.receiveParameters()
-                val fixtureId = formParams["fixtureId"]!!
-                val csrf = formParams["csrf"]!!
-                if (checkCsrfToken(fixtureId, csrf, "1234")) {
-                    val rating = formParams["rating"]!!
+                val formParams = call.receive<RatingSubmission>()
+                if (checkCsrfToken(formParams.fixtureId.toString(), formParams.csrf, "1234")) {
+                    val rating = formParams.rating
                     call.respond(HttpStatusCode.OK)
                 } else {
                     call.respond(HttpStatusCode.Unauthorized)

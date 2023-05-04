@@ -18,6 +18,7 @@ class Generator(private val repo: RatingsRepository, private val config: Applica
         html.head {
             styleLink("/static/laterball.css")
             link(href = "https://fonts.googleapis.com/css2?family=Roboto+Slab&family=Turret+Road:wght@800&display=swap", rel = "stylesheet")
+            script { src = "/static/submitRating.js"; type = "text/javascript" }
         }
     }
 
@@ -107,15 +108,14 @@ class Generator(private val repo: RatingsRepository, private val config: Applica
                                             img(src = "/static/empty_star.svg") { style = "height:50px" }
                                         }
                                         // TODO https://dev.to/madsstoumann/star-rating-using-a-single-input-i0l
-                                        form(action = "/${leagueId.path}/rating", encType = FormEncType.applicationXWwwFormUrlEncoded, method = FormMethod.post) {
+                                        form(encType = FormEncType.applicationXWwwFormUrlEncoded, method = FormMethod.post) {
                                             p {
                                                 +"Your rating:"
-                                                rangeInput(name = "rating") { min = "1"; max = "10" }
+                                                rangeInput(name = "rating") { id = "rating-${rating.fixtureId}"; min = "1"; max = "10"; }
                                                 hiddenInput(name = "csrf") { value = generateCsrfToken(rating.fixtureId.toString(), "1234") }
-                                                hiddenInput(name = "fixtureId") { value = rating.fixtureId.toString() }
                                             }
                                             p {
-                                                submitInput(classes = "lb-button lb-green lb-hover-green lb-round-xlarge") { value = "Submit" }
+                                                button(type = ButtonType.button) { id = "button-${rating.fixtureId}"; onClick = "submitRating(\'http://localhost:8080/${leagueId.path}/rating\', ${rating.fixtureId}, \'${generateCsrfToken(rating.fixtureId.toString(), "1234")}\')"; +"Submit" }
                                             }
                                         }
                                     }
