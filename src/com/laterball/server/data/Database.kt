@@ -20,4 +20,6 @@ interface Database {
     fun storeNextUpdatedMap(lastUpdated: List<LeagueUpdateTime>)
     fun getNextUpdatedMap(): List<LeagueUpdateTime>
     fun getTwitterData(): TwitterData
+    fun storeUserRating(leagueId: LeagueId, fixtureId: Int, rating: Int, ip: String)
+    fun getUserRating(leagueId: LeagueId, fixtureId: Int, ip: String): Int?
 }

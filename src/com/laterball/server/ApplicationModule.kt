@@ -30,4 +30,5 @@ val appModule = module(createdAtStart = true) {
     single { OddsRepository(get(), get()) }
     single { TwitterBot(get(), get(), get(), get()) }
     single { RatingsRepository(get(), get(), get(), get(), get()) }
+    single { UserRatingRepository(get()) }
 }

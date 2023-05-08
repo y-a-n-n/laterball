@@ -11,6 +11,7 @@ import com.laterball.server.data.mongo.LeagueFixtures
 import com.laterball.server.model.LeagueId
 import com.laterball.server.model.LeagueUpdateTime
 import com.laterball.server.model.TwitterData
+import com.laterball.server.model.UserRating
 import com.mongodb.ConnectionString
 import io.ktor.config.*
 import io.ktor.util.*
@@ -149,6 +150,22 @@ class MongoDataStore(config: ApplicationConfig) : Database {
         return runBlocking {
             val col = database.getCollection<TwitterData>("twitter")
             return@runBlocking col.find().first() ?: TwitterData()
+        }
+    }
+
+    override fun storeUserRating(leagueId: LeagueId, fixtureId: Int, rating: Int, ip: String) {
+        return runBlocking {
+            val col = database.getCollection<UserRating>("userRatings")
+            val data = UserRating(leagueId, fixtureId, rating, ip)
+            col.insertOne(data)
+        }
+    }
+
+    override fun getUserRating(leagueId: LeagueId, fixtureId: Int, ip: String): Int? {
+        return runBlocking {
+            val col = database.getCollection<UserRating>("userRatings")
+            val data = col.find(UserRating::leagueId eq leagueId, UserRating::fixtureId eq fixtureId, UserRating::ip eq ip).first()
+            return@runBlocking data?.rating
         }
     }
 }

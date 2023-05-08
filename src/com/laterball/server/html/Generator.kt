@@ -2,6 +2,7 @@ package com.laterball.server.html
 
 import com.laterball.server.model.LeagueId
 import com.laterball.server.repository.RatingsRepository
+import com.laterball.server.repository.UserRatingRepository
 import io.ktor.config.ApplicationConfig
 import io.ktor.util.KtorExperimentalAPI
 import kotlinx.html.*
@@ -10,9 +11,15 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 @KtorExperimentalAPI
-class Generator(private val repo: RatingsRepository, private val config: ApplicationConfig) {
+class Generator(private val ratingsRepository: RatingsRepository, private val userRatingRepository: UserRatingRepository, config: ApplicationConfig) {
 
     private val logger = LoggerFactory.getLogger(Generator::class.java)
+    private val csrfSecret = "1234" // config.property("ktor.security.csrfSecret").getString()
+    private val baseUrl = config.propertyOrNull("ktor.deployment.baseUrl")?.getString() ?: "http://localhost:8080"
+
+    init {
+        logger.info("Using baseUrl: $baseUrl")
+    }
 
     private fun generateHeader(html: HTML) {
         html.head {
@@ -22,8 +29,8 @@ class Generator(private val repo: RatingsRepository, private val config: Applica
         }
     }
 
-    fun generateForLeague(html: HTML, leagueId: LeagueId, sortByDate: Boolean) {
-        val ratings = repo.getRatingsForLeague(leagueId, sortByDate)
+    fun generateForLeague(html: HTML, leagueId: LeagueId, sortByDate: Boolean, userIp: String) {
+        val ratings = ratingsRepository.getRatingsForLeague(leagueId, sortByDate)
         generateHeader(html)
         html.body {
             div {
@@ -68,6 +75,7 @@ class Generator(private val repo: RatingsRepository, private val config: Applica
                         val format = SimpleDateFormat("EEEE, d MMMM")
                         ul(classes = "lb-ul lb-card-4") {
                             ratings.forEach { rating ->
+                                val userRating = userRatingRepository.getUserRating(leagueId, rating.fixtureId, userIp)
                                 li(classes = "lb-bar lb-border lb-round-xlarge fade-in") {
                                     a(
                                             classes = "lb-bar-item lb-medium lb-right subtitle link",
@@ -107,15 +115,40 @@ class Generator(private val repo: RatingsRepository, private val config: Applica
                                         for (i in (starsAdded..4)) {
                                             img(src = "/static/empty_star.svg") { style = "height:50px" }
                                         }
-                                        // TODO https://dev.to/madsstoumann/star-rating-using-a-single-input-i0l
-                                        form(encType = FormEncType.applicationXWwwFormUrlEncoded, method = FormMethod.post) {
-                                            p {
-                                                +"Your rating:"
-                                                rangeInput(name = "rating") { id = "rating-${rating.fixtureId}"; min = "1"; max = "10"; }
-                                                hiddenInput(name = "csrf") { value = generateCsrfToken(rating.fixtureId.toString(), "1234") }
-                                            }
-                                            p {
-                                                button(type = ButtonType.button) { id = "button-${rating.fixtureId}"; onClick = "submitRating(\'http://localhost:8080/${leagueId.path}/rating\', ${rating.fixtureId}, \'${generateCsrfToken(rating.fixtureId.toString(), "1234")}\')"; +"Submit" }
+                                        div (classes= "center") {
+                                            form(
+                                                encType = FormEncType.applicationXWwwFormUrlEncoded,
+                                                method = FormMethod.post
+                                            ) {
+                                                p {
+                                                    h5(classes = "fade-in subtitle") {
+                                                        +"Your rating"
+                                                    }
+                                                    rangeInput(name = "rating") {
+                                                        classes = setOf("rating", "center")
+                                                        style = "--value:2.5; background: transparent;"
+                                                        id = "rating-${rating.fixtureId}"
+                                                        min = "1"; max = "5"; step = "0.5"
+                                                        value = (userRating ?: 6).toString()
+                                                        onInput =
+                                                            "this.style.setProperty('--value', this.valueAsNumber)"
+                                                        disabled = userRating != null
+                                                    }
+                                                }
+                                                p {
+                                                    button(type = ButtonType.button) {
+                                                        classes = setOf("button", "fade-in")
+                                                        id = "button-${rating.fixtureId}"
+                                                        disabled = (userRating != null)
+                                                        onClick =
+                                                            "submitRating(\'${baseUrl}/${leagueId.path}/rating\', ${rating.fixtureId}, \'${
+                                                                generateCsrfToken(
+                                                                    rating.fixtureId.toString(),
+                                                                    csrfSecret
+                                                                )
+                                                            }\')"; +"Submit"
+                                                    }
+                                                }
                                             }
                                         }
                                     }

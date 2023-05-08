@@ -6,6 +6,7 @@ import com.laterball.server.html.checkCsrfToken
 import com.laterball.server.model.LeagueId
 import com.laterball.server.model.RatingSubmission
 import com.laterball.server.repository.RatingsRepository
+import com.laterball.server.repository.UserRatingRepository
 import io.ktor.application.*
 import io.ktor.config.ApplicationConfig
 import io.ktor.routing.*
@@ -21,6 +22,7 @@ import org.koin.core.logger.Level
 import org.koin.ktor.ext.Koin
 import org.koin.ktor.ext.inject
 import org.koin.logger.slf4jLogger
+import kotlin.math.roundToInt
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
@@ -37,25 +39,34 @@ fun Application.module() {
         modules(appModule)
     }
 
-    // Lazy inject HelloService
-    val repo by inject<RatingsRepository>()
+    val ratingsRepository by inject<RatingsRepository>()
+    val userRatingRepository by inject<UserRatingRepository>()
     val api by inject<DataApi>()
     val config by inject<ApplicationConfig>()
 
     install(CORS) {
         method(HttpMethod.Options)
         method(HttpMethod.Get)
+        method(HttpMethod.Post)
+        header(HttpHeaders.AccessControlAllowHeaders)
+        header(HttpHeaders.ContentType)
+        header(HttpHeaders.AccessControlAllowOrigin)
+        if (config.property("ktor.environment").getString() == "DEV") {
+            host("localhost:8080", schemes = listOf("http"))
+            host("127.0.0.1:8080", schemes = listOf("http"))
+            host("0.0.0.0:8080", schemes = listOf("http"))
+        }
         host("laterball.com", schemes = listOf("https"))
-        host("laterball.et.r.appspot.com", schemes = listOf("https"))
     }
 
-    val generator = Generator(repo, config)
+    val generator = Generator(ratingsRepository, userRatingRepository, config)
 
     // Init data, slowly to not hit api request limits
     api.requestDelay = 15000
-    repo.getRatingsForLeague(LeagueId.EPL)
-    repo.getRatingsForLeague(LeagueId.CHAMPIONS_LEAGUE)
+    ratingsRepository.getRatingsForLeague(LeagueId.EPL)
+    ratingsRepository.getRatingsForLeague(LeagueId.CHAMPIONS_LEAGUE)
     api.requestDelay = null
+    val csrfSecret = "1234" // config.property("ktor.security.csrfSecret").getString()
 
     routing {
         get("/about") {
@@ -72,13 +83,18 @@ fun Application.module() {
             get("/${leagueId.path}") {
                 val sortByDate = call.request.queryParameters["sort"] == "date"
                 call.respondHtml {
-                    generator.generateForLeague(this, leagueId, sortByDate)
+                    generator.generateForLeague(this, leagueId, sortByDate, call.request.origin.remoteHost)
                 }
             }
             post("/${leagueId.path}/rating") {
                 val formParams = call.receive<RatingSubmission>()
-                if (checkCsrfToken(formParams.fixtureId.toString(), formParams.csrf, "1234")) {
-                    val rating = formParams.rating
+                if (checkCsrfToken(formParams.fixtureId.toString(), formParams.csrf, csrfSecret)) {
+                    userRatingRepository.storeUserRating(
+                        leagueId,
+                        formParams.fixtureId,
+                        (formParams.rating*2).roundToInt(),
+                        call.request.origin.remoteHost
+                    )
                     call.respond(HttpStatusCode.OK)
                 } else {
                     call.respond(HttpStatusCode.Unauthorized)
