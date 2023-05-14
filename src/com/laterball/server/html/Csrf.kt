@@ -17,16 +17,19 @@ private fun generateHmac(payload: String, salt: String, secret: String): String 
     return bytes.toHex()
 }
 
-fun generateCsrfToken(payload: String, secret: String): String {
+fun generateCsrfToken(payload: String, cookie: String, secret: String): String {
     val salt = getSalt()
-    val hmac = generateHmac(payload, salt, secret)
+    val hmac = generateHmac(payload + cookie, salt, secret)
     return "$hmac:$salt"
 }
 
-fun checkCsrfToken(payload: String, token: String, secret: String): Boolean {
+// Not caring about timing attacks at this stage--we're not important enough
+fun checkCsrfToken(payload: String, cookie: String?, token: String, secret: String): Boolean {
+    if (cookie == null) {
+        return false
+    }
     val (hmac, salt) = token.split(":")
-    val expectedHmac = generateHmac(payload, salt, secret)
-    // Not caring about timing attacks at this stage--we're not important enough
+    val expectedHmac = generateHmac(payload + cookie, salt, secret)
     return hmac == expectedHmac
 }
 

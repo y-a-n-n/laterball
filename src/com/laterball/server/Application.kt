@@ -3,6 +3,7 @@ package com.laterball.server
 import com.laterball.server.api.DataApi
 import com.laterball.server.html.Generator
 import com.laterball.server.html.checkCsrfToken
+import com.laterball.server.html.ensureCookieSet
 import com.laterball.server.model.LeagueId
 import com.laterball.server.model.RatingSubmission
 import com.laterball.server.repository.RatingsRepository
@@ -66,7 +67,8 @@ fun Application.module() {
     ratingsRepository.getRatingsForLeague(LeagueId.EPL)
     ratingsRepository.getRatingsForLeague(LeagueId.CHAMPIONS_LEAGUE)
     api.requestDelay = null
-    val csrfSecret = "1234" // config.property("ktor.security.csrfSecret").getString()
+    val csrfSecret = config.property("ktor.security.csrfSecret").getString()
+    val cookieDomain = config.propertyOrNull("ktor.security.cookieDomain")?.getString()
 
     routing {
         get("/about") {
@@ -81,19 +83,26 @@ fun Application.module() {
 
         LeagueId.values().forEach {leagueId ->
             get("/${leagueId.path}") {
+                val cookie = ensureCookieSet(call, cookieDomain)
                 val sortByDate = call.request.queryParameters["sort"] == "date"
                 call.respondHtml {
-                    generator.generateForLeague(this, leagueId, sortByDate, call.request.origin.remoteHost)
+                    generator.generateForLeague(this, leagueId, sortByDate, cookie)
                 }
             }
             post("/${leagueId.path}/rating") {
+                val cookie = call.request.cookies["laterball"]
+                if (cookie == null) {
+                    log.info("No cookie set")
+                    call.respond(HttpStatusCode.Unauthorized)
+                    return@post
+                }
                 val formParams = call.receive<RatingSubmission>()
-                if (checkCsrfToken(formParams.fixtureId.toString(), formParams.csrf, csrfSecret)) {
+                if (checkCsrfToken(formParams.fixtureId.toString(), cookie, formParams.csrf, csrfSecret)) {
                     userRatingRepository.storeUserRating(
                         leagueId,
                         formParams.fixtureId,
                         (formParams.rating*2).roundToInt(),
-                        call.request.origin.remoteHost
+                        cookie
                     )
                     call.respond(HttpStatusCode.OK)
                 } else {

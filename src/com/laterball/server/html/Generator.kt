@@ -14,7 +14,7 @@ import java.util.*
 class Generator(private val ratingsRepository: RatingsRepository, private val userRatingRepository: UserRatingRepository, config: ApplicationConfig) {
 
     private val logger = LoggerFactory.getLogger(Generator::class.java)
-    private val csrfSecret = "1234" // config.property("ktor.security.csrfSecret").getString()
+    private val csrfSecret = config.property("ktor.security.csrfSecret").getString()
     private val baseUrl = config.propertyOrNull("ktor.deployment.baseUrl")?.getString() ?: "http://localhost:8080"
 
     init {
@@ -29,7 +29,7 @@ class Generator(private val ratingsRepository: RatingsRepository, private val us
         }
     }
 
-    fun generateForLeague(html: HTML, leagueId: LeagueId, sortByDate: Boolean, userIp: String) {
+    fun generateForLeague(html: HTML, leagueId: LeagueId, sortByDate: Boolean, cookie: String) {
         val ratings = ratingsRepository.getRatingsForLeague(leagueId, sortByDate)
         generateHeader(html)
         html.body {
@@ -54,6 +54,16 @@ class Generator(private val ratingsRepository: RatingsRepository, private val us
                 }
             }
             br {}
+            div(classes = "center") {
+                style = "width:200px"
+                a(
+                    classes = "link",
+                    target = "_blank",
+                    href = "https://www.google.com/search?q=${leagueId.title}+streaming+on+demand"
+                ) {
+                    +"Where to watch? ↠"
+                }
+            }
             br {}
             div(classes = "center") {
                 style = "width:500px"
@@ -75,14 +85,8 @@ class Generator(private val ratingsRepository: RatingsRepository, private val us
                         val format = SimpleDateFormat("EEEE, d MMMM")
                         ul(classes = "lb-ul lb-card-4") {
                             ratings.forEach { rating ->
-                                val userRating = userRatingRepository.getUserRating(leagueId, rating.fixtureId, userIp)
+                                val userRating = userRatingRepository.getUserRating(leagueId, rating.fixtureId, cookie)
                                 li(classes = "lb-bar lb-border lb-round-xlarge fade-in") {
-                                    a(
-                                            classes = "lb-bar-item lb-medium lb-right subtitle link",
-                                            href = "https://www.google.com/search?q=${rating.homeTeam}+vs+${rating.awayTeam}+streaming+on+demand",
-                                            target = "_blank") {
-                                        +"↠"
-                                    }
                                     div(classes = "center") {
                                         img(classes = "lb-bar-item lb-circle lb-hide-small", src = rating.homeLogo) {
                                             style = "height:100%"
@@ -144,6 +148,7 @@ class Generator(private val ratingsRepository: RatingsRepository, private val us
                                                             "submitRating(\'${baseUrl}/${leagueId.path}/rating\', ${rating.fixtureId}, \'${
                                                                 generateCsrfToken(
                                                                     rating.fixtureId.toString(),
+                                                                    cookie,
                                                                     csrfSecret
                                                                 )
                                                             }\')"; +"Submit"

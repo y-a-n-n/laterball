@@ -153,18 +153,18 @@ class MongoDataStore(config: ApplicationConfig) : Database {
         }
     }
 
-    override fun storeUserRating(leagueId: LeagueId, fixtureId: Int, rating: Int, ip: String) {
+    override fun storeUserRating(leagueId: LeagueId, fixtureId: Int, rating: Int, cookie: String) {
         return runBlocking {
             val col = database.getCollection<UserRating>("userRatings")
-            val data = UserRating(leagueId, fixtureId, rating, ip)
+            val data = UserRating(leagueId, fixtureId, rating, cookie)
             col.insertOne(data)
         }
     }
 
-    override fun getUserRating(leagueId: LeagueId, fixtureId: Int, ip: String): Int? {
+    override fun getUserRating(leagueId: LeagueId, fixtureId: Int, cookie: String): Int? {
         return runBlocking {
             val col = database.getCollection<UserRating>("userRatings")
-            val data = col.find(UserRating::leagueId eq leagueId, UserRating::fixtureId eq fixtureId, UserRating::ip eq ip).first()
+            val data = col.find(UserRating::leagueId eq leagueId, UserRating::fixtureId eq fixtureId, UserRating::cookie eq cookie).first()
             return@runBlocking data?.rating
         }
     }
