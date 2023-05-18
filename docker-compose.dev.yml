@@ -1,0 +1,34 @@
+version: '3'
+
+services:
+  mongo:
+    image: laterball/mongo:latest
+    ports:
+      - 27017:27017
+    volumes:
+      - mongo:/data/db
+    networks:
+      - laterball-network
+  laterball:
+    image: 'laterball/laterball-server:latest'
+    depends_on:
+      - 'mongo'
+    ports:
+      - 8080:8080
+    networks:
+      - laterball-network
+  nginx:
+    image: nginx
+    volumes:
+      - ./nginx/laterball.dev.conf:/etc/nginx/conf.d/laterball.conf
+    ports:
+      - 8000:8000
+    networks:
+      - laterball-network
+
+volumes:
+  mongo:
+
+networks:
+  laterball-network:
+    driver: bridge

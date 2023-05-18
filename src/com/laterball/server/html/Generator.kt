@@ -126,7 +126,7 @@ class Generator(private val ratingsRepository: RatingsRepository, private val us
                                             ) {
                                                 p {
                                                     h5(classes = "fade-in subtitle") {
-                                                        +"Your rating"
+                                                        +"Submit your own rating:"
                                                     }
                                                     rangeInput(name = "rating") {
                                                         classes = setOf("rating", "center")

@@ -1,6 +1,7 @@
 version=$1
+env=$2
 docker build -t laterball/laterball-server:$version --build-arg VERSION=$version \
---build-arg KTOR_ENV=$KTOR_ENV \
+--build-arg KTOR_ENV=$env \
 --build-arg RAPID_API_KEY=$RAPID_API_KEY \
 --build-arg MONGO_USER=$MONGO_USER \
 --build-arg MONGO_PASSWORD=$MONGO_PASSWORD \
