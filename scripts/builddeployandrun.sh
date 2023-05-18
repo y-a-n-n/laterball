@@ -9,6 +9,6 @@ echo "Deploying $version to $host"
 # build the docker images
 ./scripts/builddocker.sh $version $env
 # copy artefacts to the remote server
-./scripts/deploy.sh $host $version
+./scripts/deploy.sh $host $version $env
 # run script on remote to docker-compose down and up
-ssh $1 'bash -s' < ./scripts/run.sh $version
+ssh $1 'bash -s' < ./scripts/run.sh $version $env

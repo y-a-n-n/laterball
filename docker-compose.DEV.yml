@@ -10,6 +10,7 @@ services:
     networks:
       - laterball-network
   laterball:
+    container_name: laterball
     image: 'laterball/laterball-server:latest'
     depends_on:
       - 'mongo'
@@ -20,9 +21,11 @@ services:
   nginx:
     image: nginx
     volumes:
-      - ./nginx/laterball.dev.conf:/etc/nginx/conf.d/laterball.conf
+      - ./laterball.DEV.conf:/etc/nginx/conf.d/laterball.conf
+    depends_on:
+      - 'laterball'
     ports:
-      - 8000:8000
+      - 80:80
     networks:
       - laterball-network
 
