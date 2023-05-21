@@ -148,7 +148,6 @@ class Generator(private val ratingsRepository: RatingsRepository, private val us
                                                             "submitRating(\'${baseUrl}/${leagueId.path}/rating\', ${rating.fixtureId}, \'${
                                                                 generateCsrfToken(
                                                                     rating.fixtureId.toString(),
-                                                                    cookie,
                                                                     csrfSecret
                                                                 )
                                                             }\')"; +"Submit"

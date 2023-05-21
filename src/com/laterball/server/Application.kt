@@ -23,7 +23,10 @@ import org.koin.core.logger.Level
 import org.koin.ktor.ext.Koin
 import org.koin.ktor.ext.inject
 import org.koin.logger.slf4jLogger
+import org.slf4j.LoggerFactory
 import kotlin.math.roundToInt
+
+val logger = LoggerFactory.getLogger(Application::class.java)
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
@@ -56,6 +59,7 @@ fun Application.module() {
             host("localhost:8080", schemes = listOf("http"))
             host("127.0.0.1:8080", schemes = listOf("http"))
             host("0.0.0.0:8080", schemes = listOf("http"))
+            host("laterball.test", schemes = listOf("http"))
         }
         host("laterball.com", schemes = listOf("https"))
     }
@@ -72,6 +76,7 @@ fun Application.module() {
 
     routing {
         get("/about") {
+            logger.info("/about")
             call.respondHtml {
                 generator.generateAbout(this)
             }
@@ -83,6 +88,7 @@ fun Application.module() {
 
         LeagueId.values().forEach {leagueId ->
             get("/${leagueId.path}") {
+                logger.info("/${leagueId.path}")
                 val cookie = ensureCookieSet(call, cookieDomain)
                 val sortByDate = call.request.queryParameters["sort"] == "date"
                 call.respondHtml {
@@ -90,23 +96,26 @@ fun Application.module() {
                 }
             }
             post("/${leagueId.path}/rating") {
+                logger.info("Received rating submission for ${leagueId.path}")
                 val cookie = call.request.cookies["laterball"]
                 if (cookie == null) {
-                    log.info("No cookie set")
-                    call.respond(HttpStatusCode.Unauthorized)
+                    logger.info("No cookie set")
+                    call.respond(HttpStatusCode.Unauthorized, "Missing cookie")
                     return@post
                 }
+                val decodedCookie = java.net.URLDecoder.decode(cookie, "UTF-8")
                 val formParams = call.receive<RatingSubmission>()
-                if (checkCsrfToken(formParams.fixtureId.toString(), cookie, formParams.csrf, csrfSecret)) {
+                if (checkCsrfToken(formParams.fixtureId.toString(), formParams.csrf, csrfSecret)) {
                     userRatingRepository.storeUserRating(
                         leagueId,
                         formParams.fixtureId,
                         (formParams.rating*2).roundToInt(),
-                        cookie
+                        decodedCookie
                     )
                     call.respond(HttpStatusCode.OK)
                 } else {
-                    call.respond(HttpStatusCode.Unauthorized)
+                    logger.info("CSRF test failed")
+                    call.respond(HttpStatusCode.Unauthorized, "CSRF test failed")
                 }
             }
         }

@@ -6,6 +6,7 @@ docker build -t laterball/laterball-server:$version --build-arg VERSION=$version
 --build-arg MONGO_USER=$MONGO_USER \
 --build-arg MONGO_PASSWORD=$MONGO_PASSWORD \
 --build-arg MONGO_HOST=$MONGO_HOST \
+--build-arg CSRF_SECRET=$CSRF_SECRET \
 --build-arg LATERBALL_TWITTER_API_KEY=$LATERBALL_TWITTER_API_KEY \
 --build-arg LATERBALL_TWITTER_API_SECRET=$LATERBALL_TWITTER_API_SECRET \
 --build-arg LATERBALL_ACCESS_TOKEN=$LATERBALL_ACCESS_TOKEN \

@@ -4,6 +4,7 @@ import com.google.gson.Gson
 import com.laterball.server.api.model.*
 import com.laterball.server.data.Database
 import com.laterball.server.model.LeagueId
+import com.laterball.server.model.LeagueUpdateTime
 import com.laterball.server.model.TwitterData
 
 class DatabaseMock : Database {
@@ -83,7 +84,29 @@ class DatabaseMock : Database {
 
     }
 
+    override fun storeLastUpdatedMap(lastUpdated: List<LeagueUpdateTime>) {
+
+    }
+
+    override fun getLastUpdatedMap(): List<LeagueUpdateTime> {
+        return emptyList()
+    }
+
+    override fun storeNextUpdatedMap(lastUpdated: List<LeagueUpdateTime>) {
+    }
+
+    override fun getNextUpdatedMap(): List<LeagueUpdateTime> {
+        return emptyList()
+    }
+
     override fun getTwitterData(): TwitterData {
         return TwitterData()
+    }
+
+    override fun storeUserRating(leagueId: LeagueId, fixtureId: Int, rating: Int, cookie: String) {
+    }
+
+    override fun getUserRating(leagueId: LeagueId, fixtureId: Int, cookie: String): Int? {
+        return null
     }
 }
