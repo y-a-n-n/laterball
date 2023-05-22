@@ -13,6 +13,7 @@ import com.laterball.server.model.LeagueUpdateTime
 import com.laterball.server.model.TwitterData
 import com.laterball.server.model.UserRating
 import com.mongodb.ConnectionString
+import com.mongodb.client.model.Filters.and
 import io.ktor.config.*
 import io.ktor.util.*
 import kotlinx.coroutines.runBlocking
@@ -157,7 +158,16 @@ class MongoDataStore(config: ApplicationConfig) : Database {
         return runBlocking {
             val col = database.getCollection<UserRating>("userRatings")
             val data = UserRating(leagueId, fixtureId, rating, cookie)
-            col.insertOne(data)
+            val filter =
+                and(
+                    and(
+                        UserRating::leagueId eq leagueId,
+                        UserRating::fixtureId eq fixtureId
+                    ),
+                UserRating::cookie eq cookie
+                )
+            // upsert the data into the collection, matching on league id, fixture id and cookie
+            col.updateOne(filter, data, upsert())
         }
     }
 

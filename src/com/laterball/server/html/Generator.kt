@@ -204,7 +204,7 @@ class Generator(private val ratingsRepository: RatingsRepository, private val us
                 }
             }
             span(classes = "subtitle center") { +"© ${SimpleDateFormat("YYYY").format(Date())} Laterball" }
-            span(classes = "subtitle center") { +"Version 2.4.4" }
+            span(classes = "subtitle center") { +"Version 3.0.1" }
         }
     }
 }
