@@ -1,0 +1,3114 @@
+openapi: 3.0.0
+info:
+  title: API-NBA
+  version: 2.2.5
+servers:
+  - url: 'https://v2.nba.api-sports.io'
+    description: API-SPORTS
+  - url: 'https://api-nba-v1.p.rapidapi.com'
+    description: RapidAPI
+paths:
+  /seasons:
+    get:
+      summary: seasons
+      tags:
+        - Seasons
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                description: ''
+                type: object
+                properties:
+                  get:
+                    type: string
+                    minLength: 1
+                  parameters:
+                    type: array
+                    items:
+                      required: []
+                      properties: {}
+                  errors:
+                    type: array
+                    items:
+                      required: []
+                      properties: {}
+                  results:
+                    type: number
+                  response:
+                    type: array
+                    items:
+                      required: []
+                      properties: {}
+              examples:
+                example-1:
+                  value:
+                    get: seasons/
+                    parameters: []
+                    errors: []
+                    results: 7
+                    response:
+                      - 2015
+                      - 2016
+                      - 2017
+                      - 2018
+                      - 2019
+                      - 2020
+                      - 2021
+      operationId: get-seasons
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: x-rapidapi-key
+          description: Your RapidAPI Key
+          required: true
+      description: |-
+        All `seasons` can be used in other endpoints as filters. Seasons are only **4-digit keys** like `YYYY`.
+
+        > This endpoint does not require any parameters.
+      x-code-samples:
+        - lang: Php
+          source: "$client = new http\\Client;\n$request = new http\\Client\\Request;\n\n$request->setRequestUrl('https://api-nba-v1.p.rapidapi.com/seasons');\n$request->setRequestMethod('GET');\n$request->setHeaders(array(\n\t'x-rapidapi-host' => 'api-nba-v1.p.rapidapi.com',\n\t'x-rapidapi-key' => 'XxXxXxXxXxXxXxXxXxXxXxXx'\n));\n\n$client->enqueue($request)->send();\n$response = $client->getResponse();\n\necho $response->getBody();\n"
+        - lang: Python
+          source: |
+            import http.client
+
+            conn = http.client.HTTPSConnection("api-nba-v1.p.rapidapi.com")
+
+            headers = {
+                'x-rapidapi-host': "api-nba-v1.p.rapidapi.com",
+                'x-rapidapi-key': "XxXxXxXxXxXxXxXxXxXxXxXx"
+                }
+
+            conn.request("GET", "/seasons", headers=headers)
+
+            res = conn.getresponse()
+            data = res.read()
+
+            print(data.decode("utf-8"))
+        - lang: Node
+          source: "var request = require(\"request\");\n\nvar options = {\n  method: 'GET',\n  url: 'https://api-nba-v1.p.rapidapi.com/seasons',\n  headers: {\n    'x-rapidapi-host': 'api-nba-v1.p.rapidapi.com',\n    'x-rapidapi-key': 'XxXxXxXxXxXxXxXxXxXxXxXx'\n  }\n};\n\nrequest(options, function (error, response, body) {\n\tif (error) throw new Error(error);\n\n\tconsole.log(body);\n});\n"
+        - lang: JavaScript
+          source: "fetch(\"https://api-nba-v1.p.rapidapi.com/seasons\", {\n\t\"method\": \"GET\",\n\t\"headers\": {\n\t\t\"x-rapidapi-host\": \"api-nba-v1.p.rapidapi.com\",\n\t\t\"x-rapidapi-key\": \"XxXxXxXxXxXxXxXxXxXxXxXx\"\n\t}\n})\n.then(response => {\n\tconsole.log(response);\n})\n.catch(err => {\n\tconsole.log(err);\n});\n"
+        - lang: Curl
+          source: "curl --request GET \\\n--url https://api-nba-v1.p.rapidapi.com/seasons \\\n--header 'x-rapidapi-host: api-nba-v1.p.rapidapi.com' \\\n--header 'x-rapidapi-key: XxXxXxXxXxXxXxXxXxXxXxXx'\n"
+        - lang: Ruby
+          source: |
+            require 'uri'
+            require 'net/http'
+            require 'openssl'
+
+            url = URI("https://api-nba-v1.p.rapidapi.com/seasons")
+
+            http = Net::HTTP.new(url.host, url.port)
+            http.use_ssl = true
+            http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+            request = Net::HTTP::Get.new(url)
+            request["x-rapidapi-host"] = 'api-nba-v1.p.rapidapi.com'
+            request["x-rapidapi-key"] = 'XxXxXxXxXxXxXxXxXxXxXxXx'
+
+            response = http.request(request)
+            puts response.read_body
+  /leagues:
+    get:
+      summary: leagues
+      tags:
+        - Leagues
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                description: ''
+                type: object
+                properties:
+                  get:
+                    type: string
+                    minLength: 1
+                  parameters:
+                    type: array
+                    items:
+                      required: []
+                      properties: {}
+                  errors:
+                    type: array
+                    items:
+                      required: []
+                      properties: {}
+                  results:
+                    type: number
+                  response:
+                    type: array
+                    items:
+                      required: []
+                      properties: {}
+              examples:
+                example-1:
+                  value:
+                    get: leagues/
+                    parameters: []
+                    errors: []
+                    results: 6
+                    response:
+                      - africa
+                      - orlando
+                      - sacramento
+                      - standard
+                      - utah
+                      - vegas
+      operationId: get-leagues
+      description: |-
+        Get the list of available leagues.
+
+        All `leagues` can be used in other endpoints as filters.
+
+        **Available leagues**
+        * Africa
+        * Orlando
+        * Sacramento
+        * Standard
+        * Utah
+        * Vegas
+
+        > This endpoint does not require any parameters.
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: x-rapidapi-key
+          description: You rapidAPI Key
+          required: true
+      x-code-samples:
+        - lang: Php
+          source: "$client = new http\\Client;\n$request = new http\\Client\\Request;\n\n$request->setRequestUrl('https://api-nba-v1.p.rapidapi.com/leagues');\n$request->setRequestMethod('GET');\n$request->setHeaders(array(\n\t'x-rapidapi-host' => 'api-nba-v1.p.rapidapi.com',\n\t'x-rapidapi-key' => 'XxXxXxXxXxXxXxXxXxXxXxXx'\n));\n\n$client->enqueue($request)->send();\n$response = $client->getResponse();\n\necho $response->getBody();\n"
+        - lang: Python
+          source: |
+            import http.client
+
+            conn = http.client.HTTPSConnection("api-nba-v1.p.rapidapi.com")
+
+            headers = {
+                'x-rapidapi-host': "api-nba-v1.p.rapidapi.com",
+                'x-rapidapi-key': "XxXxXxXxXxXxXxXxXxXxXxXx"
+                }
+
+            conn.request("GET", "/leagues", headers=headers)
+
+            res = conn.getresponse()
+            data = res.read()
+
+            print(data.decode("utf-8"))
+        - lang: Node
+          source: "var request = require(\"request\");\n\nvar options = {\n  method: 'GET',\n  url: 'https://api-nba-v1.p.rapidapi.com/leagues',\n  headers: {\n    'x-rapidapi-host': 'api-nba-v1.p.rapidapi.com',\n    'x-rapidapi-key': 'XxXxXxXxXxXxXxXxXxXxXxXx'\n  }\n};\n\nrequest(options, function (error, response, body) {\n\tif (error) throw new Error(error);\n\n\tconsole.log(body);\n});\n"
+        - lang: JavaScript
+          source: "fetch(\"https://api-nba-v1.p.rapidapi.com/leagues\", {\n\t\"method\": \"GET\",\n\t\"headers\": {\n\t\t\"x-rapidapi-host\": \"api-nba-v1.p.rapidapi.com\",\n\t\t\"x-rapidapi-key\": \"XxXxXxXxXxXxXxXxXxXxXxXx\"\n\t}\n})\n.then(response => {\n\tconsole.log(response);\n})\n.catch(err => {\n\tconsole.log(err);\n});\n"
+        - lang: Curl
+          source: "curl --request GET \\\n--url https://api-nba-v1.p.rapidapi.com/leagues \\\n--header 'x-rapidapi-host: api-nba-v1.p.rapidapi.com' \\\n--header 'x-rapidapi-key: XxXxXxXxXxXxXxXxXxXxXxXx'\n"
+        - lang: Ruby
+          source: |
+            require 'uri'
+            require 'net/http'
+            require 'openssl'
+
+            url = URI("https://api-nba-v1.p.rapidapi.com/leagues")
+
+            http = Net::HTTP.new(url.host, url.port)
+            http.use_ssl = true
+            http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+            request = Net::HTTP::Get.new(url)
+            request["x-rapidapi-host"] = 'api-nba-v1.p.rapidapi.com'
+            request["x-rapidapi-key"] = 'XxXxXxXxXxXxXxXxXxXxXxXx'
+
+            response = http.request(request)
+            puts response.read_body
+  /games:
+    get:
+      summary: games
+      tags:
+        - Games
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                description: ''
+                type: object
+                properties:
+                  get:
+                    type: string
+                    minLength: 1
+                  parameters:
+                    type: object
+                    properties:
+                      date:
+                        type: string
+                        minLength: 1
+                  errors:
+                    type: array
+                    items:
+                      required: []
+                      properties: {}
+                  results:
+                    type: number
+                  response:
+                    type: array
+                    uniqueItems: true
+                    minItems: 1
+                    items:
+                      properties:
+                        id:
+                          type: number
+                        league:
+                          type: string
+                          minLength: 1
+                        season:
+                          type: number
+                        date:
+                          type: object
+                          properties:
+                            start:
+                              type: string
+                              minLength: 1
+                            end:
+                              type: string
+                              minLength: 1
+                            duration:
+                              type: string
+                              minLength: 1
+                        stage:
+                          type: number
+                        status:
+                          type: object
+                          properties:
+                            clock: {}
+                            halftime:
+                              type: boolean
+                            short:
+                              type: number
+                            long:
+                              type: string
+                              minLength: 1
+                        periods:
+                          type: object
+                          properties:
+                            current:
+                              type: number
+                            total:
+                              type: number
+                            endOfPeriod:
+                              type: boolean
+                        arena:
+                          type: object
+                          properties:
+                            name:
+                              type: string
+                              minLength: 1
+                            city:
+                              type: string
+                              minLength: 1
+                            state:
+                              type: string
+                              minLength: 1
+                            country:
+                              type: string
+                              minLength: 1
+                        teams:
+                          type: object
+                          properties:
+                            visitors:
+                              type: object
+                              properties:
+                                id:
+                                  type: number
+                                name:
+                                  type: string
+                                  minLength: 1
+                                nickname:
+                                  type: string
+                                  minLength: 1
+                                code:
+                                  type: string
+                                  minLength: 1
+                                logo:
+                                  type: string
+                                  minLength: 1
+                            home:
+                              type: object
+                              properties:
+                                id:
+                                  type: number
+                                name:
+                                  type: string
+                                  minLength: 1
+                                nickname:
+                                  type: string
+                                  minLength: 1
+                                code:
+                                  type: string
+                                  minLength: 1
+                                logo:
+                                  type: string
+                                  minLength: 1
+                              required:
+                                - id
+                                - name
+                                - nickname
+                                - code
+                                - logo
+                        scores:
+                          type: object
+                          properties:
+                            visitors:
+                              type: object
+                              properties:
+                                win:
+                                  type: number
+                                loss:
+                                  type: number
+                                series:
+                                  type: object
+                                  properties:
+                                    win:
+                                      type: number
+                                    loss:
+                                      type: number
+                                linescore:
+                                  type: array
+                                  items:
+                                    required: []
+                                    properties: {}
+                                points:
+                                  type: number
+                            home:
+                              type: object
+                              properties:
+                                win:
+                                  type: number
+                                loss:
+                                  type: number
+                                series:
+                                  type: object
+                                  properties:
+                                    win:
+                                      type: number
+                                    loss:
+                                      type: number
+                                linescore:
+                                  type: array
+                                  items:
+                                    required: []
+                                    properties: {}
+                                points:
+                                  type: number
+                        officials:
+                          type: array
+                          items:
+                            required: []
+                            properties: {}
+                        timesTied:
+                          type: number
+                        leadChanges:
+                          type: number
+                        nugget: {}
+              examples:
+                example-1:
+                  value:
+                    get: games/
+                    parameters:
+                      date: '2022-03-09'
+                    errors: []
+                    results: 6
+                    response:
+                      - id: 10540
+                        league: standard
+                        season: 2021
+                        date:
+                          start: '2022-03-09T00:00:00.000Z'
+                          end: '2022-03-09T02:24:00.000Z'
+                          duration: '2:13'
+                        stage: 2
+                        status:
+                          clock: null
+                          halftime: false
+                          short: 3
+                          long: Finished
+                        periods:
+                          current: 4
+                          total: 4
+                          endOfPeriod: false
+                        arena:
+                          name: Spectrum Center
+                          city: Charlotte
+                          state: NC
+                          country: USA
+                        teams:
+                          visitors:
+                            id: 4
+                            name: Brooklyn Nets
+                            nickname: Nets
+                            code: BKN
+                            logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Brooklyn_Nets_newlogo.svg/130px-Brooklyn_Nets_newlogo.svg.png'
+                          home:
+                            id: 5
+                            name: Charlotte Hornets
+                            nickname: Hornets
+                            code: CHA
+                            logo: 'https://upload.wikimedia.org/wikipedia/fr/thumb/f/f3/Hornets_de_Charlotte_logo.svg/1200px-Hornets_de_Charlotte_logo.svg.png'
+                        scores:
+                          visitors:
+                            win: 33
+                            loss: 33
+                            series:
+                              win: 1
+                              loss: 1
+                            linescore:
+                              - '34'
+                              - '35'
+                              - '31'
+                              - '32'
+                            points: 132
+                          home:
+                            win: 32
+                            loss: 34
+                            series:
+                              win: 1
+                              loss: 1
+                            linescore:
+                              - '20'
+                              - '23'
+                              - '41'
+                              - '37'
+                            points: 121
+                        officials:
+                          - Scott Foster
+                          - Lauren Holtkamp
+                          - Phenizee Ransom
+                        timesTied: 3
+                        leadChanges: 2
+                        nugget: null
+                      - id: 10541
+                        league: standard
+                        season: 2021
+                        date:
+                          start: '2022-03-09T00:00:00.000Z'
+                          end: '2022-03-09T02:27:00.000Z'
+                          duration: '2:17'
+                        stage: 2
+                        status:
+                          clock: null
+                          halftime: false
+                          short: 3
+                          long: Finished
+                        periods:
+                          current: 4
+                          total: 4
+                          endOfPeriod: false
+                        arena:
+                          name: Gainbridge Fieldhouse
+                          city: Indianapolis
+                          state: IN
+                          country: USA
+                        teams:
+                          visitors:
+                            id: 7
+                            name: Cleveland Cavaliers
+                            nickname: Cavaliers
+                            code: CLE
+                            logo: 'https://upload.wikimedia.org/wikipedia/fr/thumb/0/06/Cavs_de_Cleveland_logo_2017.png/150px-Cavs_de_Cleveland_logo_2017.png'
+                          home:
+                            id: 15
+                            name: Indiana Pacers
+                            nickname: Pacers
+                            code: IND
+                            logo: 'https://upload.wikimedia.org/wikipedia/fr/thumb/c/cf/Pacers_de_l%27Indiana_logo.svg/1180px-Pacers_de_l%27Indiana_logo.svg.png'
+                        scores:
+                          visitors:
+                            win: 38
+                            loss: 27
+                            series:
+                              win: 4
+                              loss: 0
+                            linescore:
+                              - '32'
+                              - '31'
+                              - '27'
+                              - '37'
+                            points: 127
+                          home:
+                            win: 22
+                            loss: 45
+                            series:
+                              win: 0
+                              loss: 4
+                            linescore:
+                              - '24'
+                              - '39'
+                              - '35'
+                              - '26'
+                            points: 124
+                        officials:
+                          - Zach Zarba
+                          - Nick Buchert
+                          - Gediminas Petraitis
+                        timesTied: 14
+                        leadChanges: 11
+                        nugget: null
+                      - id: 10542
+                        league: standard
+                        season: 2021
+                        date:
+                          start: '2022-03-09T00:00:00.000Z'
+                          end: '2022-03-09T02:26:00.000Z'
+                          duration: '2:18'
+                        stage: 2
+                        status:
+                          clock: null
+                          halftime: false
+                          short: 3
+                          long: Finished
+                        periods:
+                          current: 4
+                          total: 4
+                          endOfPeriod: false
+                        arena:
+                          name: Amway Center
+                          city: Orlando
+                          state: FL
+                          country: USA
+                        teams:
+                          visitors:
+                            id: 28
+                            name: Phoenix Suns
+                            nickname: Suns
+                            code: PHX
+                            logo: 'https://upload.wikimedia.org/wikipedia/fr/5/56/Phoenix_Suns_2013.png'
+                          home:
+                            id: 26
+                            name: Orlando Magic
+                            nickname: Magic
+                            code: ORL
+                            logo: 'https://upload.wikimedia.org/wikipedia/fr/b/bd/Orlando_Magic_logo_2010.png'
+                        scores:
+                          visitors:
+                            win: 52
+                            loss: 13
+                            series:
+                              win: 2
+                              loss: 0
+                            linescore:
+                              - '28'
+                              - '25'
+                              - '26'
+                              - '23'
+                            points: 102
+                          home:
+                            win: 16
+                            loss: 50
+                            series:
+                              win: 0
+                              loss: 2
+                            linescore:
+                              - '22'
+                              - '21'
+                              - '28'
+                              - '28'
+                            points: 99
+                        officials:
+                          - Sean Corbin
+                          - John Goble
+                          - John Butler
+                        timesTied: 6
+                        leadChanges: 4
+                        nugget: null
+                      - id: 10543
+                        league: standard
+                        season: 2021
+                        date:
+                          start: '2022-03-09T00:30:00.000Z'
+                          end: '2022-03-09T03:34:00.000Z'
+                          duration: '2:17'
+                        stage: 2
+                        status:
+                          clock: null
+                          halftime: false
+                          short: 3
+                          long: Finished
+                        periods:
+                          current: 4
+                          total: 4
+                          endOfPeriod: false
+                        arena:
+                          name: FedExForum
+                          city: Memphis
+                          state: TN
+                          country: USA
+                        teams:
+                          visitors:
+                            id: 23
+                            name: New Orleans Pelicans
+                            nickname: Pelicans
+                            code: NOP
+                            logo: 'https://upload.wikimedia.org/wikipedia/fr/thumb/2/21/New_Orleans_Pelicans.png/200px-New_Orleans_Pelicans.png'
+                          home:
+                            id: 19
+                            name: Memphis Grizzlies
+                            nickname: Grizzlies
+                            code: MEM
+                            logo: 'https://upload.wikimedia.org/wikipedia/en/thumb/f/f1/Memphis_Grizzlies.svg/1200px-Memphis_Grizzlies.svg.png'
+                        scores:
+                          visitors:
+                            win: 27
+                            loss: 38
+                            series:
+                              win: 1
+                              loss: 2
+                            linescore:
+                              - '34'
+                              - '24'
+                              - '26'
+                              - '27'
+                            points: 111
+                          home:
+                            win: 45
+                            loss: 22
+                            series:
+                              win: 2
+                              loss: 1
+                            linescore:
+                              - '44'
+                              - '33'
+                              - '35'
+                              - '20'
+                            points: 132
+                        officials:
+                          - Kane Fitzgerald
+                          - Natalie Sago
+                          - Jenna Schroeder
+                        timesTied: 0
+                        leadChanges: 0
+                        nugget: null
+                      - id: 10544
+                        league: standard
+                        season: 2021
+                        date:
+                          start: '2022-03-09T01:00:00.000Z'
+                          end: '2022-03-09T03:19:00.000Z'
+                          duration: '2:09'
+                        stage: 2
+                        status:
+                          clock: null
+                          halftime: false
+                          short: 3
+                          long: Finished
+                        periods:
+                          current: 4
+                          total: 4
+                          endOfPeriod: false
+                        arena:
+                          name: Paycom Center
+                          city: Oklahoma City
+                          state: OK
+                          country: USA
+                        teams:
+                          visitors:
+                            id: 21
+                            name: Milwaukee Bucks
+                            nickname: Bucks
+                            code: MIL
+                            logo: 'https://upload.wikimedia.org/wikipedia/fr/3/34/Bucks2015.png'
+                          home:
+                            id: 25
+                            name: Oklahoma City Thunder
+                            nickname: Thunder
+                            code: OKC
+                            logo: 'https://upload.wikimedia.org/wikipedia/fr/thumb/4/4f/Thunder_d%27Oklahoma_City_logo.svg/1200px-Thunder_d%27Oklahoma_City_logo.svg.png'
+                        scores:
+                          visitors:
+                            win: 41
+                            loss: 25
+                            series:
+                              win: 2
+                              loss: 0
+                            linescore:
+                              - '39'
+                              - '37'
+                              - '29'
+                              - '37'
+                            points: 142
+                          home:
+                            win: 20
+                            loss: 45
+                            series:
+                              win: 0
+                              loss: 2
+                            linescore:
+                              - '34'
+                              - '31'
+                              - '28'
+                              - '22'
+                            points: 115
+                        officials:
+                          - JB DeRosa
+                          - Leon Wood
+                          - Tre Maddox
+                        timesTied: 6
+                        leadChanges: 1
+                        nugget: null
+                      - id: 10545
+                        league: standard
+                        season: 2021
+                        date:
+                          start: '2022-03-09T03:00:00.000Z'
+                          end: '2022-03-09T05:31:00.000Z'
+                          duration: '2:15'
+                        stage: 2
+                        status:
+                          clock: null
+                          halftime: false
+                          short: 3
+                          long: Finished
+                        periods:
+                          current: 4
+                          total: 4
+                          endOfPeriod: false
+                        arena:
+                          name: Chase Center
+                          city: San Francisco
+                          state: CA
+                          country: USA
+                        teams:
+                          visitors:
+                            id: 16
+                            name: LA Clippers
+                            nickname: Clippers
+                            code: LAC
+                            logo: 'https://upload.wikimedia.org/wikipedia/fr/d/d6/Los_Angeles_Clippers_logo_2010.png'
+                          home:
+                            id: 11
+                            name: Golden State Warriors
+                            nickname: Warriors
+                            code: GSW
+                            logo: 'https://upload.wikimedia.org/wikipedia/fr/thumb/d/de/Warriors_de_Golden_State_logo.svg/1200px-Warriors_de_Golden_State_logo.svg.png'
+                        scores:
+                          visitors:
+                            win: 34
+                            loss: 33
+                            series:
+                              win: 1
+                              loss: 3
+                            linescore:
+                              - '21'
+                              - '15'
+                              - '25'
+                              - '36'
+                            points: 97
+                          home:
+                            win: 44
+                            loss: 21
+                            series:
+                              win: 3
+                              loss: 1
+                            linescore:
+                              - '21'
+                              - '33'
+                              - '32'
+                              - '26'
+                            points: 112
+                        officials:
+                          - Brent Barnaky
+                          - J.T. Orr
+                          - James Williams
+                        timesTied: 5
+                        leadChanges: 3
+                        nugget: null
+      operationId: get-games
+      parameters:
+        - schema:
+            type: integer
+          in: query
+          name: id
+          description: The id of the game
+        - schema:
+            type: string
+            example: '2022-03-09'
+            pattern: YYYY-MM-DD
+          in: query
+          name: date
+          description: A valid date
+        - schema:
+            type: string
+            example: all
+            enum:
+              - all
+          in: query
+          name: live
+        - schema:
+            type: string
+            example: 'standard'
+            enum:
+              - Africa
+              - Orlando
+              - Sacramento
+              - Standard
+              - Utah
+              - Vegas
+          in: query
+          name: league
+          description: The name of the league
+        - schema:
+            type: integer
+            maxLength: 4
+            minLength: 4
+            pattern: YYYY
+          in: query
+          name: season
+          description: The season
+        - schema:
+            type: integer
+          in: query
+          name: team
+          description: The id of the team
+        - schema:
+            type: string
+          in: header
+          name: x-rapidapi-key
+          description: Your RapidAPI Key
+          required: true
+        - schema:
+            type: string
+            example: 1-4
+          in: query
+          name: h2h
+          description: 'Two teams ids'
+      description: |-
+
+        Get the list of games according to the parameters.
+
+        **Available status**
+        * 1 : Not Started
+        * 2 : live
+        * 3 : Finished
+
+        > This endpoint requires at least one parameter.
+      x-code-samples:
+        - lang: Php
+          source: |
+            $client = new http\Client;
+            $request = new http\Client\Request;
+
+            $request->setRequestUrl('https://api-nba-v1.p.rapidapi.com/games');
+            $request->setRequestMethod('GET');
+            $request->setQuery(new http\QueryString(array(
+            	'date' => '2022-03-09'
+            )));
+
+            $request->setHeaders(array(
+            	'x-rapidapi-host' => 'api-nba-v1.p.rapidapi.com',
+            	'x-rapidapi-key' => 'XxXxXxXxXxXxXxXxXxXxXxXx'
+            ));
+
+            $client->enqueue($request)->send();
+            $response = $client->getResponse();
+
+            echo $response->getBody();
+        - lang: Python
+          source: |
+            import http.client
+
+            conn = http.client.HTTPSConnection("api-nba-v1.p.rapidapi.com")
+
+            headers = {
+                'x-rapidapi-host': "api-nba-v1.p.rapidapi.com",
+                'x-rapidapi-key': "XxXxXxXxXxXxXxXxXxXxXxXx"
+                }
+
+            conn.request("GET", "/games?date=2022-03-09", headers=headers)
+
+            res = conn.getresponse()
+            data = res.read()
+
+            print(data.decode("utf-8"))
+        - lang: Node
+          source: |
+            var request = require("request");
+
+            var options = {
+              method: 'GET',
+              url: 'https://api-nba-v1.p.rapidapi.com/games',
+              qs: {date: '2022-03-09'},
+              headers: {
+                'x-rapidapi-host': 'api-nba-v1.p.rapidapi.com',
+                'x-rapidapi-key': 'XxXxXxXxXxXxXxXxXxXxXxXx'
+              }
+            };
+
+            request(options, function (error, response, body) {
+            	if (error) throw new Error(error);
+
+            	console.log(body);
+            });
+        - lang: JavaScript
+          source: |
+            fetch("https://api-nba-v1.p.rapidapi.com/games?date=2022-03-09", {
+            	"method": "GET",
+            	"headers": {
+            		"x-rapidapi-host": "api-nba-v1.p.rapidapi.com",
+            		"x-rapidapi-key": "XxXxXxXxXxXxXxXxXxXxXxXx"
+            	}
+            })
+            .then(response => {
+            	console.log(response);
+            })
+            .catch(err => {
+            	console.log(err);
+            });
+        - lang: Curl
+          source: |
+            curl --request GET \
+            	--url 'https://api-nba-v1.p.rapidapi.com/games?date=2022-03-09' \
+            	--header 'x-rapidapi-host: api-nba-v1.p.rapidapi.com' \
+            	--header 'x-rapidapi-key: XxXxXxXxXxXxXxXxXxXxXxXx'
+        - lang: Ruby
+          source: |
+            require 'uri'
+            require 'net/http'
+            require 'openssl'
+
+            url = URI("https://api-nba-v1.p.rapidapi.com/games?date=2022-03-09")
+
+            http = Net::HTTP.new(url.host, url.port)
+            http.use_ssl = true
+            http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+            request = Net::HTTP::Get.new(url)
+            request["x-rapidapi-host"] = 'api-nba-v1.p.rapidapi.com'
+            request["x-rapidapi-key"] = 'XxXxXxXxXxXxXxXxXxXxXxXx'
+
+            response = http.request(request)
+            puts response.read_body
+        - lang: Use Cases
+          source: |
+            // Get games from one game {id}
+            get("https://api-nba-v1.p.rapidapi.com/games?id=1911");
+
+            // Get games in live
+            get("https://api-nba-v1.p.rapidapi.com/games?live=all");
+
+            // Get all available games from one {league} & {season}
+            get("https://api-nba-v1.p.rapidapi.com/games?league=standard&season=2019");
+
+            // Get all available games from one {team} & {season}
+            get("https://api-nba-v1.p.rapidapi.com/games?team=1&season=2020");
+
+            // Get all available games from one {date}
+            get("https://api-nba-v1.p.rapidapi.com/games?date=2022-03-09");
+
+            // Get all available games between two teams
+            get("https://api-nba-v1.p.rapidapi.com/games?h2h=1-4");
+
+            // It’s possible to make requests by mixing the available parameters
+            get("https://api-nba-v1.p.rapidapi.com/games?date=2020-01-30&league=standard&season=2020");
+            get("https://api-nba-v1.p.rapidapi.com/games?team=1&season=2019&date=2019-11-23");
+  /games/statistics:
+    get:
+      summary: statistics
+      tags:
+        - Games
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                description: ''
+                type: object
+                properties:
+                  get:
+                    type: string
+                    minLength: 1
+                  parameters:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        minLength: 1
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                  results:
+                    type: number
+                  response:
+                    type: array
+                    uniqueItems: true
+                    minItems: 1
+                    items:
+                      type: object
+                      properties:
+                        team:
+                          type: object
+                          properties:
+                            id:
+                              type: number
+                            name:
+                              type: string
+                              minLength: 1
+                            nickname:
+                              type: string
+                              minLength: 1
+                            code:
+                              type: string
+                              minLength: 1
+                            logo:
+                              type: string
+                              minLength: 1
+                        statistics:
+                          type: array
+                          uniqueItems: true
+                          minItems: 1
+                          items:
+                            type: object
+                            properties:
+                              fastBreakPoints:
+                                type: number
+                              pointsInPaint:
+                                type: number
+                              biggestLead:
+                                type: number
+                              secondChancePoints:
+                                type: number
+                              pointsOffTurnovers:
+                                type: number
+                              longestRun:
+                                type: number
+                              points:
+                                type: number
+                              fgm:
+                                type: number
+                              fga:
+                                type: number
+                              fgp:
+                                type: string
+                                minLength: 1
+                              ftm:
+                                type: number
+                              fta:
+                                type: number
+                              ftp:
+                                type: string
+                                minLength: 1
+                              tpm:
+                                type: number
+                              tpa:
+                                type: number
+                              tpp:
+                                type: string
+                                minLength: 1
+                              offReb:
+                                type: number
+                              defReb:
+                                type: number
+                              totReb:
+                                type: number
+                              assists:
+                                type: number
+                              pFouls:
+                                type: number
+                              steals:
+                                type: number
+                              turnovers:
+                                type: number
+                              blocks:
+                                type: number
+                              plusMinus:
+                                type: string
+                                minLength: 1
+                              min:
+                                type: string
+                                minLength: 1
+              examples:
+                example-1:
+                  value:
+                    get: games/statistics
+                    parameters:
+                      id: '10403'
+                    errors: []
+                    results: 2
+                    response:
+                      - team:
+                          id: 5
+                          name: Charlotte Hornets
+                          nickname: Hornets
+                          code: CHA
+                          logo: 'https://upload.wikimedia.org/wikipedia/fr/thumb/f/f3/Hornets_de_Charlotte_logo.svg/1200px-Hornets_de_Charlotte_logo.svg.png'
+                        statistics:
+                          - fastBreakPoints: 15
+                            pointsInPaint: 70
+                            biggestLead: 28
+                            secondChancePoints: 18
+                            pointsOffTurnovers: 24
+                            longestRun: 12
+                            points: 141
+                            fgm: 54
+                            fga: 97
+                            fgp: '55.7'
+                            ftm: 15
+                            fta: 23
+                            ftp: '65.2'
+                            tpm: 18
+                            tpa: 42
+                            tpp: '42.9'
+                            offReb: 15
+                            defReb: 36
+                            totReb: 51
+                            assists: 36
+                            pFouls: 22
+                            steals: 13
+                            turnovers: 18
+                            blocks: 2
+                            plusMinus: '22'
+                            min: '240:00'
+                      - team:
+                          id: 10
+                          name: Detroit Pistons
+                          nickname: Pistons
+                          code: DET
+                          logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Detroit_Pistons_primary_logo_2017.png/150px-Detroit_Pistons_primary_logo_2017.png'
+                        statistics:
+                          - fastBreakPoints: 8
+                            pointsInPaint: 52
+                            biggestLead: 2
+                            secondChancePoints: 13
+                            pointsOffTurnovers: 24
+                            longestRun: 12
+                            points: 119
+                            fgm: 48
+                            fga: 102
+                            fgp: '47.1'
+                            ftm: 11
+                            fta: 18
+                            ftp: '61.1'
+                            tpm: 12
+                            tpa: 35
+                            tpp: '34.3'
+                            offReb: 16
+                            defReb: 29
+                            totReb: 45
+                            assists: 32
+                            pFouls: 20
+                            steals: 10
+                            turnovers: 18
+                            blocks: 6
+                            plusMinus: '-22'
+                            min: '240:00'
+      operationId: get-games-statistics
+      parameters:
+        - schema:
+            type: integer
+          in: query
+          name: id
+          description: The id of the game
+          required: true
+        - schema:
+            type: string
+          in: header
+          name: x-rapidapi-key
+          description: Your RapidAPI Key
+          required: true
+      description: |-
+
+        Get the statistics of the teams that played a game.
+      x-code-samples:
+        - lang: Php
+          source: |
+            $client = new http\Client;
+            $request = new http\Client\Request;
+
+            $request->setRequestUrl('https://api-nba-v1.p.rapidapi.com/games/statistics');
+            $request->setRequestMethod('GET');
+            $request->setQuery(new http\QueryString(array(
+            	'id' => '10403'
+            )));
+
+            $request->setHeaders(array(
+            	'x-rapidapi-host' => 'api-nba-v1.p.rapidapi.com',
+            	'x-rapidapi-key' => 'XxXxXxXxXxXxXxXxXxXxXxXx'
+            ));
+
+            $client->enqueue($request)->send();
+            $response = $client->getResponse();
+
+            echo $response->getBody();
+        - lang: Python
+          source: |
+            import http.client
+
+            conn = http.client.HTTPSConnection("api-nba-v1.p.rapidapi.com")
+
+            headers = {
+                'x-rapidapi-host': "api-nba-v1.p.rapidapi.com",
+                'x-rapidapi-key': "XxXxXxXxXxXxXxXxXxXxXxXx"
+                }
+
+            conn.request("GET", "/games/statistics?id=10403", headers=headers)
+
+            res = conn.getresponse()
+            data = res.read()
+
+            print(data.decode("utf-8"))
+        - lang: Node
+          source: |
+            var request = require("request");
+
+            var options = {
+              method: 'GET',
+              url: 'https://api-nba-v1.p.rapidapi.com/games/statistics',
+              qs: {id: '10403'},
+              headers: {
+                'x-rapidapi-host': 'api-nba-v1.p.rapidapi.com',
+                'x-rapidapi-key': 'XxXxXxXxXxXxXxXxXxXxXxXx'
+              }
+            };
+
+            request(options, function (error, response, body) {
+            	if (error) throw new Error(error);
+
+            	console.log(body);
+            });
+        - lang: JavaScript
+          source: |
+            fetch("https://api-nba-v1.p.rapidapi.com/games/statistics?id=10403", {
+            	"method": "GET",
+            	"headers": {
+            		"x-rapidapi-host": "api-nba-v1.p.rapidapi.com",
+            		"x-rapidapi-key": "XxXxXxXxXxXxXxXxXxXxXxXx"
+            	}
+            })
+            .then(response => {
+            	console.log(response);
+            })
+            .catch(err => {
+            	console.log(err);
+            });
+        - lang: Curl
+          source: |
+            curl --request GET \
+            	--url 'https://api-nba-v1.p.rapidapi.com/games/statistics?id=10403' \
+            	--header 'x-rapidapi-host: api-nba-v1.p.rapidapi.com' \
+            	--header 'x-rapidapi-key: XxXxXxXxXxXxXxXxXxXxXxXx'
+        - lang: Ruby
+          source: |
+            require 'uri'
+            require 'net/http'
+            require 'openssl'
+
+            url = URI("https://api-nba-v1.p.rapidapi.com/games/statistics?id=10403")
+
+            http = Net::HTTP.new(url.host, url.port)
+            http.use_ssl = true
+            http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+            request = Net::HTTP::Get.new(url)
+            request["x-rapidapi-host"] = 'api-nba-v1.p.rapidapi.com'
+            request["x-rapidapi-key"] = 'XxXxXxXxXxXxXxXxXxXxXxXx'
+
+            response = http.request(request)
+            puts response.read_body
+  /teams/statistics:
+    get:
+      summary: statistics
+      tags:
+        - Teams
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                description: ''
+                type: object
+                properties:
+                  get:
+                    type: string
+                    minLength: 1
+                  parameters:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        minLength: 1
+                      season:
+                        type: string
+                        minLength: 1
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                  results:
+                    type: number
+                  response:
+                    type: array
+                    uniqueItems: true
+                    minItems: 1
+                    items:
+                      type: object
+                      properties:
+                        games:
+                          type: number
+                        fastBreakPoints:
+                          type: number
+                        pointsInPaint:
+                          type: number
+                        biggestLead:
+                          type: number
+                        secondChancePoints:
+                          type: number
+                        pointsOffTurnovers:
+                          type: number
+                        longestRun:
+                          type: number
+                        points:
+                          type: number
+                        fgm:
+                          type: number
+                        fga:
+                          type: number
+                        fgp:
+                          type: string
+                          minLength: 1
+                        ftm:
+                          type: number
+                        fta:
+                          type: number
+                        ftp:
+                          type: string
+                          minLength: 1
+                        tpm:
+                          type: number
+                        tpa:
+                          type: number
+                        tpp:
+                          type: string
+                          minLength: 1
+                        offReb:
+                          type: number
+                        defReb:
+                          type: number
+                        totReb:
+                          type: number
+                        assists:
+                          type: number
+                        pFouls:
+                          type: number
+                        steals:
+                          type: number
+                        turnovers:
+                          type: number
+                        blocks:
+                          type: number
+                        plusMinus:
+                          type: number
+              examples:
+                example-1:
+                  value:
+                    get: teams/statistics
+                    parameters:
+                      id: '1'
+                      season: '2020'
+                    errors: []
+                    results: 1
+                    response:
+                      - games: 94
+                        fastBreakPoints: 941
+                        pointsInPaint: 4334
+                        biggestLead: 1237
+                        secondChancePoints: 1318
+                        pointsOffTurnovers: 1394
+                        longestRun: 1026
+                        points: 10550
+                        fgm: 3782
+                        fga: 8204
+                        fgp: '46.2'
+                        ftm: 1829
+                        fta: 2261
+                        ftp: '80.9'
+                        tpm: 1157
+                        tpa: 3174
+                        tpp: '36.3'
+                        offReb: 971
+                        defReb: 3292
+                        totReb: 4263
+                        assists: 2197
+                        pFouls: 1870
+                        steals: 653
+                        turnovers: 1198
+                        blocks: 433
+                        plusMinus: 124
+      operationId: get-teams-statistics
+      parameters:
+        - schema:
+            type: integer
+          in: query
+          name: id
+          required: true
+          description: The id of the team
+        - schema:
+            type: integer
+            maxLength: 4
+            minLength: 4
+            pattern: YYYY
+          in: query
+          name: season
+          required: true
+          description: The season
+        - schema:
+            type: string
+          in: header
+          name: x-rapidapi-key
+          description: Your RapidAPI Key
+          required: true
+      description: |-
+        
+        Get the overall statistics of a team for a given `season`.
+
+      x-code-samples:
+        - lang: Php
+          source: "$client = new http\\Client;\n$request = new http\\Client\\Request;\n\n$request->setRequestUrl('https://api-nba-v1.p.rapidapi.com/teams/statistics');\n$request->setRequestMethod('GET');\n$request->setQuery(new http\\QueryString(array(\n\t'season' => '2020',\n\t'id' => '1')));\n\n$request->setHeaders(array(\n\t'x-rapidapi-host' => 'api-nba-v1.p.rapidapi.com',\n\t'x-rapidapi-key' => 'XxXxXxXxXxXxXxXxXxXxXxXx'\n));\n\n$client->enqueue($request)->send();\n$response = $client->getResponse();\n\necho $response->getBody();\n"
+        - lang: Python
+          source: |
+            import http.client
+
+            conn = http.client.HTTPSConnection("api-nba-v1.p.rapidapi.com")
+
+            headers = {
+                'x-rapidapi-host': "api-nba-v1.p.rapidapi.com",
+                'x-rapidapi-key': "XxXxXxXxXxXxXxXxXxXxXxXx"
+                }
+
+            conn.request("GET", "/teams/statistics?season=2020&id=1", headers=headers)
+
+            res = conn.getresponse()
+            data = res.read()
+
+            print(data.decode("utf-8"))
+        - lang: Node
+          source: "var request = require(\"request\");\n\nvar options = {\n  method: 'GET',\n  url: 'https://api-nba-v1.p.rapidapi.com/teams/statistics',\n  qs: {season: '2020', id: '1'},\n  headers: {\n    'x-rapidapi-host': 'api-nba-v1.p.rapidapi.com',\n    'x-rapidapi-key': 'XxXxXxXxXxXxXxXxXxXxXxXx'\n  }\n};\n\nrequest(options, function (error, response, body) {\n\tif (error) throw new Error(error);\n\n\tconsole.log(body);\n});\n"
+        - lang: JavaScript
+          source: "fetch(\"https://api-nba-v1.p.rapidapi.com/teams/statistics?season=2020&id=1\", {\n\t\"method\": \"GET\",\n\t\"headers\": {\n\t\t\"x-rapidapi-host\": \"api-nba-v1.p.rapidapi.com\",\n\t\t\"x-rapidapi-key\": \"XxXxXxXxXxXxXxXxXxXxXxXx\"\n\t}\n})\n.then(response => {\n\tconsole.log(response);\n})\n.catch(err => {\n\tconsole.log(err);\n});\n"
+        - lang: Curl
+          source: "curl --request GET \\\n\t--url 'https://api-nba-v1.p.rapidapi.com/teams/statistics?season=2020&id=1' \\\n\t--header 'x-rapidapi-host: api-nba-v1.p.rapidapi.com' \\\n\t--header 'x-rapidapi-key: XxXxXxXxXxXxXxXxXxXxXxXx'\n"
+        - lang: Ruby
+          source: |
+            require 'uri'
+            require 'net/http'
+            require 'openssl'
+
+            url = URI("https://api-nba-v1.p.rapidapi.com/teams/statistics?season=2020&id=1")
+
+            http = Net::HTTP.new(url.host, url.port)
+            http.use_ssl = true
+            http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+            request = Net::HTTP::Get.new(url)
+            request["x-rapidapi-host"] = 'api-nba-v1.p.rapidapi.com'
+            request["x-rapidapi-key"] = 'XxXxXxXxXxXxXxXxXxXxXxXx'
+
+            response = http.request(request)
+            puts response.read_body
+        - lang: Use Cases
+          source: |
+            // Get all statistics for a {team} & {season}
+            get("https://api-nba-v1.p.rapidapi.com/teams/statistics?id=1&season=2020");
+  /players/statistics:
+    get:
+      summary: statistics
+      tags:
+        - Players
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                description: ''
+                type: object
+                properties:
+                  get:
+                    type: string
+                    minLength: 1
+                  parameters:
+                    type: object
+                    properties:
+                      game:
+                        type: string
+                        minLength: 1
+                      id:
+                        type: string
+                        minLength: 1
+                      season:
+                        type: string
+                        minLength: 1
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                  results:
+                    type: number
+                  response:
+                    type: array
+                    uniqueItems: true
+                    minItems: 1
+                    items:
+                      type: object
+                      properties:
+                        player:
+                          type: object
+                          properties:
+                            id:
+                              type: number
+                            firstname:
+                              type: string
+                              minLength: 1
+                            lastname:
+                              type: string
+                              minLength: 1
+                        team:
+                          type: object
+                          properties:
+                            id:
+                              type: number
+                            name:
+                              type: string
+                              minLength: 1
+                            nickname:
+                              type: string
+                              minLength: 1
+                            code:
+                              type: string
+                              minLength: 1
+                            logo:
+                              type: string
+                              minLength: 1
+                        game:
+                          type: object
+                          properties:
+                            id:
+                              type: number
+                        points:
+                          type: number
+                        pos:
+                          type: string
+                          minLength: 1
+                        min:
+                          type: string
+                          minLength: 1
+                        fgm:
+                          type: number
+                        fga:
+                          type: number
+                        fgp:
+                          type: string
+                          minLength: 1
+                        ftm:
+                          type: number
+                        fta:
+                          type: number
+                        ftp:
+                          type: string
+                          minLength: 1
+                        tpm:
+                          type: number
+                        tpa:
+                          type: number
+                        tpp:
+                          type: string
+                          minLength: 1
+                        offReb:
+                          type: number
+                        defReb:
+                          type: number
+                        totReb:
+                          type: number
+                        assists:
+                          type: number
+                        pFouls:
+                          type: number
+                        steals:
+                          type: number
+                        turnovers:
+                          type: number
+                        blocks:
+                          type: number
+                        plusMinus:
+                          type: string
+                          minLength: 1
+                        comment: {}
+              examples:
+                example-1:
+                  value:
+                    get: players/statistics
+                    parameters:
+                      game: '8133'
+                      id: '734'
+                      season: '2020'
+                    errors: []
+                    results: 1
+                    response:
+                      - player:
+                          id: 734
+                          firstname: Dwayne
+                          lastname: Bacon
+                        team:
+                          id: 26
+                          name: Orlando Magic
+                          nickname: Magic
+                          code: ORL
+                          logo: 'https://upload.wikimedia.org/wikipedia/fr/b/bd/Orlando_Magic_logo_2010.png'
+                        game:
+                          id: 8133
+                        points: 14
+                        pos: SF
+                        min: '21:56'
+                        fgm: 6
+                        fga: 9
+                        fgp: '66.7'
+                        ftm: 1
+                        fta: 1
+                        ftp: '100'
+                        tpm: 1
+                        tpa: 3
+                        tpp: '33.3'
+                        offReb: 0
+                        defReb: 2
+                        totReb: 2
+                        assists: 1
+                        pFouls: 1
+                        steals: 2
+                        turnovers: 1
+                        blocks: 0
+                        plusMinus: '6'
+                        comment: null
+      operationId: get-players-statistics
+      parameters:
+        - schema:
+            type: integer
+          in: query
+          name: id
+          description: The id of the player
+        - schema:
+            type: integer
+          in: query
+          name: game
+          description: The id of the game
+        - schema:
+            type: string
+          in: header
+          name: x-rapidapi-key
+          description: Your RapidAPI Key
+          required: true
+        - schema:
+            type: integer
+          in: query
+          name: team
+          description: The id of the team
+        - schema:
+            type: integer
+            maxLength: 4
+            minLength: 4
+            pattern: YYYY
+          in: query
+          name: season
+          description: The season
+      description: |-
+        
+        Get statistics from one or more players.
+        
+        > This endpoint requires at least one parameter.
+
+      x-code-samples:
+        - lang: Php
+          source: "$client = new http\\Client;\n$request = new http\\Client\\Request;\n\n$request->setRequestUrl('https://api-nba-v1.p.rapidapi.com/players/statistics');\n$request->setRequestMethod('GET');\n$request->setQuery(new http\\QueryString(array(\n\t'season' => '2020',\n\t'id' => '734')));\n\n$request->setHeaders(array(\n\t'x-rapidapi-host' => 'api-nba-v1.p.rapidapi.com',\n\t'x-rapidapi-key' => 'XxXxXxXxXxXxXxXxXxXxXxXx'\n));\n\n$client->enqueue($request)->send();\n$response = $client->getResponse();\n\necho $response->getBody();\n"
+        - lang: Python
+          source: |
+            import http.client
+
+            conn = http.client.HTTPSConnection("api-nba-v1.p.rapidapi.com")
+
+            headers = {
+                'x-rapidapi-host': "api-nba-v1.p.rapidapi.com",
+                'x-rapidapi-key': "XxXxXxXxXxXxXxXxXxXxXxXx"
+                }
+
+            conn.request("GET", "/players/statistics?season=2020&id=734", headers=headers)
+
+            res = conn.getresponse()
+            data = res.read()
+
+            print(data.decode("utf-8"))
+        - lang: Node
+          source: "var request = require(\"request\");\n\nvar options = {\n  method: 'GET',\n  url: 'https://api-nba-v1.p.rapidapi.com/players/statistics',\n  qs: {season: '2020', id: '734'},\n  headers: {\n    'x-rapidapi-host': 'api-nba-v1.p.rapidapi.com',\n    'x-rapidapi-key': 'XxXxXxXxXxXxXxXxXxXxXxXx'\n  }\n};\n\nrequest(options, function (error, response, body) {\n\tif (error) throw new Error(error);\n\n\tconsole.log(body);\n});\n"
+        - lang: JavaScript
+          source: "fetch(\"https://api-nba-v1.p.rapidapi.com/players/statistics?season=2020&id=734\", {\n\t\"method\": \"GET\",\n\t\"headers\": {\n\t\t\"x-rapidapi-host\": \"api-nba-v1.p.rapidapi.com\",\n\t\t\"x-rapidapi-key\": \"XxXxXxXxXxXxXxXxXxXxXxXx\"\n\t}\n})\n.then(response => {\n\tconsole.log(response);\n})\n.catch(err => {\n\tconsole.log(err);\n});\n"
+        - lang: Curl
+          source: "curl --request GET \\\n\t--url 'https://api-nba-v1.p.rapidapi.com/players/statistics?season=2020&id=734' \\\n\t--header 'x-rapidapi-host: api-nba-v1.p.rapidapi.com' \\\n\t--header 'x-rapidapi-key: XxXxXxXxXxXxXxXxXxXxXxXx'\n"
+        - lang: Ruby
+          source: |
+            require 'uri'
+            require 'net/http'
+            require 'openssl'
+
+            url = URI("https://api-nba-v1.p.rapidapi.com/players/statistics?season=2020&id=734")
+
+            http = Net::HTTP.new(url.host, url.port)
+            http.use_ssl = true
+            http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+            request = Net::HTTP::Get.new(url)
+            request["x-rapidapi-host"] = 'api-nba-v1.p.rapidapi.com'
+            request["x-rapidapi-key"] = 'XxXxXxXxXxXxXxXxXxXxXxXx'
+
+            response = http.request(request)
+            puts response.read_body
+        - lang: Use Cases
+          source: |
+            // Get all statistics for a {player} & {season}
+            get("https://api-nba-v1.p.rapidapi.com/players/statistics?id=265&season=2020");
+
+            // Get all statistics for a {team} & {season}
+            get("https://api-nba-v1.p.rapidapi.com/players/statistics?team=1&season=2020");
+
+            // Get all statistics for a {game}
+            get("https://api-nba-v1.p.rapidapi.com/players/statistics?game=8133");
+  /standings:
+    get:
+      summary: standings
+      tags:
+        - Standings
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                description: ''
+                type: object
+                properties:
+                  get:
+                    type: string
+                    minLength: 1
+                  parameters:
+                    type: object
+                    properties:
+                      league:
+                        type: string
+                        minLength: 1
+                      season:
+                        type: string
+                        minLength: 1
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                  results:
+                    type: number
+                  response:
+                    type: array
+                    uniqueItems: true
+                    minItems: 1
+                    items:
+                      type: object
+                      properties:
+                        league:
+                          type: string
+                          minLength: 1
+                        season:
+                          type: number
+                        team:
+                          type: object
+                          properties:
+                            id:
+                              type: number
+                            name:
+                              type: string
+                              minLength: 1
+                            nickname:
+                              type: string
+                              minLength: 1
+                            code:
+                              type: string
+                              minLength: 1
+                            logo:
+                              type: string
+                              minLength: 1
+                        conference:
+                          type: object
+                          properties:
+                            name:
+                              type: string
+                              minLength: 1
+                            rank:
+                              type: number
+                            win:
+                              type: number
+                            loss:
+                              type: number
+                        division:
+                          type: object
+                          properties:
+                            name:
+                              type: string
+                              minLength: 1
+                            rank:
+                              type: number
+                            win:
+                              type: number
+                            loss:
+                              type: number
+                            gamesBehind:
+                              type: string
+                              minLength: 1
+                        win:
+                          type: object
+                          properties:
+                            home:
+                              type: number
+                            away:
+                              type: number
+                            total:
+                              type: number
+                            percentage:
+                              type: string
+                              minLength: 1
+                            lastTen:
+                              type: number
+                        loss:
+                          type: object
+                          properties:
+                            home:
+                              type: number
+                            away:
+                              type: number
+                            total:
+                              type: number
+                            percentage:
+                              type: string
+                              minLength: 1
+                            lastTen:
+                              type: number
+                        gamesBehind:
+                          type: string
+                          minLength: 1
+                        streak:
+                          type: number
+                        winStreak:
+                          type: boolean
+                        tieBreakerPoints: {}
+              examples:
+                example-1:
+                  value:
+                    get: standings/
+                    parameters:
+                      league: standard
+                      season: '2021'
+                    errors: []
+                    results: 30
+                    response:
+                      - league: standard
+                        season: 2021
+                        team:
+                          id: 41
+                          name: Washington Wizards
+                          nickname: Wizards
+                          code: WAS
+                          logo: 'https://upload.wikimedia.org/wikipedia/fr/archive/d/d6/20161212034849%21Wizards2015.png'
+                        conference:
+                          name: east
+                          rank: 11
+                          win: 22
+                          loss: 21
+                        division:
+                          name: southeast
+                          rank: 4
+                          win: 6
+                          loss: 7
+                          gamesBehind: '13.5'
+                        win:
+                          home: 17
+                          away: 12
+                          total: 29
+                          percentage: '.460'
+                          lastTen: 5
+                        loss:
+                          home: 17
+                          away: 17
+                          total: 34
+                          percentage: '.540'
+                          lastTen: 5
+                        gamesBehind: '13.5'
+                        streak: 1
+                        winStreak: true
+                        tieBreakerPoints: null
+                      - league: standard
+                        season: 2021
+                        team:
+                          id: 5
+                          name: Charlotte Hornets
+                          nickname: Hornets
+                          code: CHA
+                          logo: 'https://upload.wikimedia.org/wikipedia/fr/thumb/f/f3/Hornets_de_Charlotte_logo.svg/1200px-Hornets_de_Charlotte_logo.svg.png'
+                        conference:
+                          name: east
+                          rank: 9
+                          win: 21
+                          loss: 21
+                        division:
+                          name: southeast
+                          rank: 2
+                          win: 5
+                          loss: 7
+                          gamesBehind: '12.0'
+                        win:
+                          home: 16
+                          away: 16
+                          total: 32
+                          percentage: '.485'
+                          lastTen: 4
+                        loss:
+                          home: 16
+                          away: 18
+                          total: 34
+                          percentage: '.515'
+                          lastTen: 6
+                        gamesBehind: '12.0'
+                        streak: 1
+                        winStreak: false
+                        tieBreakerPoints: null
+                      - league: standard
+                        season: 2021
+                        team:
+                          id: 20
+                          name: Miami Heat
+                          nickname: Heat
+                          code: MIA
+                          logo: 'https://upload.wikimedia.org/wikipedia/fr/thumb/1/1c/Miami_Heat_-_Logo.svg/1200px-Miami_Heat_-_Logo.svg.png'
+                        conference:
+                          name: east
+                          rank: 1
+                          win: 28
+                          loss: 13
+                        division:
+                          name: southeast
+                          rank: 1
+                          win: 11
+                          loss: 2
+                          gamesBehind: '0.0'
+                        win:
+                          home: 23
+                          away: 21
+                          total: 44
+                          percentage: '.667'
+                          lastTen: 8
+                        loss:
+                          home: 7
+                          away: 15
+                          total: 22
+                          percentage: '.333'
+                          lastTen: 2
+                        gamesBehind: '0.0'
+                        streak: 3
+                        winStreak: true
+                        tieBreakerPoints: null
+                      - league: standard
+                        season: 2021
+                        team:
+                          id: 1
+                          name: Atlanta Hawks
+                          nickname: Hawks
+                          code: ATL
+                          logo: 'https://upload.wikimedia.org/wikipedia/fr/e/ee/Hawks_2016.png'
+                        conference:
+                          name: east
+                          rank: 10
+                          win: 20
+                          loss: 21
+                        division:
+                          name: southeast
+                          rank: 3
+                          win: 8
+                          loss: 5
+                          gamesBehind: '12.0'
+                        win:
+                          home: 19
+                          away: 12
+                          total: 31
+                          percentage: '.484'
+                          lastTen: 5
+                        loss:
+                          home: 13
+                          away: 20
+                          total: 33
+                          percentage: '.516'
+                          lastTen: 5
+                        gamesBehind: '12.0'
+                        streak: 1
+                        winStreak: false
+                        tieBreakerPoints: null
+                      - league: standard
+                        season: 2021
+                        team:
+                          id: 26
+                          name: Orlando Magic
+                          nickname: Magic
+                          code: ORL
+                          logo: 'https://upload.wikimedia.org/wikipedia/fr/b/bd/Orlando_Magic_logo_2010.png'
+                        conference:
+                          name: east
+                          rank: 15
+                          win: 10
+                          loss: 32
+                        division:
+                          name: southeast
+                          rank: 5
+                          win: 2
+                          loss: 11
+                          gamesBehind: '28.0'
+                        win:
+                          home: 7
+                          away: 9
+                          total: 16
+                          percentage: '.242'
+                          lastTen: 3
+                        loss:
+                          home: 23
+                          away: 27
+                          total: 50
+                          percentage: '.758'
+                          lastTen: 7
+                        gamesBehind: '28.0'
+                        streak: 2
+                        winStreak: false
+                        tieBreakerPoints: null
+                      - league: standard
+                        season: 2021
+                        team:
+                          id: 24
+                          name: New York Knicks
+                          nickname: Knicks
+                          code: NYK
+                          logo: 'https://upload.wikimedia.org/wikipedia/fr/d/dc/NY_Knicks_Logo_2011.png'
+                        conference:
+                          name: east
+                          rank: 12
+                          win: 14
+                          loss: 25
+                        division:
+                          name: atlantic
+                          rank: 5
+                          win: 4
+                          loss: 9
+                          gamesBehind: '13.5'
+                        win:
+                          home: 13
+                          away: 14
+                          total: 27
+                          percentage: '.415'
+                          lastTen: 3
+                        loss:
+                          home: 19
+                          away: 19
+                          total: 38
+                          percentage: '.585'
+                          lastTen: 7
+                        gamesBehind: '16.5'
+                        streak: 2
+                        winStreak: true
+                        tieBreakerPoints: null
+                      - league: standard
+                        season: 2021
+                        team:
+                          id: 4
+                          name: Brooklyn Nets
+                          nickname: Nets
+                          code: BKN
+                          logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Brooklyn_Nets_newlogo.svg/130px-Brooklyn_Nets_newlogo.svg.png'
+                        conference:
+                          name: east
+                          rank: 8
+                          win: 23
+                          loss: 18
+                        division:
+                          name: atlantic
+                          rank: 4
+                          win: 7
+                          loss: 6
+                          gamesBehind: '8.0'
+                        win:
+                          home: 13
+                          away: 20
+                          total: 33
+                          percentage: '.500'
+                          lastTen: 4
+                        loss:
+                          home: 18
+                          away: 15
+                          total: 33
+                          percentage: '.500'
+                          lastTen: 6
+                        gamesBehind: '11.0'
+                        streak: 1
+                        winStreak: true
+                        tieBreakerPoints: null
+                      - league: standard
+                        season: 2021
+                        team:
+                          id: 27
+                          name: Philadelphia 76ers
+                          nickname: 76ers
+                          code: PHI
+                          logo: 'https://upload.wikimedia.org/wikipedia/fr/4/48/76ers_2016.png'
+                        conference:
+                          name: east
+                          rank: 2
+                          win: 24
+                          loss: 15
+                        division:
+                          name: atlantic
+                          rank: 1
+                          win: 6
+                          loss: 7
+                          gamesBehind: '0.0'
+                        win:
+                          home: 19
+                          away: 21
+                          total: 40
+                          percentage: '.625'
+                          lastTen: 8
+                        loss:
+                          home: 13
+                          away: 11
+                          total: 24
+                          percentage: '.375'
+                          lastTen: 2
+                        gamesBehind: '3.0'
+                        streak: 1
+                        winStreak: true
+                        tieBreakerPoints: null
+                      - league: standard
+                        season: 2021
+                        team:
+                          id: 38
+                          name: Toronto Raptors
+                          nickname: Raptors
+                          code: TOR
+                          logo: 'https://upload.wikimedia.org/wikipedia/fr/8/89/Raptors2015.png'
+                        conference:
+                          name: east
+                          rank: 7
+                          win: 23
+                          loss: 19
+                        division:
+                          name: atlantic
+                          rank: 3
+                          win: 7
+                          loss: 5
+                          gamesBehind: '6.0'
+                        win:
+                          home: 17
+                          away: 17
+                          total: 34
+                          percentage: '.531'
+                          lastTen: 3
+                        loss:
+                          home: 15
+                          away: 15
+                          total: 30
+                          percentage: '.469'
+                          lastTen: 7
+                        gamesBehind: '9.0'
+                        streak: 3
+                        winStreak: false
+                        tieBreakerPoints: null
+                      - league: standard
+                        season: 2021
+                        team:
+                          id: 2
+                          name: Boston Celtics
+                          nickname: Celtics
+                          code: BOS
+                          logo: 'https://upload.wikimedia.org/wikipedia/fr/thumb/6/65/Celtics_de_Boston_logo.svg/1024px-Celtics_de_Boston_logo.svg.png'
+                        conference:
+                          name: east
+                          rank: 5
+                          win: 28
+                          loss: 16
+                        division:
+                          name: atlantic
+                          rank: 2
+                          win: 9
+                          loss: 6
+                          gamesBehind: '2.0'
+                        win:
+                          home: 23
+                          away: 16
+                          total: 39
+                          percentage: '.591'
+                          lastTen: 8
+                        loss:
+                          home: 11
+                          away: 16
+                          total: 27
+                          percentage: '.409'
+                          lastTen: 2
+                        gamesBehind: '5.0'
+                        streak: 3
+                        winStreak: true
+                        tieBreakerPoints: null
+                      - league: standard
+                        season: 2021
+                        team:
+                          id: 6
+                          name: Chicago Bulls
+                          nickname: Bulls
+                          code: CHI
+                          logo: 'https://upload.wikimedia.org/wikipedia/fr/thumb/d/d1/Bulls_de_Chicago_logo.svg/1200px-Bulls_de_Chicago_logo.svg.png'
+                        conference:
+                          name: east
+                          rank: 4
+                          win: 24
+                          loss: 17
+                        division:
+                          name: central
+                          rank: 2
+                          win: 7
+                          loss: 4
+                          gamesBehind: '1.5'
+                        win:
+                          home: 24
+                          away: 15
+                          total: 39
+                          percentage: '.600'
+                          lastTen: 5
+                        loss:
+                          home: 10
+                          away: 16
+                          total: 26
+                          percentage: '.400'
+                          lastTen: 5
+                        gamesBehind: '4.5'
+                        streak: 5
+                        winStreak: false
+                        tieBreakerPoints: null
+                      - league: standard
+                        season: 2021
+                        team:
+                          id: 21
+                          name: Milwaukee Bucks
+                          nickname: Bucks
+                          code: MIL
+                          logo: 'https://upload.wikimedia.org/wikipedia/fr/3/34/Bucks2015.png'
+                        conference:
+                          name: east
+                          rank: 3
+                          win: 25
+                          loss: 18
+                        division:
+                          name: central
+                          rank: 1
+                          win: 9
+                          loss: 3
+                          gamesBehind: '0.0'
+                        win:
+                          home: 23
+                          away: 18
+                          total: 41
+                          percentage: '.621'
+                          lastTen: 6
+                        loss:
+                          home: 12
+                          away: 13
+                          total: 25
+                          percentage: '.379'
+                          lastTen: 4
+                        gamesBehind: '3.0'
+                        streak: 5
+                        winStreak: true
+                        tieBreakerPoints: null
+                      - league: standard
+                        season: 2021
+                        team:
+                          id: 7
+                          name: Cleveland Cavaliers
+                          nickname: Cavaliers
+                          code: CLE
+                          logo: 'https://upload.wikimedia.org/wikipedia/fr/thumb/0/06/Cavs_de_Cleveland_logo_2017.png/150px-Cavs_de_Cleveland_logo_2017.png'
+                        conference:
+                          name: east
+                          rank: 6
+                          win: 23
+                          loss: 16
+                        division:
+                          name: central
+                          rank: 3
+                          win: 8
+                          loss: 4
+                          gamesBehind: '2.5'
+                        win:
+                          home: 20
+                          away: 18
+                          total: 38
+                          percentage: '.585'
+                          lastTen: 4
+                        loss:
+                          home: 11
+                          away: 16
+                          total: 27
+                          percentage: '.415'
+                          lastTen: 6
+                        gamesBehind: '5.5'
+                        streak: 2
+                        winStreak: true
+                        tieBreakerPoints: null
+                      - league: standard
+                        season: 2021
+                        team:
+                          id: 15
+                          name: Indiana Pacers
+                          nickname: Pacers
+                          code: IND
+                          logo: 'https://upload.wikimedia.org/wikipedia/fr/thumb/c/cf/Pacers_de_l%27Indiana_logo.svg/1180px-Pacers_de_l%27Indiana_logo.svg.png'
+                        conference:
+                          name: east
+                          rank: 13
+                          win: 11
+                          loss: 33
+                        division:
+                          name: central
+                          rank: 4
+                          win: 2
+                          loss: 13
+                          gamesBehind: '19.5'
+                        win:
+                          home: 15
+                          away: 7
+                          total: 22
+                          percentage: '.328'
+                          lastTen: 3
+                        loss:
+                          home: 19
+                          away: 26
+                          total: 45
+                          percentage: '.672'
+                          lastTen: 7
+                        gamesBehind: '22.5'
+                        streak: 3
+                        winStreak: false
+                        tieBreakerPoints: null
+                      - league: standard
+                        season: 2021
+                        team:
+                          id: 10
+                          name: Detroit Pistons
+                          nickname: Pistons
+                          code: DET
+                          logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Detroit_Pistons_primary_logo_2017.png/150px-Detroit_Pistons_primary_logo_2017.png'
+                        conference:
+                          name: east
+                          rank: 14
+                          win: 14
+                          loss: 25
+                        division:
+                          name: central
+                          rank: 5
+                          win: 5
+                          loss: 7
+                          gamesBehind: '22.5'
+                        win:
+                          home: 11
+                          away: 7
+                          total: 18
+                          percentage: '.277'
+                          lastTen: 6
+                        loss:
+                          home: 21
+                          away: 26
+                          total: 47
+                          percentage: '.723'
+                          lastTen: 4
+                        gamesBehind: '25.5'
+                        streak: 3
+                        winStreak: true
+                        tieBreakerPoints: null
+                      - league: standard
+                        season: 2021
+                        team:
+                          id: 19
+                          name: Memphis Grizzlies
+                          nickname: Grizzlies
+                          code: MEM
+                          logo: 'https://upload.wikimedia.org/wikipedia/en/thumb/f/f1/Memphis_Grizzlies.svg/1200px-Memphis_Grizzlies.svg.png'
+                        conference:
+                          name: west
+                          rank: 2
+                          win: 30
+                          loss: 14
+                        division:
+                          name: southwest
+                          rank: 1
+                          win: 8
+                          loss: 5
+                          gamesBehind: '0.0'
+                        win:
+                          home: 23
+                          away: 22
+                          total: 45
+                          percentage: '.672'
+                          lastTen: 6
+                        loss:
+                          home: 10
+                          away: 12
+                          total: 22
+                          percentage: '.328'
+                          lastTen: 4
+                        gamesBehind: '8.0'
+                        streak: 1
+                        winStreak: true
+                        tieBreakerPoints: null
+                      - league: standard
+                        season: 2021
+                        team:
+                          id: 14
+                          name: Houston Rockets
+                          nickname: Rockets
+                          code: HOU
+                          logo: 'https://upload.wikimedia.org/wikipedia/fr/thumb/d/de/Houston_Rockets_logo_2003.png/330px-Houston_Rockets_logo_2003.png'
+                        conference:
+                          name: west
+                          rank: 15
+                          win: 8
+                          loss: 32
+                        division:
+                          name: southwest
+                          rank: 5
+                          win: 3
+                          loss: 8
+                          gamesBehind: '28.0'
+                        win:
+                          home: 9
+                          away: 7
+                          total: 16
+                          percentage: '.246'
+                          lastTen: 1
+                        loss:
+                          home: 21
+                          away: 28
+                          total: 49
+                          percentage: '.754'
+                          lastTen: 9
+                        gamesBehind: '36.0'
+                        streak: 1
+                        winStreak: false
+                        tieBreakerPoints: null
+                      - league: standard
+                        season: 2021
+                        team:
+                          id: 8
+                          name: Dallas Mavericks
+                          nickname: Mavericks
+                          code: DAL
+                          logo: 'https://upload.wikimedia.org/wikipedia/fr/thumb/b/b8/Mavericks_de_Dallas_logo.svg/150px-Mavericks_de_Dallas_logo.svg.png'
+                        conference:
+                          name: west
+                          rank: 5
+                          win: 29
+                          loss: 15
+                        division:
+                          name: southwest
+                          rank: 2
+                          win: 11
+                          loss: 2
+                          gamesBehind: '4.0'
+                        win:
+                          home: 23
+                          away: 17
+                          total: 40
+                          percentage: '.615'
+                          lastTen: 8
+                        loss:
+                          home: 11
+                          away: 14
+                          total: 25
+                          percentage: '.385'
+                          lastTen: 2
+                        gamesBehind: '12.0'
+                        streak: 5
+                        winStreak: true
+                        tieBreakerPoints: null
+                      - league: standard
+                        season: 2021
+                        team:
+                          id: 31
+                          name: San Antonio Spurs
+                          nickname: Spurs
+                          code: SAS
+                          logo: 'https://upload.wikimedia.org/wikipedia/fr/0/0e/San_Antonio_Spurs_2018.png'
+                        conference:
+                          name: west
+                          rank: 12
+                          win: 15
+                          loss: 22
+                        division:
+                          name: southwest
+                          rank: 4
+                          win: 4
+                          loss: 7
+                          gamesBehind: '19.0'
+                        win:
+                          home: 12
+                          away: 13
+                          total: 25
+                          percentage: '.385'
+                          lastTen: 5
+                        loss:
+                          home: 19
+                          away: 21
+                          total: 40
+                          percentage: '.615'
+                          lastTen: 5
+                        gamesBehind: '27.0'
+                        streak: 1
+                        winStreak: true
+                        tieBreakerPoints: null
+                      - league: standard
+                        season: 2021
+                        team:
+                          id: 23
+                          name: New Orleans Pelicans
+                          nickname: Pelicans
+                          code: NOP
+                          logo: 'https://upload.wikimedia.org/wikipedia/fr/thumb/2/21/New_Orleans_Pelicans.png/200px-New_Orleans_Pelicans.png'
+                        conference:
+                          name: west
+                          rank: 10
+                          win: 18
+                          loss: 22
+                        division:
+                          name: southwest
+                          rank: 3
+                          win: 4
+                          loss: 8
+                          gamesBehind: '17.0'
+                        win:
+                          home: 15
+                          away: 12
+                          total: 27
+                          percentage: '.415'
+                          lastTen: 5
+                        loss:
+                          home: 17
+                          away: 21
+                          total: 38
+                          percentage: '.585'
+                          lastTen: 5
+                        gamesBehind: '25.0'
+                        streak: 2
+                        winStreak: false
+                        tieBreakerPoints: null
+                      - league: standard
+                        season: 2021
+                        team:
+                          id: 11
+                          name: Golden State Warriors
+                          nickname: Warriors
+                          code: GSW
+                          logo: 'https://upload.wikimedia.org/wikipedia/fr/thumb/d/de/Warriors_de_Golden_State_logo.svg/1200px-Warriors_de_Golden_State_logo.svg.png'
+                        conference:
+                          name: west
+                          rank: 3
+                          win: 26
+                          loss: 16
+                        division:
+                          name: pacific
+                          rank: 2
+                          win: 9
+                          loss: 3
+                          gamesBehind: '9.0'
+                        win:
+                          home: 26
+                          away: 17
+                          total: 43
+                          percentage: '.662'
+                          lastTen: 2
+                        loss:
+                          home: 7
+                          away: 15
+                          total: 22
+                          percentage: '.338'
+                          lastTen: 8
+                        gamesBehind: '9.0'
+                        streak: 5
+                        winStreak: false
+                        tieBreakerPoints: null
+                      - league: standard
+                        season: 2021
+                        team:
+                          id: 30
+                          name: Sacramento Kings
+                          nickname: Kings
+                          code: SAC
+                          logo: 'https://upload.wikimedia.org/wikipedia/fr/thumb/9/95/Kings_de_Sacramento_logo.svg/1200px-Kings_de_Sacramento_logo.svg.png'
+                        conference:
+                          name: west
+                          rank: 13
+                          win: 17
+                          loss: 26
+                        division:
+                          name: pacific
+                          rank: 5
+                          win: 5
+                          loss: 7
+                          gamesBehind: '29.0'
+                        win:
+                          home: 15
+                          away: 9
+                          total: 24
+                          percentage: '.358'
+                          lastTen: 3
+                        loss:
+                          home: 19
+                          away: 24
+                          total: 43
+                          percentage: '.642'
+                          lastTen: 7
+                        gamesBehind: '29.0'
+                        streak: 2
+                        winStreak: false
+                        tieBreakerPoints: null
+                      - league: standard
+                        season: 2021
+                        team:
+                          id: 28
+                          name: Phoenix Suns
+                          nickname: Suns
+                          code: PHX
+                          logo: 'https://upload.wikimedia.org/wikipedia/fr/5/56/Phoenix_Suns_2013.png'
+                        conference:
+                          name: west
+                          rank: 1
+                          win: 30
+                          loss: 9
+                        division:
+                          name: pacific
+                          rank: 1
+                          win: 6
+                          loss: 4
+                          gamesBehind: '0.0'
+                        win:
+                          home: 28
+                          away: 24
+                          total: 52
+                          percentage: '.800'
+                          lastTen: 7
+                        loss:
+                          home: 7
+                          away: 6
+                          total: 13
+                          percentage: '.200'
+                          lastTen: 3
+                        gamesBehind: '0.0'
+                        streak: 1
+                        winStreak: true
+                        tieBreakerPoints: null
+                      - league: standard
+                        season: 2021
+                        team:
+                          id: 16
+                          name: LA Clippers
+                          nickname: Clippers
+                          code: LAC
+                          logo: 'https://upload.wikimedia.org/wikipedia/fr/d/d6/Los_Angeles_Clippers_logo_2010.png'
+                        conference:
+                          name: west
+                          rank: 8
+                          win: 21
+                          loss: 23
+                        division:
+                          name: pacific
+                          rank: 3
+                          win: 7
+                          loss: 6
+                          gamesBehind: '18.5'
+                        win:
+                          home: 19
+                          away: 15
+                          total: 34
+                          percentage: '.515'
+                          lastTen: 7
+                        loss:
+                          home: 14
+                          away: 18
+                          total: 32
+                          percentage: '.485'
+                          lastTen: 3
+                        gamesBehind: '18.5'
+                        streak: 1
+                        winStreak: false
+                        tieBreakerPoints: null
+                      - league: standard
+                        season: 2021
+                        team:
+                          id: 17
+                          name: Los Angeles Lakers
+                          nickname: Lakers
+                          code: LAL
+                          logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Los_Angeles_Lakers_logo.svg/220px-Los_Angeles_Lakers_logo.svg.png'
+                        conference:
+                          name: west
+                          rank: 9
+                          win: 16
+                          loss: 24
+                        division:
+                          name: pacific
+                          rank: 4
+                          win: 3
+                          loss: 10
+                          gamesBehind: '23.5'
+                        win:
+                          home: 19
+                          away: 9
+                          total: 28
+                          percentage: '.438'
+                          lastTen: 2
+                        loss:
+                          home: 16
+                          away: 20
+                          total: 36
+                          percentage: '.562'
+                          lastTen: 8
+                        gamesBehind: '23.5'
+                        streak: 1
+                        winStreak: false
+                        tieBreakerPoints: null
+                      - league: standard
+                        season: 2021
+                        team:
+                          id: 40
+                          name: Utah Jazz
+                          nickname: Jazz
+                          code: UTA
+                          logo: 'https://upload.wikimedia.org/wikipedia/fr/3/3b/Jazz_de_l%27Utah_logo.png'
+                        conference:
+                          name: west
+                          rank: 4
+                          win: 26
+                          loss: 14
+                        division:
+                          name: northwest
+                          rank: 1
+                          win: 12
+                          loss: 1
+                          gamesBehind: '0.0'
+                        win:
+                          home: 22
+                          away: 18
+                          total: 40
+                          percentage: '.625'
+                          lastTen: 7
+                        loss:
+                          home: 10
+                          away: 14
+                          total: 24
+                          percentage: '.375'
+                          lastTen: 3
+                        gamesBehind: '11.5'
+                        streak: 1
+                        winStreak: false
+                        tieBreakerPoints: null
+                      - league: standard
+                        season: 2021
+                        team:
+                          id: 22
+                          name: Minnesota Timberwolves
+                          nickname: Timberwolves
+                          code: MIN
+                          logo: 'https://upload.wikimedia.org/wikipedia/fr/thumb/d/d9/Timberwolves_du_Minnesota_logo_2017.png/200px-Timberwolves_du_Minnesota_logo_2017.png'
+                        conference:
+                          name: west
+                          rank: 7
+                          win: 25
+                          loss: 18
+                        division:
+                          name: northwest
+                          rank: 3
+                          win: 10
+                          loss: 4
+                          gamesBehind: '4.0'
+                        win:
+                          home: 21
+                          away: 16
+                          total: 37
+                          percentage: '.561'
+                          lastTen: 8
+                        loss:
+                          home: 12
+                          away: 17
+                          total: 29
+                          percentage: '.439'
+                          lastTen: 2
+                        gamesBehind: '15.5'
+                        streak: 5
+                        winStreak: true
+                        tieBreakerPoints: null
+                      - league: standard
+                        season: 2021
+                        team:
+                          id: 9
+                          name: Denver Nuggets
+                          nickname: Nuggets
+                          code: DEN
+                          logo: 'https://upload.wikimedia.org/wikipedia/fr/thumb/3/35/Nuggets_de_Denver_2018.png/180px-Nuggets_de_Denver_2018.png'
+                        conference:
+                          name: west
+                          rank: 6
+                          win: 24
+                          loss: 18
+                        division:
+                          name: northwest
+                          rank: 2
+                          win: 5
+                          loss: 9
+                          gamesBehind: '1.5'
+                        win:
+                          home: 20
+                          away: 19
+                          total: 39
+                          percentage: '.600'
+                          lastTen: 9
+                        loss:
+                          home: 11
+                          away: 15
+                          total: 26
+                          percentage: '.400'
+                          lastTen: 1
+                        gamesBehind: '13.0'
+                        streak: 3
+                        winStreak: true
+                        tieBreakerPoints: null
+                      - league: standard
+                        season: 2021
+                        team:
+                          id: 29
+                          name: Portland Trail Blazers
+                          nickname: Trail Blazers
+                          code: POR
+                          logo: 'https://upload.wikimedia.org/wikipedia/en/thumb/2/21/Portland_Trail_Blazers_logo.svg/1200px-Portland_Trail_Blazers_logo.svg.png'
+                        conference:
+                          name: west
+                          rank: 11
+                          win: 11
+                          loss: 29
+                        division:
+                          name: northwest
+                          rank: 4
+                          win: 1
+                          loss: 11
+                          gamesBehind: '15.0'
+                        win:
+                          home: 16
+                          away: 9
+                          total: 25
+                          percentage: '.391'
+                          lastTen: 4
+                        loss:
+                          home: 18
+                          away: 21
+                          total: 39
+                          percentage: '.609'
+                          lastTen: 6
+                        gamesBehind: '26.5'
+                        streak: 5
+                        winStreak: false
+                        tieBreakerPoints: null
+                      - league: standard
+                        season: 2021
+                        team:
+                          id: 25
+                          name: Oklahoma City Thunder
+                          nickname: Thunder
+                          code: OKC
+                          logo: 'https://upload.wikimedia.org/wikipedia/fr/thumb/4/4f/Thunder_d%27Oklahoma_City_logo.svg/1200px-Thunder_d%27Oklahoma_City_logo.svg.png'
+                        conference:
+                          name: west
+                          rank: 14
+                          win: 14
+                          loss: 28
+                        division:
+                          name: northwest
+                          rank: 5
+                          win: 4
+                          loss: 7
+                          gamesBehind: '20.5'
+                        win:
+                          home: 9
+                          away: 11
+                          total: 20
+                          percentage: '.308'
+                          lastTen: 3
+                        loss:
+                          home: 24
+                          away: 21
+                          total: 45
+                          percentage: '.692'
+                          lastTen: 7
+                        gamesBehind: '32.0'
+                        streak: 3
+                        winStreak: false
+                        tieBreakerPoints: null
+      operationId: get-standings
+      parameters:
+        - schema:
+            type: string
+            example: standard
+            enum:
+              - Africa
+              - Orlando
+              - Sacramento
+              - Standard
+              - Utah
+              - Vegas
+          in: query
+          name: league
+          required: true
+          description: The name of the league
+        - schema:
+            type: integer
+            maxLength: 4
+            minLength: 4
+            pattern: YYYY
+          in: query
+          name: season
+          required: true
+          description: The season
+        - schema:
+            type: integer
+          in: query
+          name: team
+          description: The id of the team
+        - schema:
+            type: string
+            example: east
+            enum:
+              - East
+              - West
+          in: query
+          name: conference
+          description: The conference name
+        - schema:
+            type: string
+            example: southeast
+            enum:
+              - Atlantic
+              - Central
+              - Northwest
+              - Pacific
+              - Southeast
+              - Southwest
+          in: query
+          name: division
+          description: The division name
+        - schema:
+            type: string
+          in: header
+          name: x-rapidapi-key
+          description: Your RapidAPI Key
+          required: true
+      description: |-
+        Get the standings for a league & season.
+
+        **Available conferences**
+        * East
+        * West
+
+        **Available divisions**
+        * Atlantic
+        * Central
+        * Northwest
+        * Pacific
+        * Southeast
+        * Southwest
+
+        > Parameters `league` & `season` are required.
+      x-code-samples:
+        - lang: Php
+          source: "$client = new http\\Client;\n$request = new http\\Client\\Request;\n\n$request->setRequestUrl('https://api-nba-v1.p.rapidapi.com/standings');\n$request->setRequestMethod('GET');\n$request->setQuery(new http\\QueryString(array(\n\t'league' => 'standard',\n\t'season' => '2021'\n)));\n\n$request->setHeaders(array(\n\t'x-rapidapi-host' => 'api-nba-v1.p.rapidapi.com',\n\t'x-rapidapi-key' => 'XxXxXxXxXxXxXxXxXxXxXxXx'\n));\n\n$client->enqueue($request)->send();\n$response = $client->getResponse();\n\necho $response->getBody();\n"
+        - lang: Python
+          source: |
+            import http.client
+
+            conn = http.client.HTTPSConnection("api-nba-v1.p.rapidapi.com")
+
+            headers = {
+                'x-rapidapi-host': "api-nba-v1.p.rapidapi.com",
+                'x-rapidapi-key': "XxXxXxXxXxXxXxXxXxXxXxXx"
+                }
+
+            conn.request("GET", "/standings?league=standard&season=2021", headers=headers)
+
+            res = conn.getresponse()
+            data = res.read()
+
+            print(data.decode("utf-8"))
+        - lang: Node
+          source: "var request = require(\"request\");\n\nvar options = {\n  method: 'GET',\n  url: 'https://api-nba-v1.p.rapidapi.com/standings',\n  qs: {league: 'standard', season: '2021'},\n  headers: {\n    'x-rapidapi-host': 'api-nba-v1.p.rapidapi.com',\n    'x-rapidapi-key': 'XxXxXxXxXxXxXxXxXxXxXxXx'\n  }\n};\n\nrequest(options, function (error, response, body) {\n\tif (error) throw new Error(error);\n\n\tconsole.log(body);\n});\n"
+        - lang: JavaScript
+          source: "fetch(\"https://api-nba-v1.p.rapidapi.com/standings?league=standard&season=2021\", {\n\t\"method\": \"GET\",\n\t\"headers\": {\n\t\t\"x-rapidapi-host\": \"api-nba-v1.p.rapidapi.com\",\n\t\t\"x-rapidapi-key\": \"XxXxXxXxXxXxXxXxXxXxXxXx\"\n\t}\n})\n.then(response => {\n\tconsole.log(response);\n})\n.catch(err => {\n\tconsole.log(err);\n});\n"
+        - lang: Curl
+          source: "curl --request GET \\\n\t--url 'https://api-nba-v1.p.rapidapi.com/standings?league=standard&season=2021' \\\n\t--header 'x-rapidapi-host: api-nba-v1.p.rapidapi.com' \\\n\t--header 'x-rapidapi-key: XxXxXxXxXxXxXxXxXxXxXxXx'\n"
+        - lang: Ruby
+          source: |
+            require 'uri'
+            require 'net/http'
+            require 'openssl'
+
+            url = URI("https://api-nba-v1.p.rapidapi.com/standings?league=standard&season=2021")
+
+            http = Net::HTTP.new(url.host, url.port)
+            http.use_ssl = true
+            http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+            request = Net::HTTP::Get.new(url)
+            request["x-rapidapi-host"] = 'api-nba-v1.p.rapidapi.com'
+            request["x-rapidapi-key"] = 'XxXxXxXxXxXxXxXxXxXxXxXx'
+
+            response = http.request(request)
+            puts response.read_body
+        - lang: Use Cases
+          source: |
+            // Get all Standings from one {league} & {season}
+            get("https://api-nba-v1.p.rapidapi.com/standings?league=standard&season=2020");
+
+            // Get all Standings from one {team} & {season}
+            get("https://api-nba-v1.p.rapidapi.com/standings?team=1&season=2020&league=standard");
+
+            // Get all Standings from one {conference} & {season}
+            get("https://api-nba-v1.p.rapidapi.com/standings?league=standard&season=2019&conference=east");
+
+            // Get all Standings from one {division} & {season}
+            get("https://api-nba-v1.p.rapidapi.com/standings?league=standard&season=2019&division=southeast");
+components:
+  schemas: {}
+x-tagGroups:
+  - name: Endpoints
+    tags:
+      - Seasons
+      - Leagues
+      - Games
+      - Teams
+      - Players
+      - Standings
