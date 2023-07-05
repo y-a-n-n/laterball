@@ -19,6 +19,30 @@
             <pattern>%-4relative [%thread] %-5level %logger{35} - %msg%n</pattern>
         </encoder>
     </appender>
+
+<!--    &lt;!&ndash; This is the kafkaAppender &ndash;&gt;-->
+<!--    <appender name="kafkaAppender" class="io.github.bullettooth.logback.kafka.KafkaAppender">-->
+<!--        <encoder>-->
+<!--            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>-->
+<!--        </encoder>-->
+<!--        <topic>logs</topic>-->
+<!--        <keyingStrategy class="io.github.bullettooth.logback.kafka.keying.NoKeyKeyingStrategy" />-->
+<!--        <deliveryStrategy class="io.github.bullettooth.logback.kafka.delivery.AsynchronousDeliveryStrategy" />-->
+
+<!--        &lt;!&ndash; Optional parameter to use a fixed partition &ndash;&gt;-->
+<!--        &lt;!&ndash; <partition>0</partition> &ndash;&gt;-->
+
+<!--        &lt;!&ndash; Optional parameter to include log timestamps into the kafka message &ndash;&gt;-->
+<!--         <appendTimestamp>true</appendTimestamp>-->
+
+<!--        &lt;!&ndash; each <producerConfig> translates to regular kafka-client config (format: key=value) &ndash;&gt;-->
+<!--        &lt;!&ndash; producer configs are documented here: https://kafka.apache.org/documentation.html#producerconfigs &ndash;&gt;-->
+<!--        &lt;!&ndash; bootstrap.servers is the only mandatory producerConfig &ndash;&gt;-->
+<!--        <producerConfig>bootstrap.servers=localhost:9092</producerConfig>-->
+
+<!--        &lt;!&ndash; this is the fallback appender if kafka is not available. &ndash;&gt;-->
+<!--        <appender-ref ref="FILE" />-->
+<!--    </appender>-->
     <root level="info">
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="FILE"/>

@@ -49,7 +49,7 @@ dependencies {
     implementation("io.ktor:ktor-html-builder:$ktor_version")
     implementation("org.twitter4j", "twitter4j-core", "4.0.7")
     implementation("org.litote.kmongo:kmongo-coroutine:4.2.8")
-
+    implementation("io.github.bullet-tooth:logback-kafka-appender:0.3.0")
 
     testImplementation("io.ktor:ktor-server-tests:$ktor_version")
     testImplementation("io.ktor:ktor-client-mock:$ktor_version")
