@@ -16,11 +16,30 @@
         </rollingPolicy>
 
         <encoder>
-            <pattern>%-4relative [%thread] %-5level %logger{35} - %msg%n</pattern>
+            <pattern>%d{YYYY-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
         </encoder>
     </appender>
+    <appender name="LOKI" class="com.github.loki4j.logback.Loki4jAppender">
+        <http>
+            <url>http://loki:3100/loki/api/v1/push</url>
+        </http>
+        <format>
+            <label>
+                <pattern>app=laterball,host=${HOSTNAME},level=%level</pattern>
+            </label>
+            <message>
+                <pattern>%d{YYYY-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+            </message>
+            <sortByTime>true</sortByTime>
+        </format>
+    </appender>
+
+    <root level="DEBUG">
+        <appender-ref ref="LOKI" />
+    </root>
     <root level="info">
         <appender-ref ref="STDOUT"/>
+        <appender-ref ref="LOKI"/>
         <appender-ref ref="FILE"/>
     </root>
 

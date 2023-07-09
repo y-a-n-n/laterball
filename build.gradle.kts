@@ -49,6 +49,7 @@ dependencies {
     implementation("io.ktor:ktor-html-builder:$ktor_version")
     implementation("org.twitter4j", "twitter4j-core", "4.0.7")
     implementation("org.litote.kmongo:kmongo-coroutine:4.2.8")
+    implementation("com.github.loki4j:loki-logback-appender:1.4.1")
 
 
     testImplementation("io.ktor:ktor-server-tests:$ktor_version")
@@ -58,7 +59,7 @@ dependencies {
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "11"
     }
 }
 
