@@ -9,6 +9,7 @@ services:
       - mongo:/data/db
     networks:
       - laterball-network
+    env_file: .env.PROD
   laterball:
     image: 'laterball/laterball-server:latest'
     depends_on:
@@ -17,6 +18,7 @@ services:
       - 8080:8080
     networks:
       - laterball-network
+    env_file: .env.PROD
 
 volumes:
   mongo:
