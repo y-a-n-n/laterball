@@ -84,7 +84,7 @@ fun Application.module() {
         }
 
         get("/") {
-            call.respondRedirect("/${LeagueId.EPL.path}")
+            call.respondRedirect("/${LeagueId.values()[0].path}")
         }
 
         LeagueId.values().forEach {leagueId ->
