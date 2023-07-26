@@ -7,3 +7,6 @@ docker tag laterball/laterball-server:$version laterball/laterball-server:latest
 docker build -t laterball/mongo:$version -f Dockerfile-db .
 
 docker tag laterball/mongo:$version laterball/mongo:latest
+
+docker build -t laterball/goatcounter:$version -f goatcounter/Dockerfile-goatcounter .
+docker tag laterball/goatcounter:$version laterball/goatcounter:latest

@@ -10,6 +10,14 @@ services:
     networks:
       - laterball-network
     env_file: .env.DEV
+  goatcounter:
+      container_name: goatcounter
+      image: 'laterball/goatcounter:latest'
+      ports:
+        - 8005:8080
+      networks:
+        - laterball-network
+      env_file: .env.DEV
   laterball:
     container_name: laterball
     image: 'laterball/laterball-server:latest'

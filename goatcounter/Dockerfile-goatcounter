@@ -1,0 +1,28 @@
+FROM debian:bookworm-slim
+
+WORKDIR /goatcounter
+
+ENV GOATCOUNTER_VERSION 'v2.0.4'
+ENV GOATCOUNTER_LISTEN '0.0.0.0:8080'
+ENV GOATCOUNTER_DB 'sqlite:///goatcounter/db/goatcounter.sqlite3'
+ENV GOATCOUNTER_SMTP ''
+
+
+RUN apt-get update \
+  && apt-get install -y ca-certificates wget \
+  && update-ca-certificates --fresh
+
+
+COPY goatcounter/goatcounter-v2.4.1-linux-amd64 /usr/bin/goatcounter
+COPY goatcounter/goatcounter.sh ./
+COPY goatcounter/entrypoint.sh /entrypoint.sh
+
+RUN chmod +x /usr/bin/goatcounter
+RUN chmod +x /goatcounter/goatcounter.sh
+RUN chmod +x /entrypoint.sh
+
+VOLUME ["/goatcounter/db"]
+EXPOSE 8080
+
+ENTRYPOINT ["/entrypoint.sh"]
+CMD ["/goatcounter/goatcounter.sh"]

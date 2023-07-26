@@ -1,5 +1,6 @@
 package com.laterball.server
 
+import com.laterball.server.analytics.GoatCounterFeature
 import com.laterball.server.api.DataApi
 import com.laterball.server.html.Generator
 import com.laterball.server.html.checkCsrfToken
@@ -63,6 +64,8 @@ fun Application.module() {
         }
         host("laterball.com", schemes = listOf("https"))
     }
+
+    install(GoatCounterFeature)
 
     val generator = Generator(ratingsRepository, userRatingRepository, config)
 
