@@ -89,7 +89,7 @@ class Generator(private val ratingsRepository: RatingsRepository, private val us
                                 li(classes = "lb-bar lb-border lb-round-xlarge fade-in") {
                                     div(classes = "center") {
                                         img(classes = "lb-bar-item lb-circle lb-hide-small", src = rating.homeLogo) {
-                                            style = "height:100%"
+                                            style = "height:100px"
                                         }
                                         div(classes = "lb-bar-item") {
                                             span(classes = "lb-xxlarge match") { +"${rating.homeTeam} vs ${rating.awayTeam}" }
@@ -102,7 +102,7 @@ class Generator(private val ratingsRepository: RatingsRepository, private val us
                                             }
                                         }
                                         img(classes = "lb-bar-item lb-circle lb-hide-small", src = rating.awayLogo) {
-                                            style = "height:100%"
+                                            style = "height:100px"
                                         }
                                     }
                                     div {
@@ -204,7 +204,7 @@ class Generator(private val ratingsRepository: RatingsRepository, private val us
                 }
             }
             span(classes = "subtitle center") { +"© ${SimpleDateFormat("YYYY").format(Date())} Laterball" }
-            span(classes = "subtitle center") { +"Version 3.0.1" }
+            span(classes = "subtitle center") { +"Version 3.2.0" }
         }
     }
 }

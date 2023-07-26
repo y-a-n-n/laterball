@@ -68,6 +68,7 @@ fun Application.module() {
 
     // Init data, slowly to not hit api request limits
     api.requestDelay = 15000
+    ratingsRepository.getRatingsForLeague(LeagueId.WWC23)
     ratingsRepository.getRatingsForLeague(LeagueId.EPL)
     ratingsRepository.getRatingsForLeague(LeagueId.CHAMPIONS_LEAGUE)
     api.requestDelay = null
@@ -83,7 +84,7 @@ fun Application.module() {
         }
 
         get("/") {
-            call.respondRedirect("/${LeagueId.EPL.path}")
+            call.respondRedirect("/${LeagueId.values()[0].path}")
         }
 
         LeagueId.values().forEach {leagueId ->
