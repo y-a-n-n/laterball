@@ -1,5 +1,7 @@
 package com.laterball.server
 
+import com.laterball.server.analytics.AnalyticsApi
+import com.laterball.server.analytics.GoatCounterApi
 import com.laterball.server.api.ApiFootball
 import com.laterball.server.api.DataApi
 import com.laterball.server.data.Database
@@ -21,6 +23,7 @@ import org.koin.experimental.builder.singleBy
 val appModule = module(createdAtStart = true) {
     factory<ApplicationConfig> { HoconApplicationConfig(ConfigFactory.load()) }
     factory<DataApi> { ApiFootball(get()) }
+    factory<AnalyticsApi> { GoatCounterApi(get()) }
     single<Scheduler> { CoroutineScheduler() }
     single<Database> { MongoDataStore(get()) }
     singleBy<TwitterApi, Twitter4jApi>()

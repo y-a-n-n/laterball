@@ -1,5 +1,6 @@
 package com.laterball.server
 
+import com.laterball.server.analytics.AnalyticsApi
 import com.laterball.server.analytics.GoatCounterFeature
 import com.laterball.server.api.DataApi
 import com.laterball.server.html.Generator
@@ -48,6 +49,7 @@ fun Application.module() {
     val userRatingRepository by inject<UserRatingRepository>()
     val api by inject<DataApi>()
     val config by inject<ApplicationConfig>()
+    val analytics by inject<AnalyticsApi>()
 
     install(CORS) {
         method(HttpMethod.Options)
@@ -65,7 +67,9 @@ fun Application.module() {
         host("laterball.com", schemes = listOf("https"))
     }
 
-    install(GoatCounterFeature)
+    install(GoatCounterFeature) {
+        analyticsApi = analytics
+    }
 
     val generator = Generator(ratingsRepository, userRatingRepository, config)
 

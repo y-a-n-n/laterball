@@ -41,16 +41,16 @@ class GoatCounterApi(config: ApplicationConfig, clientOverride: HttpClient? = nu
         }
     }
 
-    override fun incrementPageView(path: String, sessionId: String) {
+    override fun incrementPageView(hit: Hit) {
         // TODO don't block, but sync on batcher
         // TODO batch?
-        batcher.add(Hit(path, sessionId));
+        batcher.add(hit)
         val count = Count(batcher)
         runBlocking {
             try {
                 client.post<Void> {
                     url("${baseUrl}/count")
-                    body = Hit(path, sessionId)
+                    body = count
                 }
                 batcher.clear()
             } catch (e: Exception) {
