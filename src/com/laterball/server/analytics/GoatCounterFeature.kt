@@ -1,12 +1,16 @@
 package com.laterball.server.analytics
 
 import com.laterball.server.analytics.model.Hit
+import com.laterball.server.logger
 import io.ktor.application.*
 import io.ktor.features.*
 import io.ktor.request.*
 import io.ktor.util.*
+import org.slf4j.LoggerFactory
 
 class GoatCounterFeature {
+
+    private val logger = LoggerFactory.getLogger(GoatCounterFeature::class.java)
 
     class Configuration {
         var analyticsApi: AnalyticsApi? = null
@@ -19,9 +23,9 @@ class GoatCounterFeature {
 
         // Code to execute when installing the plugin.
         override fun install(pipeline: ApplicationCallPipeline, configure: Configuration.() -> Unit): GoatCounterFeature {
-
+            logger.info("Installing GoatCounterFeature");
             // It is responsibility of the install code to call the `configure` method with the mutable configuration.
-            val configuration = GoatCounterFeature.Configuration().apply(configure)
+            val configuration = Configuration().apply(configure)
             val api = configuration.analyticsApi!! // Copies a snapshot of the mutable config into an immutable property.
 
             // Create the plugin, providing the mutable configuration so the plugin reads it keeping an immutable copy of the properties.

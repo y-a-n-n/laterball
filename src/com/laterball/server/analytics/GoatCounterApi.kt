@@ -42,6 +42,8 @@ class GoatCounterApi(config: ApplicationConfig, clientOverride: HttpClient? = nu
     }
 
     override fun incrementPageView(hit: Hit) {
+        logger.info("incrementPageView ${hit.path}");
+
         // TODO don't block, but sync on batcher
         // TODO batch?
         batcher.add(hit)

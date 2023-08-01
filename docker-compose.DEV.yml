@@ -18,6 +18,8 @@ services:
       networks:
         - laterball-network
       env_file: .env.DEV
+      volumes:
+        - ./volumes/goatcounter/db:/goatcounter/db
   laterball:
     container_name: laterball
     image: 'laterball/laterball-server:latest'
