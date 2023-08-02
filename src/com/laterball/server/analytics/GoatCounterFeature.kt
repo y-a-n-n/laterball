@@ -17,7 +17,7 @@ class GoatCounterFeature {
     }
 
     // Implements ApplicationFeature as a companion object.
-    companion object Feature : ApplicationFeature<ApplicationCallPipeline, GoatCounterFeature.Configuration, GoatCounterFeature> {
+    companion object Feature : ApplicationFeature<ApplicationCallPipeline, Configuration, GoatCounterFeature> {
         // Creates a unique key for the feature.
         override val key = AttributeKey<GoatCounterFeature>("GoatCounterFeature")
 

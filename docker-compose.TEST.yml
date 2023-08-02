@@ -1,0 +1,49 @@
+version: '3'
+
+services:
+  mongo:
+    image: laterball/mongo:latest
+    ports:
+      - 27017:27017
+    volumes:
+      - mongo:/data/db
+    networks:
+      - laterball-network
+    env_file: .env.TEST
+  goatcounter:
+      container_name: goatcounter
+      image: 'laterball/goatcounter:latest'
+      ports:
+        - 8005:8080
+      networks:
+        - laterball-network
+      env_file: .env.TEST
+      volumes:
+        - ./volumes/goatcounter/db:/goatcounter/db
+  laterball:
+    container_name: laterball
+    image: 'laterball/laterball-server:latest'
+    depends_on:
+      - 'mongo'
+    ports:
+      - 8080:8080
+    networks:
+      - laterball-network
+    env_file: .env.TEST
+  nginx:
+    image: nginx
+    volumes:
+      - ./laterball.DEV.conf:/etc/nginx/conf.d/laterball.conf
+    depends_on:
+      - 'laterball'
+    ports:
+      - 80:80
+    networks:
+      - laterball-network
+
+volumes:
+  mongo:
+
+networks:
+  laterball-network:
+    driver: bridge
