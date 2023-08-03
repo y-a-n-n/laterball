@@ -24,7 +24,7 @@ class Generator(private val ratingsRepository: RatingsRepository, private val us
     private fun generateHeader(html: HTML) {
         html.head {
             styleLink("/static/laterball.css")
-            link(href = "https://fonts.googleapis.com/css2?family=Roboto+Slab&family=Turret+Road:wght@800&display=swap", rel = "stylesheet")
+            link(href = "https://fonts.googleapis.com/css2?family=Open+Sans:wght@800&display=swap", rel = "stylesheet")
             script { src = "/static/submitRating.js"; type = "text/javascript" }
         }
     }
