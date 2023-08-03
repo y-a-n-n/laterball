@@ -1,7 +1,6 @@
 package com.laterball.server.analytics
 
 import com.laterball.server.analytics.model.Hit
-import com.laterball.server.logger
 import io.ktor.application.*
 import io.ktor.features.*
 import io.ktor.request.*
@@ -10,7 +9,6 @@ import org.slf4j.LoggerFactory
 
 class GoatCounterFeature {
 
-    private val logger = LoggerFactory.getLogger(GoatCounterFeature::class.java)
 
     class Configuration {
         var analyticsApi: AnalyticsApi? = null
@@ -20,6 +18,7 @@ class GoatCounterFeature {
     companion object Feature : ApplicationFeature<ApplicationCallPipeline, Configuration, GoatCounterFeature> {
         // Creates a unique key for the feature.
         override val key = AttributeKey<GoatCounterFeature>("GoatCounterFeature")
+        private val logger = LoggerFactory.getLogger(GoatCounterFeature::class.java)
 
         // Code to execute when installing the plugin.
         override fun install(pipeline: ApplicationCallPipeline, configure: Configuration.() -> Unit): GoatCounterFeature {
@@ -34,6 +33,9 @@ class GoatCounterFeature {
             // Intercept a pipeline.
             pipeline.intercept(ApplicationCallPipeline.Call) {
                 val path = this.context.request.path()
+                if (path.startsWith("/static") || path.startsWith("/favicon.ico")) {
+                    return@intercept
+                }
                 val hit = Hit(path, call.request.cookies["laterball"] ?: "ANON", this.call.request.origin.remoteHost, this.context.request.queryString(), this.call.request.userAgent() ?: "Unknown")
                 api.incrementPageView(hit)
             }

@@ -38,6 +38,7 @@ class GoatCounterApi(config: ApplicationConfig, clientOverride: HttpClient? = nu
         install(DefaultRequest) {
             headers.append("Authorization", "Bearer $apiKey")
             headers.append("Content-Type", ContentType.Application.Json.toString())
+            headers.append("Accept", ContentType.Application.Any.toString())
         }
     }
 
@@ -50,7 +51,7 @@ class GoatCounterApi(config: ApplicationConfig, clientOverride: HttpClient? = nu
         val count = Count(batcher)
         runBlocking {
             try {
-                client.post<Void> {
+                client.post<String> {
                     url("${baseUrl}/count")
                     body = count
                 }
