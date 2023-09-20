@@ -68,9 +68,7 @@ fun Application.module() {
 
     // Init data, slowly to not hit api request limits
     api.requestDelay = 15000
-    ratingsRepository.getRatingsForLeague(LeagueId.WWC23)
-    ratingsRepository.getRatingsForLeague(LeagueId.EPL)
-    ratingsRepository.getRatingsForLeague(LeagueId.CHAMPIONS_LEAGUE)
+    LeagueId.values().forEach { leagueId -> ratingsRepository.getRatingsForLeague(leagueId) }
     api.requestDelay = null
     val csrfSecret = config.property("ktor.security.csrfSecret").getString()
     val cookieDomain = config.propertyOrNull("ktor.security.cookieDomain")?.getString()
