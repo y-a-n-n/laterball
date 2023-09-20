@@ -68,7 +68,7 @@ fun Application.module() {
 
     // Init data, slowly to not hit api request limits
     api.requestDelay = 15000
-    LeagueId.values().forEach { leagueId -> ratingsRepository.getRatingsForLeague(leagueId) }
+    LeagueId.values().forEach { leagueId -> if (leagueId.enabled) ratingsRepository.getRatingsForLeague(leagueId) }
     api.requestDelay = null
     val csrfSecret = config.property("ktor.security.csrfSecret").getString()
     val cookieDomain = config.propertyOrNull("ktor.security.cookieDomain")?.getString()
@@ -85,36 +85,38 @@ fun Application.module() {
             call.respondRedirect("/${LeagueId.values()[0].path}")
         }
 
-        LeagueId.values().forEach {leagueId ->
-            get("/${leagueId.path}") {
-                logger.info("/${leagueId.path}")
-                val cookie = ensureCookieSet(call, cookieDomain)
-                val sortByDate = call.request.queryParameters["sort"] == "date"
-                call.respondHtml {
-                    generator.generateForLeague(this, leagueId, sortByDate, cookie)
+        LeagueId.values().forEach { leagueId ->
+            if (leagueId.enabled) {
+                get("/${leagueId.path}") {
+                    logger.info("/${leagueId.path}")
+                    val cookie = ensureCookieSet(call, cookieDomain)
+                    val sortByDate = call.request.queryParameters["sort"] == "date"
+                    call.respondHtml {
+                        generator.generateForLeague(this, leagueId, sortByDate, cookie)
+                    }
                 }
-            }
-            post("/${leagueId.path}/rating") {
-                logger.info("Received rating submission for ${leagueId.path}")
-                val cookie = call.request.cookies["laterball"]
-                if (cookie == null) {
-                    logger.info("No cookie set")
-                    call.respond(HttpStatusCode.Unauthorized, "Missing cookie")
-                    return@post
-                }
-                val decodedCookie = java.net.URLDecoder.decode(cookie, "UTF-8")
-                val formParams = call.receive<RatingSubmission>()
-                if (checkCsrfToken(formParams.fixtureId.toString(), formParams.csrf, csrfSecret)) {
-                    userRatingRepository.storeUserRating(
-                        leagueId,
-                        formParams.fixtureId,
-                        (formParams.rating*2).roundToInt(),
-                        decodedCookie
-                    )
-                    call.respond(HttpStatusCode.OK)
-                } else {
-                    logger.info("CSRF test failed")
-                    call.respond(HttpStatusCode.Unauthorized, "CSRF test failed")
+                post("/${leagueId.path}/rating") {
+                    logger.info("Received rating submission for ${leagueId.path}")
+                    val cookie = call.request.cookies["laterball"]
+                    if (cookie == null) {
+                        logger.info("No cookie set")
+                        call.respond(HttpStatusCode.Unauthorized, "Missing cookie")
+                        return@post
+                    }
+                    val decodedCookie = java.net.URLDecoder.decode(cookie, "UTF-8")
+                    val formParams = call.receive<RatingSubmission>()
+                    if (checkCsrfToken(formParams.fixtureId.toString(), formParams.csrf, csrfSecret)) {
+                        userRatingRepository.storeUserRating(
+                            leagueId,
+                            formParams.fixtureId,
+                            (formParams.rating * 2).roundToInt(),
+                            decodedCookie
+                        )
+                        call.respond(HttpStatusCode.OK)
+                    } else {
+                        logger.info("CSRF test failed")
+                        call.respond(HttpStatusCode.Unauthorized, "CSRF test failed")
+                    }
                 }
             }
         }
