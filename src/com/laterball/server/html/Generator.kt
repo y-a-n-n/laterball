@@ -44,10 +44,12 @@ class Generator(private val ratingsRepository: RatingsRepository, private val us
                 div(classes = "center") {
                     style = "width:600px"
                     LeagueId.values().forEach {
-                        h4(classes = "center") {
-                            a(classes = if (it == leagueId) "static" else "link", href = "./${it.path}") {
-                                style = "margin-left: 30px; margin-right: 30px;"
-                                +it.title
+                        if (leagueId.enabled) {
+                            h4(classes = "center") {
+                                a(classes = if (it == leagueId) "static" else "link", href = "./${it.path}") {
+                                    style = "margin-left: 30px; margin-right: 30px;"
+                                    +it.title
+                                }
                             }
                         }
                     }
