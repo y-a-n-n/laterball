@@ -10,7 +10,7 @@ plugins {
 }
 
 group = "com.laterball.server"
-version = "3.2.4"
+version = "3.2.6-alpha1"
 
 application {
     mainClassName = "io.ktor.server.netty.EngineMain"
@@ -58,7 +58,7 @@ dependencies {
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
 }
 

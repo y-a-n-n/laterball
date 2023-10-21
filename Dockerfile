@@ -1,4 +1,4 @@
-FROM adoptopenjdk/openjdk8:latest
+FROM eclipse-temurin:17-jdk-alpine
 
 ARG VERSION
 
