@@ -8,7 +8,7 @@ body{
     background-color:#292929
 }
 .subtitle{
-    font-family:'Open Sans',cursive;
+    font-family:'Quicksand',cursive;
     color:#fff
 }
 .fade-in{
@@ -19,12 +19,12 @@ body{
     opacity:1
 }
 .link{
-    font-family:'Open Sans',cursive;
+    font-family:'Quicksand',cursive;
     color:#fff;
     text-decoration:none
 }
 .static{
-    font-family:'Open Sans',cursive;
+    font-family:'Quicksand',cursive;
     color:#fff;
     text-decoration:none
 }
@@ -39,7 +39,7 @@ body{
     left:0
 }
 .match{
-    font-family:'Open Sans',serif;
+    font-family:'Quicksand',serif;
     color:#fff
 }
 .center{
@@ -139,7 +139,7 @@ img{
     font:inherit
 }
 body,html{
-    font-family:'Open Sans',san lb-threequarters-serif;
+    font-family:Verdana,san lb-threequarters-serif;
     font-size:15px;
     line-height:1.5
 }
@@ -165,7 +165,7 @@ h6{
     font-size:16px
 }
 h1,h2,h3,h4,h5,h6{
-    font-family:"Open Sans",Arial,sans-serif;
+    font-family:"Segoe UI",Arial,sans-serif;
     font-weight:400;
     margin:10px 0
 }
@@ -480,4 +480,33 @@ button:disabled {
   border-image: none;
   opacity: 0.5; /* optional - add a little transparency to make it look "disabled" */
   cursor: not-allowed; /* optional - change the cursor to indicate that the button cannot be clicked */
+}
+
+a.fancy {
+  display: inline-block;
+  background: linear-gradient(to right, #3b5998, #ff6ec4);
+  border: 2px solid;
+  border-image: linear-gradient(to right, #3b5998, #ff6ec4) 1;
+  color: white;
+  padding: 10px 20px;
+  text-decoration: none;
+  text-align: center;
+  transition: background 0.3s, color 0.3s;
+}
+
+a.fancy2 {
+  display: inline-block;
+  background: transparent;
+  border: 2px solid;
+  border-image: linear-gradient(to right, #3b5998, #ff6ec4) 1;
+  color: white;
+  padding: 10px 20px;
+  text-decoration: none;
+  text-align: center;
+  transition: background 0.3s, color 0.3s;
+}
+
+a.fancy2:hover {
+background: linear-gradient(to right, rgba(59, 89, 152, 0.7), rgba(255, 110, 196, 0.7));
+  color: white;
 }

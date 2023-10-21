@@ -24,7 +24,7 @@ class Generator(private val ratingsRepository: RatingsRepository, private val us
     private fun generateHeader(html: HTML) {
         html.head {
             styleLink("/static/laterball.css")
-            link(href = "https://fonts.googleapis.com/css2?family=Open+Sans:wght@800&display=swap", rel = "stylesheet")
+            link(href = "https://fonts.googleapis.com/css2?family=Quicksand&display=swap", rel = "stylesheet")
             script { src = "/static/submitRating.js"; type = "text/javascript" }
         }
     }
@@ -44,10 +44,12 @@ class Generator(private val ratingsRepository: RatingsRepository, private val us
                 div(classes = "center") {
                     style = "width:600px"
                     LeagueId.values().forEach {
-                        h4(classes = "center") {
-                            a(classes = if (it == leagueId) "static" else "link", href = "./${it.path}") {
-                                style = "margin-left: 30px; margin-right: 30px;"
-                                +it.title
+                        if (it.enabled) {
+                            h4(classes = "center") {
+                                a(classes = if (it == leagueId) "fancy" else "fancy2", href = "./${it.path}") {
+                                    style = "margin-left: 30px; margin-right: 30px;"
+                                    +it.title
+                                }
                             }
                         }
                     }
@@ -192,7 +194,7 @@ class Generator(private val ratingsRepository: RatingsRepository, private val us
                     br {}
                 }
             }
-            span(classes = "subtitle center") { +"feedback: email hi at yann dot software" }
+            span(classes = "subtitle center") { +"feedback: email laterball at yann dot software" }
             span(classes = "subtitle center") {
                 a(href = "https://twitter.com/laterball", target = "_blank") {
                     style = "margin-right: 10px;"
@@ -204,7 +206,7 @@ class Generator(private val ratingsRepository: RatingsRepository, private val us
                 }
             }
             span(classes = "subtitle center") { +"© ${SimpleDateFormat("YYYY").format(Date())} Laterball" }
-            span(classes = "subtitle center") { +"Version 3.2.0" }
+            span(classes = "subtitle center") { +"Version 3.2.6-alpha1" }
         }
     }
 }
