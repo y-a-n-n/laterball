@@ -481,3 +481,32 @@ button:disabled {
   opacity: 0.5; /* optional - add a little transparency to make it look "disabled" */
   cursor: not-allowed; /* optional - change the cursor to indicate that the button cannot be clicked */
 }
+
+a.fancy {
+  display: inline-block;
+  background: linear-gradient(to right, #3b5998, #ff6ec4);
+  border: 2px solid;
+  border-image: linear-gradient(to right, #3b5998, #ff6ec4) 1;
+  color: white;
+  padding: 10px 20px;
+  text-decoration: none;
+  text-align: center;
+  transition: background 0.3s, color 0.3s;
+}
+
+a.fancy2 {
+  display: inline-block;
+  background: transparent;
+  border: 2px solid;
+  border-image: linear-gradient(to right, #3b5998, #ff6ec4) 1;
+  color: white;
+  padding: 10px 20px;
+  text-decoration: none;
+  text-align: center;
+  transition: background 0.3s, color 0.3s;
+}
+
+a.fancy2:hover {
+background: linear-gradient(to right, rgba(59, 89, 152, 0.7), rgba(255, 110, 196, 0.7));
+  color: white;
+}
