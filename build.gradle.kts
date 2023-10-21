@@ -10,7 +10,7 @@ plugins {
 }
 
 group = "com.laterball.server"
-version = "3.2.6-alpha1"
+version = "3.2.6"
 
 application {
     mainClassName = "io.ktor.server.netty.EngineMain"
