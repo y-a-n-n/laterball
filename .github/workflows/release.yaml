@@ -1,23 +1,42 @@
-# Inspired by https://blog.benoitblanchon.fr/github-action-run-ssh-commands/
 on:
   push:
-#    temporarily disabling push on tag while changing hosting provider
     tags:
-      - 'foobar'
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+      # Also trigger on alpha tags for testing only:
+      - 'v[0-9]+.[0-9]+.[0-9]+-alpha.[0-9]+'
 
 name: Release
 
 jobs:
-  release:
-    name: Release
+  build:
+
     runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      - name: Build with Gradle
+        uses: gradle/gradle-build-action@bd5760595778326ba7f1441bcf7e88b49de61a25 # v2.6.0
+        with:
+          arguments: build
+
+  prepare:
+    name: Prepare
+    runs-on: ubuntu-latest
+    needs: build
+    outputs:
+      version: ${{ steps.step2.outputs.version }}
     # needs: test
     steps:
       - name: Configure SSH
         run: |
           mkdir -p ~/.ssh/
-          echo "$SSH_KEY" > ~/.ssh/staging.key
-          chmod 600 ~/.ssh/staging.key
+          echo "$SSH_KEY" > ~/.ssh/production.key
+          chmod 600 ~/.ssh/production.key
           cat >>~/.ssh/config <<END
           Host production
             HostName $SSH_HOST
@@ -26,17 +45,38 @@ jobs:
             StrictHostKeyChecking no
           END
         env:
-          SSH_USER: ${{ secrets.STAGING_SSH_USER }}
-          SSH_KEY: ${{ secrets.STAGING_SSH_KEY }}
-          SSH_HOST: ${{ secrets.STAGING_SSH_HOST }}
+          SSH_USER: ${{ secrets.PROD_SSH_USER }}
+          SSH_KEY: ${{ secrets.PROD_SSH_KEY }}
+          SSH_HOST: ${{ secrets.PROD_SSH_HOST }}
 
-      - name: Stop the server
-        # TODO
-        run: ssh staging 'sudo systemctl stop my-application'
+      - name: Build docker images
+        run: |
+          tag=$(git describe --tags --abbrev=0)
+          version="${tag#?}"
+          echo "::set-output name=version::$version"
+          ./scripts/builddocker.sh $version PROD
 
-      - name: Check out the source
-        run: ssh staging 'cd my-application && git fetch && git reset --hard origin/master'
+      - name: Create tarballs
+        run: |
+          mkdir -p ./build/docker
+          docker save laterball/laterball-server > ./build/docker/laterball-server-$version.tar
+          docker save laterball/mongo > ./build/docker/laterball-mongo-$version.tar
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    needs: prepare
+    steps:
+      - name: Copy tarballs to production
+        run: |
+          ssh $SSH_HOST "mkdir -p ~/laterball"
+          scp ./docker-compose.PROD.yml .env.PROD ./nginx/laterball.PROD.conf ./build/docker/laterball-server-$VERSION.tar ./build/docker/laterball-mongo-$VERSION.tar $SSH_HOST:~/laterball
+        env:
+          SSH_HOST: ${{ secrets.PROD_SSH_HOST }}
+          VERSION: ${{needs.job1.outputs.version}}
 
-      - name: Start the server
-        if: ${{ always() }}
-        run: ssh staging 'sudo systemctl start my-application'
+      - name: Restart containers
+        run: |
+          ssh $SSH_HOST 'bash -s' < ./scripts/run.sh $VERSION PROD
+        env:
+          SSH_HOST: ${{ secrets.PROD_SSH_HOST }}
+          VERSION: ${{needs.prepare.outputs.version}}
