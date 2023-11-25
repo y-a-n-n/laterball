@@ -21,6 +21,12 @@ jobs:
           distribution: 'temurin'
       - name: Build with Gradle
         run: ./gradlew assembleDist
+      - name: Temporarily save build artefact
+        uses: actions/upload-artifact@v2
+        with:
+         name: server-artifact
+         path: build/distributions
+         retention-days: 1
 
   prepare:
     name: Prepare
@@ -30,6 +36,13 @@ jobs:
       version: ${{ steps.step2.outputs.version }}
     # needs: test
     steps:
+      - uses: actions/checkout@v3
+      - name: Downloade build artefact
+        uses: actions/download-artifact@v2
+        with:
+          name: server-artifact
+          path: build/distributions
+          retention-days: 1
       - name: Configure SSH
         run: |
           mkdir -p ~/.ssh/
@@ -46,19 +59,6 @@ jobs:
           SSH_USER: ${{ secrets.SSH_USER }}
           SSH_KEY: ${{ secrets.SSH_KEY }}
           SSH_HOST: ${{ secrets.SSH_HOST }}
-
-      - name: Create .env.PROD file
-        run: |
-          cat <<EOF > .env.PROD
-          KTOR_ENV=PROD
-          MONGO_INITDB_ROOT_USERNAME=$MONGO_INITDB_ROOT_USERNAME
-          MONGO_INITDB_ROOT_PASSWORD=$MONGO_INITDB_ROOT_PASSWORD
-          RAPID_API_KEY=$RAPID_API_KEY
-          MONGO_HOST=mongo
-          CSRF_SECRET=$CSRF_SECRET
-          COOKIE_DOMAIN=laterball.com
-          BASE_URL=http://laterball.com
-          EOF
       - name: Build docker images
         run: |
           tag=$GITHUB_REF_NAME
@@ -71,12 +71,36 @@ jobs:
           mkdir -p ./build/docker
           docker save laterball/laterball-server > ./build/docker/laterball-server-$version.tar
           docker save laterball/mongo > ./build/docker/laterball-mongo-$version.tar
+      - name: Temporarily save docker artefacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: docker-artifact
+          path: build/distributions/docker
+          retention-days: 1
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
     needs: prepare
     steps:
-      - name: Copy tarballs to production
+      - name: Download docker artefacts
+        uses: actions/download-artifact@v2
+        with:
+          name: docker-artifact
+          path: build/distributions/docker
+          retention-days: 1
+      - name: Create .env.PROD file
+        run: |
+          cat <<EOF > .env.PROD
+          KTOR_ENV=PROD
+          MONGO_INITDB_ROOT_USERNAME=$MONGO_INITDB_ROOT_USERNAME
+          MONGO_INITDB_ROOT_PASSWORD=$MONGO_INITDB_ROOT_PASSWORD
+          RAPID_API_KEY=$RAPID_API_KEY
+          MONGO_HOST=mongo
+          CSRF_SECRET=$CSRF_SECRET
+          COOKIE_DOMAIN=laterball.com
+          BASE_URL=http://laterball.com
+          EOF
+      - name: Copy artefacts to production
         run: |
           ssh $SSH_HOST "mkdir -p /usr/bin/laterball"
           scp ./docker-compose.PROD.yml .env.PROD ./nginx/laterball.PROD.conf ./build/docker/laterball-server-$VERSION.tar ./build/docker/laterball-mongo-$VERSION.tar $SSH_HOST:/usr/bin/laterball
