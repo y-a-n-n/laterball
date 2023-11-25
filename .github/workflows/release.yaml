@@ -102,7 +102,6 @@ jobs:
           SSH_HOST: ${{ secrets.SSH_HOST }}
       - name: Copy artefacts to production
         run: |
-          ssh $SSH_USER@$SSH_HOST "mkdir -p /usr/bin/laterball"
           scp ./docker-compose.PROD.yml .env.PROD ./nginx/laterball.PROD.conf ./build/docker/laterball-server-$VERSION.tar ./build/docker/laterball-mongo-$VERSION.tar $SSH_USER@$SSH_HOST:/usr/bin/laterball
         env:
           SSH_USER: ${{ secrets.SSH_USER }}
