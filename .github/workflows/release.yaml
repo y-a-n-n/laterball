@@ -61,7 +61,7 @@ jobs:
           EOF
       - name: Build docker images
         run: |
-          tag=$(git describe --tags --abbrev=0)
+          tag=$GITHUB_REF_NAME
           version="${tag#?}"
           echo "::set-output name=version::$version"
           ./scripts/builddocker.sh $version PROD
