@@ -60,7 +60,6 @@ jobs:
           BASE_URL=http://laterball.com
           EOF
       - name: Build docker images
-        uses: actions/checkout@v3
         run: |
           tag=$(git describe --tags --abbrev=0)
           version="${tag#?}"
