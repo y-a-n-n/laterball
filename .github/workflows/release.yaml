@@ -43,11 +43,24 @@ jobs:
             StrictHostKeyChecking no
           END
         env:
-          SSH_USER: ${{ secrets.PROD_SSH_USER }}
-          SSH_KEY: ${{ secrets.PROD_SSH_KEY }}
-          SSH_HOST: ${{ secrets.PROD_SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_KEY: ${{ secrets.SSH_KEY }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
 
+      - name: Create .env.PROD file
+        run: |
+          cat <<EOF > .env.PROD
+          KTOR_ENV=PROD
+          MONGO_INITDB_ROOT_USERNAME=$MONGO_INITDB_ROOT_USERNAME
+          MONGO_INITDB_ROOT_PASSWORD=$MONGO_INITDB_ROOT_PASSWORD
+          RAPID_API_KEY=$RAPID_API_KEY
+          MONGO_HOST=mongo
+          CSRF_SECRET=$CSRF_SECRET
+          COOKIE_DOMAIN=laterball.com
+          BASE_URL=http://laterball.com
+          EOF
       - name: Build docker images
+        uses: actions/checkout@v3
         run: |
           tag=$(git describe --tags --abbrev=0)
           version="${tag#?}"
@@ -66,15 +79,21 @@ jobs:
     steps:
       - name: Copy tarballs to production
         run: |
-          ssh $SSH_HOST "mkdir -p ~/laterball"
-          scp ./docker-compose.PROD.yml .env.PROD ./nginx/laterball.PROD.conf ./build/docker/laterball-server-$VERSION.tar ./build/docker/laterball-mongo-$VERSION.tar $SSH_HOST:~/laterball
+          ssh $SSH_HOST "mkdir -p /usr/bin/laterball"
+          scp ./docker-compose.PROD.yml .env.PROD ./nginx/laterball.PROD.conf ./build/docker/laterball-server-$VERSION.tar ./build/docker/laterball-mongo-$VERSION.tar $SSH_HOST:/usr/bin/laterball
         env:
-          SSH_HOST: ${{ secrets.PROD_SSH_HOST }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
           VERSION: ${{needs.job1.outputs.version}}
-
       - name: Restart containers
         run: |
           ssh $SSH_HOST 'bash -s' < ./scripts/run.sh $VERSION PROD
         env:
-          SSH_HOST: ${{ secrets.PROD_SSH_HOST }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
           VERSION: ${{needs.prepare.outputs.version}}
+      - name: Wait for health
+        uses: iFaxity/wait-on-action
+        with:
+          resource: https://laterball.com
+          timeout: 60000
+          interval: 5000
+          delay: 5000
