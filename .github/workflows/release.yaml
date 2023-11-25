@@ -90,9 +90,9 @@ jobs:
           SSH_HOST: ${{ secrets.SSH_HOST }}
           VERSION: ${{needs.prepare.outputs.version}}
       - name: Wait for health
-        uses: iFaxity/wait-on-action
+        uses: cygnetdigital/wait_for_response@v2.0.0
         with:
-          resource: https://laterball.com
+          url: https://laterball.com
           timeout: 60000
           interval: 5000
-          delay: 5000
+          responseCode: 200
