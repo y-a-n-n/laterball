@@ -75,7 +75,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: docker-artifact
-          path: build/distributions/docker
+          path: build/docker
           retention-days: 1
   deploy:
     name: Deploy
@@ -86,7 +86,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: docker-artifact
-          path: build/distributions/docker
+          path: build/docker
           retention-days: 1
       - name: Create .env.PROD file
         run: |
