@@ -105,12 +105,14 @@ jobs:
           ssh $SSH_USER@$SSH_HOST "mkdir -p /usr/bin/laterball"
           scp ./docker-compose.PROD.yml .env.PROD ./nginx/laterball.PROD.conf ./build/docker/laterball-server-$VERSION.tar ./build/docker/laterball-mongo-$VERSION.tar $SSH_USER@$SSH_HOST:/usr/bin/laterball
         env:
+          SSH_USER: ${{ secrets.SSH_USER }}
           SSH_HOST: ${{ secrets.SSH_HOST }}
           VERSION: ${{needs.job1.outputs.version}}
       - name: Restart containers
         run: |
           ssh $SSH_USER@$SSH_HOST 'bash -s' < ./scripts/run.sh $VERSION PROD
         env:
+          SSH_USER: ${{ secrets.SSH_USER }}
           SSH_HOST: ${{ secrets.SSH_HOST }}
           VERSION: ${{needs.prepare.outputs.version}}
       - name: Wait for health
