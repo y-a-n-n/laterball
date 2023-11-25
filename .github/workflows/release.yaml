@@ -1,11 +1,11 @@
+name: Release
+
 on:
   push:
     tags:
       - 'v[0-9]+.[0-9]+.[0-9]+'
       # Also trigger on alpha tags for testing only:
       - 'v[0-9]+.[0-9]+.[0-9]+-alpha.[0-9]+'
-
-name: Release
 
 jobs:
   build:
