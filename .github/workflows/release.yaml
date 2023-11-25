@@ -43,22 +43,6 @@ jobs:
           name: server-artifact
           path: build/distributions
           retention-days: 1
-      - name: Configure SSH
-        run: |
-          mkdir -p ~/.ssh/
-          echo "$SSH_KEY" > ~/.ssh/production.key
-          chmod 600 ~/.ssh/production.key
-          cat >>~/.ssh/config <<END
-          Host production
-            HostName $SSH_HOST
-            User $SSH_USER
-            IdentityFile ~/.ssh/production.key
-            StrictHostKeyChecking no
-          END
-        env:
-          SSH_USER: ${{ secrets.SSH_USER }}
-          SSH_KEY: ${{ secrets.SSH_KEY }}
-          SSH_HOST: ${{ secrets.SSH_HOST }}
       - name: Build docker images
         run: |
           tag=$GITHUB_REF_NAME
@@ -100,16 +84,32 @@ jobs:
           COOKIE_DOMAIN=laterball.com
           BASE_URL=http://laterball.com
           EOF
+      - name: Configure SSH
+        run: |
+          mkdir -p ~/.ssh/
+          echo "$SSH_KEY" > ~/.ssh/production.key
+          chmod 600 ~/.ssh/production.key
+          cat >>~/.ssh/config <<END
+          Host production
+            HostName $SSH_HOST
+            User $SSH_USER
+            IdentityFile ~/.ssh/production.key
+            StrictHostKeyChecking no
+          END
+        env:
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_KEY: ${{ secrets.SSH_KEY }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
       - name: Copy artefacts to production
         run: |
-          ssh $SSH_HOST "mkdir -p /usr/bin/laterball"
-          scp ./docker-compose.PROD.yml .env.PROD ./nginx/laterball.PROD.conf ./build/docker/laterball-server-$VERSION.tar ./build/docker/laterball-mongo-$VERSION.tar $SSH_HOST:/usr/bin/laterball
+          ssh $SSH_USER@$SSH_HOST "mkdir -p /usr/bin/laterball"
+          scp ./docker-compose.PROD.yml .env.PROD ./nginx/laterball.PROD.conf ./build/docker/laterball-server-$VERSION.tar ./build/docker/laterball-mongo-$VERSION.tar $SSH_USER@$SSH_HOST:/usr/bin/laterball
         env:
           SSH_HOST: ${{ secrets.SSH_HOST }}
           VERSION: ${{needs.job1.outputs.version}}
       - name: Restart containers
         run: |
-          ssh $SSH_HOST 'bash -s' < ./scripts/run.sh $VERSION PROD
+          ssh $SSH_USER@$SSH_HOST 'bash -s' < ./scripts/run.sh $VERSION PROD
         env:
           SSH_HOST: ${{ secrets.SSH_HOST }}
           VERSION: ${{needs.prepare.outputs.version}}
