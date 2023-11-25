@@ -100,13 +100,27 @@ jobs:
           SSH_USER: ${{ secrets.SSH_USER }}
           SSH_KEY: ${{ secrets.SSH_KEY }}
           SSH_HOST: ${{ secrets.SSH_HOST }}
-      - name: Copy artefacts to production
+      - name: Group deployment artifacts
         run: |
-          scp ./docker-compose.PROD.yml .env.PROD ./nginx/laterball.PROD.conf ./build/docker/laterball-server-$VERSION.tar ./build/docker/laterball-mongo-$VERSION.tar $SSH_USER@$SSH_HOST:/usr/bin/laterball
+          mkdir -p ./build/deploy
+          mv -t ./build/deploy ./docker-compose.PROD.yml .env.PROD ./nginx/laterball.PROD.conf ./build/docker/laterball-server-$VERSION.tar ./build/docker/laterball-mongo-$VERSION.tar
         env:
-          SSH_USER: ${{ secrets.SSH_USER }}
-          SSH_HOST: ${{ secrets.SSH_HOST }}
-          VERSION: ${{needs.job1.outputs.version}}
+          VERSION: ${{needs.prepare.outputs.version}}
+      - name: Copy artefacts to production
+        uses: appleboy/scp-action@v0.1.4
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          source: "build/deploy/*"
+          target: /usr/bin/laterball
+#      - name: Copy artefacts to production
+#        run: |
+#          scp ./docker-compose.PROD.yml .env.PROD ./nginx/laterball.PROD.conf ./build/docker/laterball-server-$VERSION.tar ./build/docker/laterball-mongo-$VERSION.tar $SSH_USER@$SSH_HOST:/usr/bin/laterball
+#        env:
+#          SSH_USER: ${{ secrets.SSH_USER }}
+#          SSH_HOST: ${{ secrets.SSH_HOST }}
+#          VERSION: ${{needs.job1.outputs.version}}
       - name: Restart containers
         run: |
           ssh $SSH_USER@$SSH_HOST 'bash -s' < ./scripts/run.sh $VERSION PROD
