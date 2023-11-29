@@ -24,7 +24,7 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew assembleDist
       - name: Temporarily save build artefact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
          name: server-artifact
          path: build/distributions
@@ -39,8 +39,8 @@ jobs:
     # needs: test
     steps:
       - uses: actions/checkout@v3
-      - name: Downloade build artefact
-        uses: actions/download-artifact@v2
+      - name: Download build artefact
+        uses: actions/download-artifact@v3
         with:
           name: server-artifact
           path: build/distributions
@@ -58,7 +58,7 @@ jobs:
           docker save laterball/laterball-server > ./build/docker/laterball-server-$version.tar
           docker save laterball/mongo > ./build/docker/laterball-mongo-$version.tar
       - name: Temporarily save docker artefacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: docker-artifact
           path: build/docker
@@ -68,8 +68,9 @@ jobs:
     runs-on: ubuntu-latest
     needs: prepare
     steps:
+      - uses: actions/checkout@v3
       - name: Download docker artefacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: docker-artifact
           path: build/docker
