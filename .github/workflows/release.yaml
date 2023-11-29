@@ -47,10 +47,11 @@ jobs:
           retention-days: 1
       - name: Build docker images
         run: |
-          tag=$(git describe --tags --abbrev=0)
+          tag=v3.2.13
           version="${tag#?}"
           echo "::set-output name=version::$version"
           ./scripts/builddocker.sh $version PROD
+
       - name: Create tarballs
         run: |
           mkdir -p ./build/docker
