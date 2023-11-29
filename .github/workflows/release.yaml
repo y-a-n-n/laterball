@@ -6,6 +6,8 @@ on:
       - 'v[0-9]+.[0-9]+.[0-9]+'
       # Also trigger on alpha tags for testing only:
       - 'v[0-9]+.[0-9]+.[0-9]+-alpha.[0-9]+'
+    branches:
+      - 'action-deploy'
 
 jobs:
   build:
@@ -102,8 +104,8 @@ jobs:
           SSH_HOST: ${{ secrets.SSH_HOST }}
       - name: Group deployment artifacts
         run: |
-          mkdir -p ./build/deploy
-          mv -t ./build/deploy ./docker-compose.PROD.yml .env.PROD ./nginx/laterball.PROD.conf ./build/docker/laterball-server-$VERSION.tar ./build/docker/laterball-mongo-$VERSION.tar
+          mkdir -p build/deploy
+          cp {docker-compose.PROD.yml,.env.PROD,nginx/laterball.PROD.conf,build/docker/laterball-server-$VERSION.tar,build/docker/laterball-mongo-$VERSION.tar} build/deploy
         env:
           VERSION: ${{needs.prepare.outputs.version}}
       - name: Copy artefacts to production
