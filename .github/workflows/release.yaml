@@ -4,10 +4,6 @@ on:
   push:
     tags:
       - 'v[0-9]+.[0-9]+.[0-9]+'
-      # Also trigger on alpha tags for testing only:
-      - 'v[0-9]+.[0-9]+.[0-9]+-alpha.[0-9]+'
-    branches:
-      - 'action-deploy'
 
 jobs:
   build:
@@ -47,7 +43,7 @@ jobs:
           retention-days: 1
       - name: Build docker images
         run: |
-          tag=v3.2.13
+          tag=$GITHUB_REF_NAME
           version="${tag#?}"
           echo "::set-output name=version::$version"
           ./scripts/builddocker.sh $version PROD
@@ -136,6 +132,6 @@ jobs:
         uses: cygnetdigital/wait_for_response@v2.0.0
         with:
           url: https://laterball.com
-          timeout: 60000
-          interval: 5000
+          timeout: 180000
+          interval: 10000
           responseCode: 200
