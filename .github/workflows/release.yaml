@@ -131,7 +131,7 @@ jobs:
       - name: Wait for health
         uses: cygnetdigital/wait_for_response@v2.0.0
         with:
-          url: https://laterball.com/epl
+          url: https://laterball.com/health
           timeout: 180000
           interval: 10000
           responseCode: 200

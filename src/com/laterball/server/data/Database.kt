@@ -22,4 +22,6 @@ interface Database {
     fun getTwitterData(): TwitterData
     fun storeUserRating(leagueId: LeagueId, fixtureId: Int, rating: Int, cookie: String)
     fun getUserRating(leagueId: LeagueId, fixtureId: Int, cookie: String): Int?
+
+    val isHealthy: Boolean
 }

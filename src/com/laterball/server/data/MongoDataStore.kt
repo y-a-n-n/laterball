@@ -17,6 +17,7 @@ import com.mongodb.client.model.Filters.and
 import io.ktor.config.*
 import io.ktor.util.*
 import kotlinx.coroutines.runBlocking
+import org.bson.Document
 import org.litote.kmongo.coroutine.coroutine
 import org.litote.kmongo.eq
 import org.litote.kmongo.reactivestreams.KMongo
@@ -178,5 +179,15 @@ class MongoDataStore(config: ApplicationConfig) : Database {
             return@runBlocking data?.rating
         }
     }
+
+    override val isHealthy: Boolean
+        get() = try {
+            runBlocking {
+                database.runCommand<Document>("{ping:1}")?.get("ok") == 1.0
+            }
+        } catch (e: Exception) {
+            logger.error("Error checking database health", e)
+            false
+        }
 }
 

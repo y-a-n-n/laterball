@@ -25,4 +25,5 @@ val appModule = module(createdAtStart = true) {
     single { OddsRepository(get(), get()) }
     single { RatingsRepository(get(), get(), get(), get(), get()) }
     single { UserRatingRepository(get()) }
+    single { HealthRepository(get()) }
 }

@@ -6,6 +6,7 @@ import com.laterball.server.html.checkCsrfToken
 import com.laterball.server.html.ensureCookieSet
 import com.laterball.server.model.LeagueId
 import com.laterball.server.model.RatingSubmission
+import com.laterball.server.repository.HealthRepository
 import com.laterball.server.repository.RatingsRepository
 import com.laterball.server.repository.UserRatingRepository
 import io.ktor.application.*
@@ -47,6 +48,7 @@ fun Application.module() {
     val userRatingRepository by inject<UserRatingRepository>()
     val api by inject<DataApi>()
     val config by inject<ApplicationConfig>()
+    val healthRepository by inject<HealthRepository>()
 
     install(CORS) {
         method(HttpMethod.Options)
@@ -74,6 +76,15 @@ fun Application.module() {
     val cookieDomain = config.propertyOrNull("ktor.security.cookieDomain")?.getString()
 
     routing {
+        get("/health") {
+            logger.info("/health")
+            if (healthRepository.isHealthy) {
+                call.respondText("OK")
+            } else {
+                call.respond(HttpStatusCode.InternalServerError, "Not healthy")
+            }
+        }
+
         get("/about") {
             logger.info("/about")
             call.respondHtml {
