@@ -4,6 +4,8 @@ on:
   push:
     tags:
       - 'v[0-9]+.[0-9]+.[0-9]+'
+    branches:
+      - 'action-deploy'
 
 jobs:
   build:
@@ -43,9 +45,9 @@ jobs:
           retention-days: 1
       - name: Build docker images
         run: |
-          tag=$GITHUB_REF_NAME
-          version="${tag#?}"
-          echo "::set-output name=version::$version"
+          tag=$(git describe --tags --abbrev=0)
+          version=$(echo $TAG | sed 's/^v//;s/-.*//')
+          echo "LATERBALL_VERSION=$version" >> GITHUB_ENV
           ./scripts/builddocker.sh $version PROD
 
       - name: Create tarballs
@@ -104,7 +106,7 @@ jobs:
           mkdir -p build/deploy
           cp {docker-compose.PROD.yml,.env.PROD,nginx/laterball.PROD.conf,build/docker/laterball-server-$VERSION.tar,build/docker/laterball-mongo-$VERSION.tar} build/deploy
         env:
-          VERSION: ${{needs.prepare.outputs.version}}
+          VERSION: ${{ env.LATERBALL_VERSION }}
       - name: Copy artefacts to production
         uses: appleboy/scp-action@v0.1.4
         with:
@@ -119,7 +121,7 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
-          envs: VERSION
+          envs: ${{ env.LATERBALL_VERSION }}
           script: |
             cd /usr/bin/laterball
             docker load -i laterball-server-$VERSION.tar
@@ -127,7 +129,7 @@ jobs:
             docker compose -f docker-compose.PROD.yml down
             docker compose -f docker-compose.PROD.yml up -d
         env:
-          VERSION: ${{needs.prepare.outputs.version}}
+          VERSION: ${{ env.LATERBALL_VERSION }}
       - name: Wait for health
         uses: cygnetdigital/wait_for_response@v2.0.0
         with:
