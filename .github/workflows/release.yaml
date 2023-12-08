@@ -8,21 +8,6 @@ on:
       - 'action-deploy'
 
 jobs:
-  version:
-    runs-on: ubuntu-latest
-    outputs:
-      LATERBALL_VERSION: ${{ steps.step1.outputs.LATERBALL_VERSION }}
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-      - name: Get version
-        id: step1
-        run: |
-          TAG=$(git describe --tags --abbrev=0)
-          VERSION=$(echo $TAG | sed 's/^v//;s/-.*//')
-          echo "Deploying version ${VERSION}"
-          echo "LATERBALL_VERSION=${VERSION}" >> GITHUB_OUTPUT
   build:
 
     runs-on: ubuntu-latest
@@ -50,6 +35,8 @@ jobs:
     # needs: test
     steps:
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
       - name: Download build artefact
         uses: actions/download-artifact@v3
         with:
@@ -58,17 +45,16 @@ jobs:
           retention-days: 1
       - name: Build docker images
         run: |
+          TAG=$(git describe --tags --abbrev=0)
+          VERSION=$(echo $TAG | sed 's/^v//;s/-.*//')
+          echo "LATERBALL_VERSION=${VERSION}" >> GITHUB_ENV
           echo "Building docker images for version $VERSION"
           ./scripts/builddocker.sh $VERSION PROD
-        env:
-          VERSION: ${{needs.version.outputs.LATERBALL_VERSION}}
       - name: Create tarballs
         run: |
           mkdir -p ./build/docker
-          docker save laterball/laterball-server > ./build/docker/laterball-server-${VERSION}.tar
-          docker save laterball/mongo > ./build/docker/laterball-mongo-${VERSION}.tar
-        env:
-          VERSION: ${{needs.version.outputs.LATERBALL_VERSION}}
+          docker save laterball/laterball-server > ./build/docker/laterball-server-${{ env.LATERBALL_VERSION }}.tar
+          docker save laterball/mongo > ./build/docker/laterball-mongo-${{ env.LATERBALL_VERSION }}.tar
       - name: Temporarily save docker artefacts
         uses: actions/upload-artifact@v3
         with:
@@ -81,6 +67,8 @@ jobs:
     needs: prepare
     steps:
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
       - name: Download docker artefacts
         uses: actions/download-artifact@v3
         with:
@@ -117,6 +105,9 @@ jobs:
           SSH_HOST: ${{ secrets.SSH_HOST }}
       - name: Group deployment artifacts
         run: |
+          TAG=$(git describe --tags --abbrev=0)
+          VERSION=$(echo $TAG | sed 's/^v//;s/-.*//')
+          echo "LATERBALL_VERSION=${VERSION}" >> GITHUB_ENV
           mkdir -p build/deploy
           cp {docker-compose.PROD.yml,.env.PROD,nginx/laterball.PROD.conf,build/docker/*.tar} build/deploy
       - name: Copy artefacts to production
@@ -135,14 +126,14 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           envs: VERSION
           script: |
-            echo "Loading docker images for ${VERSION}"
+            echo "Loading docker images for $VERSION"
             cd /usr/bin/laterball
-            docker load -i laterball-server-${VERSION}.tar
-            docker load -i laterball-mongo-${VERSION}.tar
+            docker load -i laterball-server-$VERSION.tar
+            docker load -i laterball-mongo-$VERSION.tar
             docker compose -f docker-compose.PROD.yml down
             docker compose -f docker-compose.PROD.yml up -d
         env:
-          VERSION: ${{needs.version.outputs.LATERBALL_VERSION}}
+          VERSION: ${{ env.LATERBALL_VERSION }}
       - name: Wait for health
         uses: cygnetdigital/wait_for_response@v2.0.0
         with:
