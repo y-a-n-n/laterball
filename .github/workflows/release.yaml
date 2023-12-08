@@ -17,6 +17,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Get version
+        id: step1
         run: |
           TAG=$(git describe --tags --abbrev=0)
           VERSION=$(echo $TAG | sed 's/^v//;s/-.*//')
@@ -57,8 +58,8 @@ jobs:
           retention-days: 1
       - name: Build docker images
         run: |
-          echo "Building docker images for version ${VERSION}"
-          ./scripts/builddocker.sh ${VERSION} PROD
+          echo "Building docker images for version $VERSION"
+          ./scripts/builddocker.sh $VERSION PROD
         env:
           VERSION: ${{needs.version.outputs.LATERBALL_VERSION}}
       - name: Create tarballs
@@ -132,9 +133,9 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
-          envs: ${VERSION}
+          envs: VERSION
           script: |
-            echo "Saving docker images for ${VERSION}"
+            echo "Loading docker images for ${VERSION}"
             cd /usr/bin/laterball
             docker load -i laterball-server-${VERSION}.tar
             docker load -i laterball-mongo-${VERSION}.tar
