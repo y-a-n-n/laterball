@@ -20,8 +20,8 @@ jobs:
         run: |
           TAG=$(git describe --tags --abbrev=0)
           VERSION=$(echo $TAG | sed 's/^v//;s/-.*//')
-          echo "Deploying version $(VERSION}"
-          echo "LATERBALL_VERSION=$(VERSION}" >> GITHUB_OUTPUT
+          echo "Deploying version ${VERSION}"
+          echo "LATERBALL_VERSION=${VERSION}" >> GITHUB_OUTPUT
   build:
 
     runs-on: ubuntu-latest
