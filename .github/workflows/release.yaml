@@ -48,7 +48,8 @@ jobs:
       - name: Build docker images
         run: |
           tag=$(git describe --tags --abbrev=0)
-          version=$(echo $TAG | sed 's/^v//;s/-.*//')
+#          version=$(echo $TAG | sed 's/^v//;s/-.*//')
+          version="3.2.17"
           echo "Building docker images for version $version"
           echo "LATERBALL_VERSION=$version" >> GITHUB_ENV
           ./scripts/builddocker.sh $version PROD
