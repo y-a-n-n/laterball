@@ -90,7 +90,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
             echo "Loading docker images for $VERSION"
-            cd /usr/bin/laterball
+            cd /usr/bin/laterball/build/deploy
             docker load -i laterball-server.tar
             docker load -i laterball-mongo.tar
             docker compose -f docker-compose.PROD.yml down
