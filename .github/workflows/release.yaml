@@ -56,8 +56,8 @@ jobs:
       - name: Create tarballs
         run: |
           mkdir -p ./build/docker
-          docker save laterball/laterball-server > ./build/docker/laterball-server-$version.tar
-          docker save laterball/mongo > ./build/docker/laterball-mongo-$version.tar
+          docker save laterball/laterball-server > ./build/docker/laterball-server-${{ env.LATERBALL_VERSION }}.tar
+          docker save laterball/mongo > ./build/docker/laterball-mongo-${{ env.LATERBALL_VERSION }}.tar
       - name: Temporarily save docker artefacts
         uses: actions/upload-artifact@v3
         with:
