@@ -9,9 +9,7 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-    needs: version
     steps:
       - uses: actions/checkout@v3
       - name: Set up JDK 11
@@ -61,6 +59,7 @@ jobs:
           name: docker-artifact
           path: build/docker
           retention-days: 1
+
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
