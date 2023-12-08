@@ -29,16 +29,14 @@ jobs:
         run: |
           TAG=$(git describe --tags --abbrev=0)
           VERSION=$(echo $TAG | sed 's/^v//;s/-.*//')
-          echo "LATERBALL_VERSION=${VERSION}" >> GITHUB_ENV
           echo "Building docker images for version $VERSION"
           ./scripts/builddocker.sh $VERSION PROD
 
       - name: Create tarballs
         run: |
           mkdir -p ./build/docker
-          echo "Building docker tarballs for version ${{ env.LATERBALL_VERSION }}"
-          docker save laterball/laterball-server > ./build/docker/laterball-server-${{ env.LATERBALL_VERSION }}.tar
-          docker save laterball/mongo > ./build/docker/laterball-mongo-${{ env.LATERBALL_VERSION }}.tar
+          docker save laterball/laterball-server > ./build/docker/laterball-server.tar
+          docker save laterball/mongo > ./build/docker/laterball-mongo.tar
 
       - name: Create .env.PROD file
         run: |
@@ -72,9 +70,6 @@ jobs:
 
       - name: Group deployment artifacts
         run: |
-          TAG=$(git describe --tags --abbrev=0)
-          VERSION=$(echo $TAG | sed 's/^v//;s/-.*//')
-          echo "LATERBALL_VERSION=${VERSION}" >> GITHUB_ENV
           mkdir -p build/deploy
           cp {docker-compose.PROD.yml,.env.PROD,nginx/laterball.PROD.conf,build/docker/*.tar} build/deploy
 
@@ -93,16 +88,13 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
-          envs: VERSION
           script: |
             echo "Loading docker images for $VERSION"
             cd /usr/bin/laterball
-            docker load -i laterball-server-$VERSION.tar
-            docker load -i laterball-mongo-$VERSION.tar
+            docker load -i laterball-server.tar
+            docker load -i laterball-mongo.tar
             docker compose -f docker-compose.PROD.yml down
             docker compose -f docker-compose.PROD.yml up -d
-        env:
-          VERSION: ${{ env.LATERBALL_VERSION }}
 
       - name: Wait for health
         uses: cygnetdigital/wait_for_response@v2.0.0
