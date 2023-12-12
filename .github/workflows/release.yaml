@@ -48,7 +48,7 @@ jobs:
           MONGO_HOST=mongo
           CSRF_SECRET=$CSRF_SECRET
           COOKIE_DOMAIN=laterball.com
-          BASE_URL=http://laterball.com
+          BASE_URL=https://laterball.com
           EOF
         env:
           MONGO_INITDB_ROOT_USERNAME: ${{ secrets.MONGO_INITDB_ROOT_USERNAME }}
@@ -99,12 +99,4 @@ jobs:
             docker load -i laterball-server.tar
             docker load -i laterball-mongo.tar
             docker compose -f docker-compose.PROD.yml down
-            docker compose -f docker-compose.PROD.yml up -d
-
-      - name: Wait for health
-        uses: cygnetdigital/wait_for_response@v2.0.0
-        with:
-          url: https://laterball.com/health
-          timeout: 180000
-          interval: 10000
-          responseCode: 200
+            docker compose -f docker-compose.PROD.yml up -d --wait
