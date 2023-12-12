@@ -50,6 +50,12 @@ jobs:
           COOKIE_DOMAIN=laterball.com
           BASE_URL=http://laterball.com
           EOF
+        env:
+          MONGO_INITDB_ROOT_USERNAME: ${{ secrets.MONGO_INITDB_ROOT_USERNAME }}
+          MONGO_INITDB_ROOT_PASSWORD: ${{ secrets.MONGO_INITDB_ROOT_PASSWORD }}
+          RAPID_API_KEY: ${{ secrets.RAPID_API_KEY }}
+          CSRF_SECRET: ${{ secrets.CSRF_SECRET }}
+
       - name: Configure SSH
         run: |
           mkdir -p ~/.ssh/
@@ -66,10 +72,6 @@ jobs:
           SSH_USER: ${{ secrets.SSH_USER }}
           SSH_KEY: ${{ secrets.SSH_KEY }}
           SSH_HOST: ${{ secrets.SSH_HOST }}
-          MONGO_INITDB_ROOT_USERNAME: ${{ secrets.MONGO_INITDB_ROOT_USERNAME }}
-          $MONGO_INITDB_ROOT_PASSWORD: ${{ secrets.MONGO_INITDB_ROOT_PASSWORD }}
-          RAPID_API_KEY: ${{ secrets.RAPID_API_KEY }}
-          CSRF_SECRET: ${{ secrets.CSRF_SECRET }}
 
       - name: Group deployment artifacts
         run: |
