@@ -204,7 +204,7 @@ class Generator(
                 }
             }
             span(classes = "subtitle center") { +"© ${SimpleDateFormat("YYYY").format(Date())} Laterball" }
-            span(classes = "subtitle center") { +"Version 3.2.17" }
+            span(classes = "subtitle center") { +"Version 3.3.5" }
         }
     }
 }
