@@ -1,6 +1,6 @@
 val logback_version: String by project
-val ktor_version: String by project
-val kotlin_version: String by project
+//val 1.6.8: String by project
+//val 1.6.21: String by project
 val koin_version: String by project
 
 plugins {
@@ -26,34 +26,36 @@ repositories {
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version")
-    implementation("io.ktor:ktor-server-netty:$ktor_version")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$1.9.0")
+    implementation("io.ktor:ktor-server-netty-jvm:2.3.7")
     implementation("ch.qos.logback:logback-classic:$logback_version")
-    implementation("io.ktor:ktor-client-core:$ktor_version")
-    implementation("io.ktor:ktor-client-core-jvm:$ktor_version")
-    implementation("io.ktor:ktor-client-okhttp:$ktor_version")
-    implementation("io.ktor:ktor-client-auth-jvm:$ktor_version")
-    implementation("io.ktor:ktor-client-json-jvm:$ktor_version")
-    implementation("io.ktor:ktor-client-gson:$ktor_version")
-    implementation("io.ktor:ktor-client-logging-jvm:$ktor_version")
-    implementation("io.ktor:ktor-server-core:$ktor_version")
-    implementation("io.ktor:ktor-server-servlet:$ktor_version")
-    implementation("io.ktor:ktor-server-host-common:$ktor_version")
-    implementation("io.ktor:ktor-auth:$ktor_version")
-    implementation("io.ktor:ktor-gson:$ktor_version")
-    implementation("io.ktor:ktor-locations:$ktor_version")
-    implementation("io.ktor:ktor-metrics:$ktor_version")
+    implementation("io.ktor:ktor-client-core-jvm:2.3.7")
+    implementation("io.ktor:ktor-client-core-jvm:2.3.7")
+    implementation("io.ktor:ktor-client-okhttp-jvm:2.3.7")
+    implementation("io.ktor:ktor-client-auth-jvm:2.3.7")
+    implementation("io.ktor:ktor-client-json-jvm:2.3.7")
+    implementation("io.ktor:ktor-client-gson-jvm:2.3.7")
+    implementation("io.ktor:ktor-client-logging-jvm:2.3.7")
+    implementation("io.ktor:ktor-server-core-jvm:2.3.7")
+    implementation("io.ktor:ktor-server-servlet-jvm:2.3.7")
+    implementation("io.ktor:ktor-server-host-common-jvm:2.3.7")
+    implementation("io.ktor:ktor-server-auth-jvm:2.3.7")
+    implementation("io.ktor:ktor-serialization-gson:2.3.7")
+    implementation("io.ktor:ktor-server-locations-jvm:2.3.7")
+    implementation("io.ktor:ktor-server-metrics-jvm:2.3.7")
     implementation("io.insert-koin:koin-ktor:$koin_version")
     implementation("io.insert-koin:koin-logger-slf4j:$koin_version")
     implementation("io.insert-koin:koin-test:$koin_version")
-    implementation("io.ktor:ktor-html-builder:$ktor_version")
+    implementation("io.ktor:ktor-server-html-builder-jvm:2.3.7")
     implementation("org.twitter4j", "twitter4j-core", "4.0.7")
     implementation("org.litote.kmongo:kmongo-coroutine:4.2.8")
+    implementation("io.ktor:ktor-server-cors:2.3.7")
+    implementation("io.ktor:ktor-server-content-negotiation-jvm:2.3.7")
 
 
-    testImplementation("io.ktor:ktor-server-tests:$ktor_version")
-    testImplementation("io.ktor:ktor-client-mock:$ktor_version")
-    testImplementation("io.ktor:ktor-client-mock-jvm:$ktor_version")
+    testImplementation("io.ktor:ktor-server-tests-jvm:2.3.7")
+    testImplementation("io.ktor:ktor-client-mock-jvm:2.3.7")
+    testImplementation("io.ktor:ktor-client-mock-jvm:2.3.7")
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {

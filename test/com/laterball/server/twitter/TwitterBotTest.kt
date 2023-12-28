@@ -1,5 +1,6 @@
 package com.laterball.server.twitter
 
+import io.ktor.server.config.MapApplicationConfig
 import com.laterball.server.MockConfig
 import com.laterball.server.api.ApiFootball
 import com.laterball.server.api.DataApi
@@ -9,10 +10,8 @@ import com.laterball.server.repository.*
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.mock.MockEngine
 import io.ktor.client.engine.mock.respond
-import io.ktor.config.MapApplicationConfig
 import io.ktor.util.KtorExperimentalAPI
 import org.junit.Before
-
 import org.junit.Assert.*
 import org.junit.Test
 import java.util.*
@@ -48,8 +47,15 @@ class TwitterBotTest {
         val oddsRepository = OddsRepository(dataApi, databaseMock)
 
         twitterApiMock = TwitterApiMock()
-        ratingsRepository = RatingsRepository(fixtureRepository, statsRepository, eventsRepository, oddsRepository, SchedulerMock())
-        twitterBot = TwitterBot(twitterApiMock, databaseMock, MockConfig(mapOf(Pair("ktor.environment", "PROD"))), ratingsRepository, clockMock)
+        ratingsRepository =
+            RatingsRepository(fixtureRepository, statsRepository, eventsRepository, oddsRepository, SchedulerMock())
+        twitterBot = TwitterBot(
+            twitterApiMock,
+            databaseMock,
+            MockConfig(mapOf(Pair("ktor.environment", "PROD"))),
+            ratingsRepository,
+            clockMock
+        )
     }
 
     @Test
@@ -71,7 +77,7 @@ class TwitterBotTest {
 
         clockMock.time += 3600001L * 4
 
-        val rating2 = Rating(6,"Fizz", "Buss", Date(), "", "", 8f, "", 1f)
+        val rating2 = Rating(6, "Fizz", "Buss", Date(), "", "", 8f, "", 1f)
         val rating3 = Rating(7, "Foo2", "Bar2", Date(), "", "", 4f, "", 1f)
         twitterBot.tweetForRatings(LeagueId.CHAMPIONS_LEAGUE, listOf(rating2, rating3))
         assertEquals(1, twitterApiMock.sent.size)
@@ -79,7 +85,7 @@ class TwitterBotTest {
 
         clockMock.time += 30000
 
-        val rating4 = Rating(8,"Fizz", "Buss", Date(), "", "", 8f, "", 1f)
+        val rating4 = Rating(8, "Fizz", "Buss", Date(), "", "", 8f, "", 1f)
         val rating5 = Rating(9, "Foo2", "Bar2", Date(), "", "", 4f, "", 1f)
 
         twitterBot.tweetForRatings(LeagueId.CHAMPIONS_LEAGUE, listOf(rating4, rating5))
@@ -88,7 +94,7 @@ class TwitterBotTest {
 
         clockMock.time += 3600001L * 4
 
-        val rating6 = Rating(6538,"Fizz", "Buss", Date(), "", "", 8f, "", 1f)
+        val rating6 = Rating(6538, "Fizz", "Buss", Date(), "", "", 8f, "", 1f)
         val rating7 = Rating(9333, "Foo2", "Bar2", Date(), "", "", 4f, "", 1f)
 
         twitterBot.tweetForRatings(LeagueId.CHAMPIONS_LEAGUE, listOf(rating6, rating7))
@@ -100,7 +106,7 @@ class TwitterBotTest {
     fun dontTweetSameTwice() {
         clockMock.time += 3600001L * 4
 
-        val rating2 = Rating(6,"Fizz", "Buss", Date(), "", "", 8f, "", 1f)
+        val rating2 = Rating(6, "Fizz", "Buss", Date(), "", "", 8f, "", 1f)
         val rating3 = Rating(7, "Foo2", "Bar2", Date(), "", "", 4f, "", 1f)
         twitterBot.tweetForRatings(LeagueId.CHAMPIONS_LEAGUE, listOf(rating2, rating3))
         assertEquals(1, twitterApiMock.sent.size)

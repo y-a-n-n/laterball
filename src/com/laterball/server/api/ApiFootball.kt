@@ -1,18 +1,21 @@
 package com.laterball.server.api
 
+import io.ktor.client.plugins.gson.GsonSerializer
+import io.ktor.client.call.body
+import io.ktor.server.config.ApplicationConfig
+import io.ktor.client.plugins.DefaultRequest
+import io.ktor.client.plugins.HttpResponseValidator
+import io.ktor.client.plugins.HttpTimeout
+import io.ktor.client.plugins.json.GsonSerializer
+import io.ktor.client.plugins.json.JsonFeature
+import io.ktor.client.plugins.logging.LogLevel
+import io.ktor.client.plugins.logging.Logging
+import ` io`.ktor.client.plugins.logging.LogLevel
+import ` io`.ktor.client.plugins.logging.Logging
 import com.laterball.server.api.model.*
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.okhttp.OkHttp
-import io.ktor.client.features.DefaultRequest
-import io.ktor.client.features.HttpResponseValidator
-import io.ktor.client.features.HttpTimeout
-import io.ktor.client.features.json.GsonSerializer
-import io.ktor.client.features.json.JsonFeature
-import io.ktor.client.features.logging.LogLevel
-import io.ktor.client.features.logging.Logging
 import io.ktor.client.request.url
-import io.ktor.client.request.get
-import io.ktor.config.ApplicationConfig
 import io.ktor.http.ContentType
 import io.ktor.util.KtorExperimentalAPI
 import kotlinx.coroutines.delay
@@ -32,7 +35,7 @@ class ApiFootball(config: ApplicationConfig, clientOverride: HttpClient? = null)
 
     private val requestThrottler = RequestThrottler()
 
-    private val client: HttpClient = clientOverride ?: HttpClient(OkHttp){
+    private val client: HttpClient = clientOverride ?: HttpClient(OkHttp) {
         val apiKey = config.propertyOrNull("ktor.api.apiKey")?.getString()
         install(HttpTimeout) {
         }
@@ -66,11 +69,12 @@ class ApiFootball(config: ApplicationConfig, clientOverride: HttpClient? = null)
             return null
         }
         return runBlocking {
-                requestDelay?.let { delay(it) }
+            requestDelay?.let { delay(it) }
             return@runBlocking try {
-                client.get<FixtureList> {
+                client.get {
+                    url()
                     url("$BASE_URL/fixtures/league/$leagueId/last/30")
-                }.api
+                }.body<FixtureList>().api
             } catch (e: Exception) {
                 logger.error("Failed to fetch stats", e)
                 null
@@ -86,9 +90,10 @@ class ApiFootball(config: ApplicationConfig, clientOverride: HttpClient? = null)
         return runBlocking {
             requestDelay?.let { delay(it) }
             return@runBlocking try {
-                client.get<FixtureList> {
+                client.get {
+                    url()
                     url("$BASE_URL/fixtures/league/$leagueId/next/10")
-                }.api
+                }.body<FixtureList>().api
             } catch (e: Exception) {
                 logger.error("Failed to fetch stats", e)
                 null
@@ -104,9 +109,10 @@ class ApiFootball(config: ApplicationConfig, clientOverride: HttpClient? = null)
         return runBlocking {
             requestDelay?.let { delay(it) }
             return@runBlocking try {
-                client.get<FixtureStats> {
+                client.get {
+                    url()
                     url("$BASE_URL/statistics/fixture/$fixtureId")
-                }.api
+                }.body<FixtureStats>().api
             } catch (e: Exception) {
                 logger.error("Failed to fetch stats", e)
                 null
@@ -122,9 +128,10 @@ class ApiFootball(config: ApplicationConfig, clientOverride: HttpClient? = null)
         return runBlocking {
             requestDelay?.let { delay(it) }
             return@runBlocking try {
-                client.get<Odds> {
+                client.get {
+                    url()
                     url("$BASE_URL/odds/fixture/$fixtureId")
-                }.api
+                }.body<Odds>().api
             } catch (e: Exception) {
                 logger.error("Failed to fetch odds", e)
                 null
@@ -140,9 +147,10 @@ class ApiFootball(config: ApplicationConfig, clientOverride: HttpClient? = null)
         return runBlocking {
             requestDelay?.let { delay(it) }
             return@runBlocking try {
-                client.get<FixtureEvents> {
+                client.get {
+                    url()
                     url("$BASE_URL/events/$fixtureId")
-                }.api
+                }.body<FixtureEvents>().api
             } catch (e: Exception) {
                 logger.error("Failed to fetch events", e)
                 null

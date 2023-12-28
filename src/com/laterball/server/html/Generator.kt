@@ -1,9 +1,9 @@
 package com.laterball.server.html
 
+import io.ktor.server.config.ApplicationConfig
 import com.laterball.server.model.LeagueId
 import com.laterball.server.repository.RatingsRepository
 import com.laterball.server.repository.UserRatingRepository
-import io.ktor.config.ApplicationConfig
 import io.ktor.util.KtorExperimentalAPI
 import kotlinx.html.*
 import org.slf4j.LoggerFactory
@@ -11,7 +11,11 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 @KtorExperimentalAPI
-class Generator(private val ratingsRepository: RatingsRepository, private val userRatingRepository: UserRatingRepository, config: ApplicationConfig) {
+class Generator(
+    private val ratingsRepository: RatingsRepository,
+    private val userRatingRepository: UserRatingRepository,
+    config: ApplicationConfig
+) {
 
     private val logger = LoggerFactory.getLogger(Generator::class.java)
     private val csrfSecret = config.property("ktor.security.csrfSecret").getString()
@@ -98,7 +102,7 @@ class Generator(private val ratingsRepository: RatingsRepository, private val us
                                             br {}
                                             span(classes = "center subtitle") { +format.format(rating.date) }
                                             br {}
-                                            h5 (classes = "fade-in subtitle tooltip") {
+                                            h5(classes = "fade-in subtitle tooltip") {
                                                 +"Show score"
                                                 span(classes = "tooltiptext") { +rating.score }
                                             }
@@ -121,7 +125,7 @@ class Generator(private val ratingsRepository: RatingsRepository, private val us
                                         for (i in (starsAdded..4)) {
                                             img(src = "/static/empty_star.svg") { style = "height:50px" }
                                         }
-                                        div (classes= "center") {
+                                        div(classes = "center") {
                                             form(
                                                 encType = FormEncType.applicationXWwwFormUrlEncoded,
                                                 method = FormMethod.post
@@ -198,11 +202,11 @@ class Generator(private val ratingsRepository: RatingsRepository, private val us
             span(classes = "subtitle center") {
                 a(href = "https://twitter.com/laterball", target = "_blank") {
                     style = "margin-right: 10px;"
-                    img(src = "/static/twitter.png") { style = "width: 50px; height: 50px"}
+                    img(src = "/static/twitter.png") { style = "width: 50px; height: 50px" }
                 }
                 a(href = "https://github.com/y-a-n-n/laterball", target = "_blank") {
                     style = "margin-left: 10px;"
-                    img(src = "/static/github.png") { style = "width: 50px; height: 50px"}
+                    img(src = "/static/github.png") { style = "width: 50px; height: 50px" }
                 }
             }
             span(classes = "subtitle center") { +"© ${SimpleDateFormat("YYYY").format(Date())} Laterball" }

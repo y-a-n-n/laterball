@@ -1,15 +1,16 @@
 package com.laterball.server.repository
 
+import io.ktor.client.plugins.gson.GsonSerializer
+import io.ktor.server.config.MapApplicationConfig
+import io.ktor.client.plugins.DefaultRequest
+import io.ktor.client.plugins.json.GsonSerializer
+import io.ktor.client.plugins.json.JsonFeature
 import com.laterball.server.api.ApiFootball
 import com.laterball.server.api.DataApi
 import com.laterball.server.model.LeagueId
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.mock.MockEngine
 import io.ktor.client.engine.mock.respond
-import io.ktor.client.features.DefaultRequest
-import io.ktor.client.features.json.GsonSerializer
-import io.ktor.client.features.json.JsonFeature
-import io.ktor.config.MapApplicationConfig
 import io.ktor.http.ContentType
 import io.ktor.http.headersOf
 import io.ktor.utils.io.ByteReadChannel
@@ -60,7 +61,14 @@ internal class RatingsRepositoryTest {
         val oddsRepository = OddsRepository(dataApi, databaseMock)
         val schedulerMock = SchedulerMock()
 
-        ratingsRepository = RatingsRepository(fixtureRepository, statsRepository, eventsRepository, oddsRepository, schedulerMock, clockMock)
+        ratingsRepository = RatingsRepository(
+            fixtureRepository,
+            statsRepository,
+            eventsRepository,
+            oddsRepository,
+            schedulerMock,
+            clockMock
+        )
     }
 
     @Test

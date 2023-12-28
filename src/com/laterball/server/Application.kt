@@ -1,5 +1,16 @@
 package com.laterball.server
 
+import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.server.plugins.cors.CORS
+import io.ktor.server.application.*
+import io.ktor.server.config.ApplicationConfig
+import io.ktor.server.routing.*
+import io.ktor.server.request.*
+import io.ktor.server.response.*
+import io.ktor.server.plugins.*
+import io.ktor.server.http.content.*
+import io.ktor.server.html.respondHtml
+import io.ktor.serialization.gson.*
 import com.laterball.server.api.DataApi
 import com.laterball.server.html.Generator
 import com.laterball.server.html.checkCsrfToken
@@ -9,16 +20,7 @@ import com.laterball.server.model.RatingSubmission
 import com.laterball.server.repository.HealthRepository
 import com.laterball.server.repository.RatingsRepository
 import com.laterball.server.repository.UserRatingRepository
-import io.ktor.application.*
-import io.ktor.config.ApplicationConfig
-import io.ktor.routing.*
 import io.ktor.http.*
-import io.ktor.http.content.*
-import io.ktor.gson.*
-import io.ktor.features.*
-import io.ktor.html.respondHtml
-import io.ktor.request.*
-import io.ktor.response.*
 import io.ktor.util.KtorExperimentalAPI
 import org.koin.core.logger.Level
 import org.koin.ktor.ext.Koin
