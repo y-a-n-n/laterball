@@ -25,8 +25,7 @@ jobs:
 
       - name: Build docker images
         run: |
-          TAG=$(git describe --tags --abbrev=0)
-          VERSION=$(echo $TAG | sed 's/^v//;s/-.*//')
+          VERSION=$GITHUB_REF
           echo "Building docker images for version $VERSION"
           ./scripts/builddocker.sh $VERSION PROD
 
