@@ -1,6 +1,5 @@
 package com.laterball.server.data
 
-import io.ktor.server.config.*
 import com.laterball.server.api.model.ApiFixtureEvents
 import com.laterball.server.api.model.ApiFixtureList
 import com.laterball.server.api.model.Bet
@@ -15,7 +14,7 @@ import com.laterball.server.model.TwitterData
 import com.laterball.server.model.UserRating
 import com.mongodb.ConnectionString
 import com.mongodb.client.model.Filters.and
-import io.ktor.util.*
+import io.ktor.server.config.*
 import kotlinx.coroutines.runBlocking
 import org.bson.Document
 import org.litote.kmongo.coroutine.coroutine
@@ -24,7 +23,6 @@ import org.litote.kmongo.reactivestreams.KMongo
 import org.litote.kmongo.upsert
 import org.slf4j.LoggerFactory
 
-@KtorExperimentalAPI
 class MongoDataStore(config: ApplicationConfig) : Database {
 
     private val logger = LoggerFactory.getLogger(MongoDataStore::class.java.name)

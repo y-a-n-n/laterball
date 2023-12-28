@@ -5,7 +5,7 @@ val koin_version: String by project
 
 plugins {
     application
-    kotlin("jvm") version "1.6.21"
+    id("org.jetbrains.kotlin.jvm") version "1.9.22"
 //    id("io.ktor.plugin") version "2.2.2"
 }
 
@@ -47,7 +47,6 @@ dependencies {
     implementation("io.insert-koin:koin-logger-slf4j:$koin_version")
     implementation("io.insert-koin:koin-test:$koin_version")
     implementation("io.ktor:ktor-server-html-builder-jvm:2.3.7")
-    implementation("org.twitter4j", "twitter4j-core", "4.0.7")
     implementation("org.litote.kmongo:kmongo-coroutine:4.2.8")
     implementation("io.ktor:ktor-server-cors:2.3.7")
     implementation("io.ktor:ktor-server-content-negotiation-jvm:2.3.7")
