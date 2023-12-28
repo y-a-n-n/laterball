@@ -25,7 +25,7 @@ jobs:
 
       - name: Build docker images
         run: |
-          VERSION=$GITHUB_REF
+          VERSION=${GITHUB_REF##*/}
           echo "Building docker images for version $VERSION"
           ./scripts/builddocker.sh $VERSION PROD
 
