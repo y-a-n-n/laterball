@@ -1,16 +1,14 @@
 package com.laterball.server.html
 
-import io.ktor.server.config.ApplicationConfig
 import com.laterball.server.model.LeagueId
 import com.laterball.server.repository.RatingsRepository
 import com.laterball.server.repository.UserRatingRepository
-import io.ktor.util.KtorExperimentalAPI
+import io.ktor.server.config.*
 import kotlinx.html.*
 import org.slf4j.LoggerFactory
 import java.text.SimpleDateFormat
 import java.util.*
 
-@KtorExperimentalAPI
 class Generator(
     private val ratingsRepository: RatingsRepository,
     private val userRatingRepository: UserRatingRepository,
@@ -200,10 +198,6 @@ class Generator(
             }
             span(classes = "subtitle center") { +"feedback: email laterball at yann dot software" }
             span(classes = "subtitle center") {
-                a(href = "https://twitter.com/laterball", target = "_blank") {
-                    style = "margin-right: 10px;"
-                    img(src = "/static/twitter.png") { style = "width: 50px; height: 50px" }
-                }
                 a(href = "https://github.com/y-a-n-n/laterball", target = "_blank") {
                     style = "margin-left: 10px;"
                     img(src = "/static/github.png") { style = "width: 50px; height: 50px" }
