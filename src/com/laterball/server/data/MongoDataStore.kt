@@ -1,5 +1,6 @@
 package com.laterball.server.data
 
+import io.ktor.server.config.*
 import com.laterball.server.api.model.ApiFixtureEvents
 import com.laterball.server.api.model.ApiFixtureList
 import com.laterball.server.api.model.Bet
@@ -14,7 +15,6 @@ import com.laterball.server.model.TwitterData
 import com.laterball.server.model.UserRating
 import com.mongodb.ConnectionString
 import com.mongodb.client.model.Filters.and
-import io.ktor.config.*
 import io.ktor.util.*
 import kotlinx.coroutines.runBlocking
 import org.bson.Document
@@ -165,7 +165,7 @@ class MongoDataStore(config: ApplicationConfig) : Database {
                         UserRating::leagueId eq leagueId,
                         UserRating::fixtureId eq fixtureId
                     ),
-                UserRating::cookie eq cookie
+                    UserRating::cookie eq cookie
                 )
             // upsert the data into the collection, matching on league id, fixture id and cookie
             col.updateOne(filter, data, upsert())
@@ -175,7 +175,11 @@ class MongoDataStore(config: ApplicationConfig) : Database {
     override fun getUserRating(leagueId: LeagueId, fixtureId: Int, cookie: String): Int? {
         return runBlocking {
             val col = database.getCollection<UserRating>("userRatings")
-            val data = col.find(UserRating::leagueId eq leagueId, UserRating::fixtureId eq fixtureId, UserRating::cookie eq cookie).first()
+            val data = col.find(
+                UserRating::leagueId eq leagueId,
+                UserRating::fixtureId eq fixtureId,
+                UserRating::cookie eq cookie
+            ).first()
             return@runBlocking data?.rating
         }
     }

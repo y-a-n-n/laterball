@@ -1,5 +1,6 @@
 package com.laterball.server.twitter
 
+import io.ktor.server.config.*
 import com.laterball.server.data.Database
 import com.laterball.server.model.LeagueId
 import com.laterball.server.model.Rating
@@ -7,7 +8,6 @@ import com.laterball.server.model.TwitterData
 import com.laterball.server.repository.Clock
 import com.laterball.server.repository.RatingsRepository
 import com.laterball.server.repository.SystemClock
-import io.ktor.config.*
 import io.ktor.util.KtorExperimentalAPI
 import org.slf4j.LoggerFactory
 import java.util.*
@@ -16,24 +16,24 @@ import kotlin.math.max
 
 @KtorExperimentalAPI
 class TwitterBot(
-        private val twitterApi: TwitterApi,
-        private val database: Database,
-        config: ApplicationConfig,
-        ratingsRepository: RatingsRepository,
-        private val clock: Clock = SystemClock()
+    private val twitterApi: TwitterApi,
+    private val database: Database,
+    config: ApplicationConfig,
+    ratingsRepository: RatingsRepository,
+    private val clock: Clock = SystemClock()
 ) {
 
     var enabled = config.property("ktor.environment").getString() == "PROD"
-    set(value) {
-        field = value
-        logger.info("Twitter bot ${this.hashCode()} enabled: $value")
-    }
+        set(value) {
+            field = value
+            logger.info("Twitter bot ${this.hashCode()} enabled: $value")
+        }
 
     companion object {
         private val PROMO = listOf(
-                "\n\nSee all this week's watchability ratings at laterball.com",
-                "\n\nFor a full list of watchability ratings, head to laterball.com",
-                "\n\nTo see what else is worth watching this week, visit laterball.com",
+            "\n\nSee all this week's watchability ratings at laterball.com",
+            "\n\nFor a full list of watchability ratings, head to laterball.com",
+            "\n\nTo see what else is worth watching this week, visit laterball.com",
         )
 
         private const val INTERVAL = 3600000L * 4 // Don't tweet more than once per four hours
@@ -92,22 +92,23 @@ class TwitterBot(
     private fun getStatus(rating: Rating): String? {
         if (rating.rating >= 8f) {
             val teams = "${rating.homeTeam} vs ${rating.awayTeam}"
-            val words = if (rating.rating >= 10f) greatGames[randIndex(greatGames.size)] else goodGames[randIndex(goodGames.size)]
+            val words =
+                if (rating.rating >= 10f) greatGames[randIndex(greatGames.size)] else goodGames[randIndex(goodGames.size)]
             return words.first + String.format(words.second, teams) + PROMO[randIndex(PROMO.size)]
         }
         return null
     }
 
     private val greatGames = listOf(
-            Pair("⭐⭐⭐⭐⭐ What a game!", " Checkout %s on your preferred streaming service."),
-            Pair("⭐⭐⭐⭐⭐ Five star game alert!", " Checkout %s on your preferred streaming service."),
-            Pair("⭐⭐⭐⭐⭐ An instant classic?", " %s gets a great rating from us."),
-            Pair("An absolute belter ⭐⭐⭐⭐⭐!", " %s is one to watch.")
+        Pair("⭐⭐⭐⭐⭐ What a game!", " Checkout %s on your preferred streaming service."),
+        Pair("⭐⭐⭐⭐⭐ Five star game alert!", " Checkout %s on your preferred streaming service."),
+        Pair("⭐⭐⭐⭐⭐ An instant classic?", " %s gets a great rating from us."),
+        Pair("An absolute belter ⭐⭐⭐⭐⭐!", " %s is one to watch.")
     )
 
     private val goodGames = listOf(
-            Pair("⭐⭐⭐⭐ Worth a watch!", " Checkout %s on your preferred streaming service."),
-            Pair("With ⭐⭐⭐⭐ four stars,", " %s gets a great rating from us."),
-            Pair("⭐⭐⭐⭐ Nice one!", " %s is one to watch.")
+        Pair("⭐⭐⭐⭐ Worth a watch!", " Checkout %s on your preferred streaming service."),
+        Pair("With ⭐⭐⭐⭐ four stars,", " %s gets a great rating from us."),
+        Pair("⭐⭐⭐⭐ Nice one!", " %s is one to watch.")
     )
 }

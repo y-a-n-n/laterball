@@ -1,6 +1,6 @@
 package com.laterball.server.html
 
-import io.ktor.application.*
+import io.ktor.server.application.*
 import io.ktor.http.*
 
 fun ensureCookieSet(call: ApplicationCall, domain: String?): String {

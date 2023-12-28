@@ -1,6 +1,6 @@
 package com.laterball.server.twitter
 
-import io.ktor.config.ApplicationConfig
+import io.ktor.server.config.ApplicationConfig
 import org.slf4j.LoggerFactory
 import twitter4j.TwitterException
 import twitter4j.TwitterFactory
@@ -16,12 +16,12 @@ class Twitter4jApi(private val config: ApplicationConfig) : TwitterApi {
     private fun accessTokenSecret() = config.propertyOrNull("ktor.twitter.accesstokensecret")?.getString() ?: ""
 
     private val twitter = TwitterFactory(
-            ConfigurationBuilder()
-                    .setOAuthConsumerKey(consumerKey())
-                    .setOAuthConsumerSecret(consumerSecret())
-                    .setOAuthAccessToken(accessToken())
-                    .setOAuthAccessTokenSecret(accessTokenSecret())
-                    .build()
+        ConfigurationBuilder()
+            .setOAuthConsumerKey(consumerKey())
+            .setOAuthConsumerSecret(consumerSecret())
+            .setOAuthAccessToken(accessToken())
+            .setOAuthAccessTokenSecret(accessTokenSecret())
+            .build()
     ).instance
 
     override fun sendTweet(text: String) {

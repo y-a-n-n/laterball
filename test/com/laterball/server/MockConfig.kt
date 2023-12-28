@@ -1,6 +1,6 @@
 package com.laterball.server
 
-import io.ktor.config.*
+import io.ktor.server.config.*
 
 class MockConfig(val values: Map<String, String>) : ApplicationConfig {
 
