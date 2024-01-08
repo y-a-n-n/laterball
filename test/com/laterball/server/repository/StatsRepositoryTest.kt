@@ -8,7 +8,6 @@ import org.junit.Before
 import org.junit.Test
 import kotlin.test.assertEquals
 
-
 internal class StatsRepositoryTest {
     private lateinit var statsRepository: StatsRepository
     private lateinit var dataApiMock: DataApiMock

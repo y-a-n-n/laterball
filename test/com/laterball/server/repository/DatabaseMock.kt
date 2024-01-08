@@ -7,7 +7,7 @@ import com.laterball.server.model.LeagueId
 import com.laterball.server.model.LeagueUpdateTime
 import com.laterball.server.model.TwitterData
 
-class DatabaseMock : Database {
+class DatabaseMock(override val isHealthy: Boolean = true) : Database {
 
     private val map = HashMap<String, HashMap<String, String>>()
     private val gson = Gson()

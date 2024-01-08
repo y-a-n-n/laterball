@@ -12,6 +12,10 @@ class MockConfig(val values: Map<String, String>) : ApplicationConfig {
         return listOf(this)
     }
 
+    override fun keys(): Set<String> {
+        return values.keys
+    }
+
     override fun property(path: String): ApplicationConfigValue {
         return object : ApplicationConfigValue {
             override fun getList(): List<String> {
@@ -27,5 +31,9 @@ class MockConfig(val values: Map<String, String>) : ApplicationConfig {
 
     override fun propertyOrNull(path: String): ApplicationConfigValue? {
         return values[path]?.let { property(path) }
+    }
+
+    override fun toMap(): Map<String, Any?> {
+        return values
     }
 }
