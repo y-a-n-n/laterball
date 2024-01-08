@@ -5,7 +5,7 @@ val koin_version: String by project
 
 plugins {
     application
-    kotlin("jvm") version "1.6.21"
+    kotlin("jvm") version "1.9.22"
 //    id("io.ktor.plugin") version "2.2.2"
 }
 
