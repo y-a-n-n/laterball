@@ -85,7 +85,7 @@ jobs:
           target: /usr/bin/laterball
 
       - name: Restart containers
-        uses: appleboy/ssh-action@v1.0.0
+        uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
