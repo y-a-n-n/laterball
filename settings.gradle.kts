@@ -1,8 +1,8 @@
 rootProject.name = "laterball-server"
 
-pluginManagement {
-    repositories {
-        gradlePluginPortal()
-        google()
-    }
-}
+//pluginManagement {
+//    repositories {
+//        gradlePluginPortal()
+//        google()
+//    }
+//}

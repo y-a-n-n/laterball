@@ -9,21 +9,25 @@ import com.laterball.server.model.RatingSubmission
 import com.laterball.server.repository.HealthRepository
 import com.laterball.server.repository.RatingsRepository
 import com.laterball.server.repository.UserRatingRepository
-import io.ktor.application.*
-import io.ktor.config.*
-import io.ktor.features.*
-import io.ktor.gson.*
-import io.ktor.html.*
 import io.ktor.http.*
 import io.ktor.http.content.*
-import io.ktor.request.*
-import io.ktor.response.*
-import io.ktor.routing.*
+import io.ktor.serialization.gson.*
+import io.ktor.server.application.*
+import io.ktor.server.config.*
+import io.ktor.server.html.*
+import io.ktor.server.http.content.*
+import io.ktor.server.plugins.contentnegotiation.*
+import io.ktor.server.plugins.cors.routing.*
+import io.ktor.server.request.*
+import io.ktor.server.response.*
+import io.ktor.server.routing.*
 import org.koin.core.logger.Level
-import org.koin.ktor.ext.Koin
+import org.koin.java.KoinJavaComponent.inject
 import org.koin.ktor.ext.inject
+import org.koin.ktor.plugin.Koin
 import org.koin.logger.slf4jLogger
 import org.slf4j.LoggerFactory
+import java.io.File
 import kotlin.math.roundToInt
 
 val logger = LoggerFactory.getLogger(Application::class.java)
@@ -49,19 +53,19 @@ fun Application.module() {
     val healthRepository by inject<HealthRepository>()
 
     install(CORS) {
-        method(HttpMethod.Options)
-        method(HttpMethod.Get)
-        method(HttpMethod.Post)
-        header(HttpHeaders.AccessControlAllowHeaders)
-        header(HttpHeaders.ContentType)
-        header(HttpHeaders.AccessControlAllowOrigin)
+        allowMethod(HttpMethod.Options)
+        allowMethod(HttpMethod.Get)
+        allowMethod(HttpMethod.Post)
+        allowHeader(HttpHeaders.AccessControlAllowHeaders)
+        allowHeader(HttpHeaders.ContentType)
+        allowHeader(HttpHeaders.AccessControlAllowOrigin)
         if (config.property("ktor.environment").getString() == "DEV") {
-            host("localhost:8080", schemes = listOf("http"))
-            host("127.0.0.1:8080", schemes = listOf("http"))
-            host("0.0.0.0:8080", schemes = listOf("http"))
-            host("laterball.test", schemes = listOf("http"))
+            allowHost("localhost:8080", schemes = listOf("http"))
+            allowHost("127.0.0.1:8080", schemes = listOf("http"))
+            allowHost("0.0.0.0:8080", schemes = listOf("http"))
+            allowHost("laterball.test", schemes = listOf("http"))
         }
-        host("laterball.com", schemes = listOf("https"))
+        allowHost("laterball.com", schemes = listOf("https"))
     }
 
     val generator = Generator(ratingsRepository, userRatingRepository, config)
@@ -130,9 +134,7 @@ fun Application.module() {
             }
         }
 
-        static("/static") {
-            resources("static")
-        }
+        staticFiles("/static", File("static"))
     }
 }
 
