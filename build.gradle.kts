@@ -48,7 +48,7 @@ dependencies {
     implementation("io.insert-koin:koin-logger-slf4j:$koin_version")
     implementation("io.insert-koin:koin-test:$koin_version")
     implementation("io.ktor:ktor-server-html-builder-jvm:$ktor_version")
-    implementation("org.litote.kmongo:kmongo-coroutine:4.2.8")
+    implementation("org.litote.kmongo:kmongo-coroutine:4.11.0")
     implementation("io.ktor:ktor-server-cors:$ktor_version")
     implementation("io.ktor:ktor-server-content-negotiation-jvm:$ktor_version")
     implementation("io.ktor:ktor-client-content-negotiation:$ktor_version")
