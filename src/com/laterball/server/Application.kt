@@ -134,7 +134,7 @@ fun Application.module() {
             }
         }
 
-        staticFiles("/static", File("static"))
+        staticResources("/static", "static")
     }
 }
 

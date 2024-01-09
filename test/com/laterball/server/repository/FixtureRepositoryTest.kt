@@ -62,7 +62,6 @@ internal class FixtureRepositoryTest {
                     (1000 * Math.random()).toInt(),
                     (1000 * Math.random()).toInt(),
                     (1000 * Math.random()).toInt(),
-                    (1000 * Math.random()).toInt(),
                     FixtureTeam(Math.random().toString(), (1000 * Math.random()).toInt(), Math.random().toString()),
                     League(
                         Math.random().toString(),
@@ -71,15 +70,11 @@ internal class FixtureRepositoryTest {
                         Math.random().toString()
                     ),
                     LeagueId.EPL.id,
-                    (1000 * Math.random()).toInt(),
                     Math.random().toString(),
                     Score(
                         Math.random().toString(),
                         Math.random().toString(),
-                        Math.random().toString(),
-                        Math.random().toString()
                     ),
-                    (1000 * Math.random()).toInt(),
                     Math.random().toString(),
                     Math.random().toString(),
                     Math.random().toString()

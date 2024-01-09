@@ -1,21 +1,21 @@
 package com.laterball.server.api.model
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class Fixture(
     val awayTeam: FixtureTeam,
     val elapsed: Int = 0,
     val event_date: String = "",
     val event_timestamp: Int = 0,
-    val firstHalfStart: Int = 0,
     val fixture_id: Int = 0,
     val goalsAwayTeam: Int = 0,
     val goalsHomeTeam: Int = 0,
     val homeTeam: FixtureTeam,
     val league: League,
     val league_id: Int = 0,
-    val referee: Any?,
     val round: String = "",
     val score: Score,
-    val secondHalfStart: Int = 0,
     val status: String = "",
     val statusShort: String = "",
     val venue: String = ""

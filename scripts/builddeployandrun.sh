@@ -1,8 +1,7 @@
 # TODO: https://blog.benoitblanchon.fr/github-action-run-ssh-commands/
 host=$1
 env=$2
-tag=$(git describe --tags --abbrev=0)
-version="${tag#?}"
+version=$(git describe --tags --abbrev=0)
 echo "Deploying $version to $host"
 # build the tarball
 ./scripts/buildlocal.sh

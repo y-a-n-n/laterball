@@ -36,6 +36,8 @@ class ApiFootball(config: ApplicationConfig, clientOverride: HttpClient? = null)
             json(Json {
                 prettyPrint = true
                 isLenient = true
+                ignoreUnknownKeys = true
+                coerceInputValues  = true
             })
         }
         install(Logging) {
