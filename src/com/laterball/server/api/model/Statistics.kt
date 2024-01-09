@@ -2,6 +2,9 @@ package com.laterball.server.api.model
 
 import com.google.gson.annotations.SerializedName
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class Statistics(
     @SerializedName("Ball Possession")
     val BallPossession: HomeAwayStat = HomeAwayStat(),

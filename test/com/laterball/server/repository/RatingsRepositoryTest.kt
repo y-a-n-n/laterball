@@ -25,7 +25,6 @@ internal class RatingsRepositoryTest {
     private lateinit var client: HttpClient
     private lateinit var ratingsRepository: RatingsRepository
     private lateinit var databaseMock: DatabaseMock
-    private lateinit var schedulerMock: SchedulerMock
 
     @Before
     fun setUp() {
@@ -47,6 +46,8 @@ internal class RatingsRepositoryTest {
                 json(Json {
                     prettyPrint = true
                     isLenient = true
+                    ignoreUnknownKeys = true
+                    coerceInputValues  = true
                 })
             }
             install(DefaultRequest) {
