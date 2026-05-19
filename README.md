@@ -1,6 +1,6 @@
 ![banner](banner.png)
-# ⚽▶️ Laterball
-This is the source for the Laterball football match watchability rating generator running at [laterball.com](http://laterball.com)
+# ⚽▶️ Laterball (deprecated)
+This is the source for the Laterball football match watchability rating generator (formerly) running at [laterball.com](http://laterball.com)
 
 ## What is Laterball?
 
