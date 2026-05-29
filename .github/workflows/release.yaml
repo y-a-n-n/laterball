@@ -76,7 +76,7 @@ jobs:
           cp {docker-compose.PROD.yml,.env.PROD,nginx/laterball.PROD.conf,build/docker/*.tar} build/deploy
 
       - name: Copy artefacts to production
-        uses: appleboy/scp-action@v0.1.4
+        uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
